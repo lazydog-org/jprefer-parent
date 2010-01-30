@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <ui:include src="/pages/common/modalPanel.xhtml">
+                <ui:param name="type" value="agent"/>
+                <ui:param name="managedBean" value="#{agentMB}"/>
+            </ui:include>
+        </ui:composition>
+    </body>
+</html>

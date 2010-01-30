@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <rich:modalPanel
+                id="pm-#{type}-modal-panel"
+                minWidth="400"
+                autosized="true">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        #{type}
+                    </h:panelGroup>
+                </f:facet>
+                <f:facet name="controls">
+                    <h:panelGroup>
+                        <h:form>
+                            <a4j:commandLink
+                                value="close"
+                                oncomplete="Richfaces.hideModalPanel('pm-#{type}-modal-panel');"
+                                reRender="pm-#{type}-table"/>
+                        </h:form>
+                    </h:panelGroup>
+                </f:facet>
+                <h:panelGrid id="pm-#{type}-modal-panel-content">
+                    <ui:include src="/pages/common/modalPanelForm.xhtml">
+                        <ui:param name="type" value="#{type}"/>
+                        <ui:param name="managedBean" value="#{managedBean}"/>
+                    </ui:include>
+                </h:panelGrid>
+            </rich:modalPanel>
+        </ui:composition>
+    </body>
+</html>
+

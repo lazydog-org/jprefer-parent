@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <fieldset>
+                <ol>
+                    <li>
+                        <label for="enabled">Enabled </label>
+                        <h:selectBooleanCheckbox
+                            id="enabled"
+                            value="#{agentMB.agent.enabled}"/>
+                        <h:inputHidden value="#{agentMB.agent.id}"/>
+                    </li>
+                    <li>
+                        <label for="server-name">Server Name: </label>
+                        <h:inputText
+                            id="server-name"
+                            value="#{agentMB.agent.serverName}"
+                            size="25"
+                            maxlength="50"/>
+                    </li>
+                    <li>
+                        <label for="jmx-port">JMX Port: </label>
+                        <h:inputText
+                            id="jmx-port"
+                            value="#{agentMB.agent.jmxPort}"
+                            size="10"
+                            maxlength="10"/>
+                    </li>
+                    <li>
+                        <label for="login">Login: </label>
+                        <h:inputText
+                            id="login"
+                            value="#{agentMB.agent.login}"
+                            size="25"
+                            maxlength="50"/>
+                    </li>
+                    <li>
+                        <label for="password">Password: </label>
+                        <h:inputText
+                            id="password"
+                            value="#{agentMB.agent.password}"
+                            size="25"
+                            maxlength="50"/>
+                    </li>
+                </ol>
+            </fieldset>
+        </ui:composition>
+    </body>
+</html>

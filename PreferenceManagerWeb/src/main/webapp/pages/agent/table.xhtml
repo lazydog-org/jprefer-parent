@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:form id="pm-agent-table">
+                <div class="pm-form-buttons">
+                    <a4j:commandButton
+                        value="Refresh"
+                        actionListener="#{agentMB.processRefreshButton}"
+                        reRender="pm-agent-table"/>
+                    <a4j:commandButton
+                        value="Add"
+                        actionListener="#{agentMB.processAddButton}"
+                        oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
+                        reRender="pm-agent-modal-panel-content"/>
+                    <a4j:commandButton
+                        value="Synchronize All"
+                        actionListener="#{agentMB.processSynchronizeAllButton}"
+                        reRender="pm-agent-table"/>
+                </div>
+                <rich:contextMenu
+                    attached="false"
+                    id="menu"
+                    submitMode="ajax">
+                    <rich:menuItem
+                        value="Modify"
+                        oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
+                        reRender="pm-agent-modal-panel-content">
+                        <a4j:actionparam
+                            name="agentId"
+                            assignTo="#{agentMB.agentId}"
+                            value="{agentId}"
+                            actionListener="#{agentMB.processModifyButton}"/>
+                    </rich:menuItem>
+                    <rich:menuItem
+                        value="Delete"
+                        actionListener="#{agentMB.processDeleteButton}"
+                        reRender="pm-agent-table"/>
+                    <rich:menuItem
+                        style="display: {disabled};"
+                        value="Enable"
+                        reRender="pm-agent-table">
+                        <a4j:actionparam
+                            name="agentId"
+                            assignTo="#{agentMB.agentId}"
+                            value="{agentId}"
+                            actionListener="#{agentMB.processEnableButton}"/>
+                    </rich:menuItem>
+                    <rich:menuItem
+                        style="display: {enabled};"
+                        value="Disable"
+                        reRender="pm-agent-table">
+                        <a4j:actionparam
+                            name="agentId"
+                            assignTo="#{agentMB.agentId}"
+                            value="{agentId}"
+                            actionListener="#{agentMB.processDisableButton}"/>
+                    </rich:menuItem>
+                    <rich:menuItem
+                        style="display: {enabled};"
+                        value="Synchronize"
+                        actionListener="#{agentMB.processSynchronizeButton}"
+                        reRender="pm-agent-table"/>
+                </rich:contextMenu>
+                <rich:dataTable
+                    value="#{agentMB.agents}"
+                    var="agent">
+                    <rich:column headerClass="pm-table-cell pm-table-agent-server-name-cell">
+                        <f:facet name="header">
+                            <h:outputText value="Server Name"/>
+                        </f:facet>
+                        <h:outputText value="#{agent.serverName}"/>
+                    </rich:column>
+                    <rich:column headerClass="pm-table-cell pm-table-agent-enabled-cell">
+                        <f:facet name="header">
+                            <h:outputText value="Enabled"/>
+                        </f:facet>
+                        <h:outputText value="#{agent.enabled}"/>
+                    </rich:column>
+                    <rich:column headerClass="pm-table-cell pm-table-agent-status-cell">
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
+                        <h:outputText value="#{agent.status}"/>
+                    </rich:column>
+                    <rich:componentControl event="onRowClick" for="menu" operation="show">
+                        <f:param name="agentId" value="#{agent.id}"/>
+                        <f:param name="enabled" value="#{agent.enabled ? 'block' : 'none'}"/>
+                        <f:param name="disabled" value="#{agent.enabled ? 'none' : 'block'}"/>
+                    </rich:componentControl>
+                </rich:dataTable>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>
