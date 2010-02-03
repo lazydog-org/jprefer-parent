@@ -1,21 +1,21 @@
-package org.lazydog.preference.manager.configuration.exception;
+package org.lazydog.preference.manager.configuration.dao;
 
 import java.io.Serializable;
 
 
 /**
- * Thrown to indicate that an error occurred in the AgentDAO class.
+ * Thrown to indicate that an error occurred in the ConfigurationDAO class.
  *
  * @author  Ronald Rickard
  */
-public class AgentDAOException 
+public class ConfigurationDAOException
         extends Exception
         implements Serializable {
 
     /**
      * Constructs a new exception.
      */
-    public AgentDAOException() {
+    public ConfigurationDAOException() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class AgentDAOException
      *
      * @param  message  the message.
      */
-    public AgentDAOException(String message) {
+    public ConfigurationDAOException(String message) {
         super(message);
     }
 
@@ -34,7 +34,7 @@ public class AgentDAOException
      * @param  message  the message.
      * @param  cause    the cause.
      */
-    public AgentDAOException(String message, Throwable cause) {
+    public ConfigurationDAOException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -43,7 +43,7 @@ public class AgentDAOException
      *
      * @param  cause  the cause.
      */
-    public AgentDAOException(Throwable cause) {
+    public ConfigurationDAOException(Throwable cause) {
         super(cause);
     }
 }

@@ -6,31 +6,39 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.lazydog.preference.manager.configuration.exception.AgentDAOException;
+import org.lazydog.preference.manager.configuration.ConfigurationType;
 import org.lazydog.preference.manager.model.Agent;
 
 
 /**
- * Agent data access object.
+ * Configuration data access object.
  *
  * @author  Ron Rickard
  */
-public class AgentDAO {
+public class ConfigurationDAO {
 
     private static final String AGENT_KEY_PREFIX = "agent.";
     private static final String AGENT_KEY_REGEX = AGENT_KEY_PREFIX + "\\d+";
-    private static final String SEQUENCE_KEY = "sequence";
-    private static final int START_SEQUENCE = 1;
     private static final String AGENT_VALUE_REGEX = "(.*),(\\d*),(.*),(.*),(.*)";
     private static final String AGENT_VALUE_SEPARATOR = ",";
+    private static final String SEQUENCE_KEY = "sequence";
+    private static final int START_SEQUENCE = 1;
+    private static final String TYPE_KEY = "type";
     private static final int SERVER_NAME_GROUP = 1;
     private static final int JMX_PORT_GROUP = 2;
     private static final int LOGIN_GROUP = 3;
     private static final int PASSWORD_GROUP = 4;
     private static final int ENABLED_GROUP = 5;
 
-    private Preferences preferences = Preferences.systemNodeForPackage(this.getClass());
+    private Preferences preferences;
 
+    /**
+     * Constructor.
+     */
+    public ConfigurationDAO() {
+        preferences = Preferences.userNodeForPackage(this.getClass());
+    }
+    
     /**
      * Find the agent specified by the ID.
      *
@@ -38,10 +46,10 @@ public class AgentDAO {
      *
      * @return  the agent.
      *
-     * @throws  AgentDAOException  if unable to find the agent.
+     * @throws  ConfigurationDAOException  if unable to find the agent.
      */
-    public Agent find(int id)
-            throws AgentDAOException {
+    public Agent findAgent(int id)
+            throws ConfigurationDAOException {
 
         // Declare.
         Agent agent;
@@ -61,23 +69,22 @@ public class AgentDAO {
             agent = this.interpret(agentValue, id);
         }
         catch(Exception e) {
-            throw new AgentDAOException(
-                    "Unable to find the agent for ID "
-                    + id + ".", e);
+            throw new ConfigurationDAOException(
+                    "Unable to find the agent for ID " + id + ".", e);
         }
 
         return agent;
     }
 
     /**
-     * Find all the agents.
+     * Find the agents.
      *
-     * @return  all the agents.
+     * @return  the agents.
      *
-     * @throws  AgentDAOException  if unable to find all the agents.
+     * @throws  ConfigurationDAOException  if unable to find the agents.
      */
-    public List<Agent> findAll()
-            throws AgentDAOException {
+    public List<Agent> findAgents()
+            throws ConfigurationDAOException {
 
         // Declare.
         List<Agent> agents;
@@ -113,7 +120,7 @@ public class AgentDAO {
                     id = Integer.parseInt(key.replace(AGENT_KEY_PREFIX, ""));
 
                     // Find the agent.
-                    agent = this.find(id);
+                    agent = this.findAgent(id);
 
                     // Add the agent to the agents.
                     agents.add(agent);
@@ -121,11 +128,39 @@ public class AgentDAO {
             }
         }
         catch(Exception e) {
-            throw new AgentDAOException(
-                    "Unable to find all the agents.", e);
+            throw new ConfigurationDAOException(
+                    "Unable to find the agents.", e);
         }
 
         return agents;
+    }
+
+    /**
+     * Find the type.
+     *
+     * @return  the type.
+     *
+     * @throws  ConfigurationDAOException  if unable to find the type.
+     */
+    public ConfigurationType findType()
+            throws ConfigurationDAOException {
+
+        // Declare.
+        ConfigurationType type;
+
+        // Initialize.
+        type = null;
+
+        try {
+
+            // Get the type.
+            type = ConfigurationType.valueOf(this.preferences.get(TYPE_KEY, null));
+        }
+        catch(Exception e) {
+            throw new ConfigurationDAOException(
+                    "Unable to find the type.", e);
+        }
+        return type;
     }
 
     /**
@@ -255,10 +290,12 @@ public class AgentDAO {
      *
      * @param  agent  the agent.
      *
-     * @throws  AgentDAOException  if unable to persist the agent.
+     * @return  the agent.
+     *
+     * @throws  ConfigurationDAOException  if unable to persist the agent.
      */
-    public Agent persist(Agent agent) 
-            throws AgentDAOException {
+    public Agent persistAgent(Agent agent)
+            throws ConfigurationDAOException {
 
         try {
 
@@ -279,26 +316,54 @@ public class AgentDAO {
             this.preferences.flush();
 
             // Get the agent.
-            agent = this.find(id);
+            agent = this.findAgent(id);
         }
         catch(Exception e) {
-            throw new AgentDAOException(
-                    "Unable to persist the agent, "
-                    + agent + ".", e);
+            throw new ConfigurationDAOException(
+                    "Unable to persist the agent, " + agent + ".", e);
         }
 
         return agent;
     }
     
     /**
+     * Persist the type.
+     * 
+     * @param  type  the type.
+     * 
+     * @return  the type.
+     * 
+     * @throws  ConfigurationDAOException  if unable to persist the type.
+     */
+    public ConfigurationType persistType(ConfigurationType type)
+            throws ConfigurationDAOException {
+
+        try {
+
+            // Store the type.
+            this.preferences.put(TYPE_KEY, type.toString());
+            this.preferences.flush();
+
+            // Get the type.
+            type = this.findType();
+        }
+        catch(Exception e) {
+            throw new ConfigurationDAOException(
+                    "Unable to persist the type, " + type.toString() + ".", e);
+        }
+
+        return type;
+    }
+
+    /**
      * Remove the agent specified by the ID.
      *
      * @param  id  the ID.
      *
-     * @throws  AgentDAOException  if unable to remove the agent.
+     * @throws  ConfigurationDAOException  if unable to remove the agent.
      */
-    public void remove(int id) 
-            throws AgentDAOException {
+    public void removeAgent(int id)
+            throws ConfigurationDAOException {
 
         try {
 
@@ -306,15 +371,14 @@ public class AgentDAO {
             this.preferences.remove(this.getAgentKey(id));
         }
         catch(Exception e) {
-            throw new AgentDAOException(
-                    "Unable to remove the agent for ID "
-                    + id + ".", e);
+            throw new ConfigurationDAOException(
+                    "Unable to remove the agent for ID " + id + ".", e);
         }
     }
 
     public static void main(String[] args) throws Exception {
 
-        AgentDAO dao = new AgentDAO();
+        ConfigurationDAO dao = new ConfigurationDAO();
 
         Agent agent1 = new Agent();
         agent1.setEnabled(Boolean.FALSE);
@@ -324,36 +388,36 @@ public class AgentDAO {
         agent1.setServerName("SIC36565.sic.nwie.net");
         System.out.println("Before store: " + agent1);
 
-        agent1 = dao.persist(agent1);
+        agent1 = dao.persistAgent(agent1);
         System.out.println("After store: " + agent1);
 
         agent1.setEnabled(Boolean.TRUE);
-        agent1 = dao.persist(agent1);
+        agent1 = dao.persistAgent(agent1);
         System.out.println("After change: " + agent1);
 
-        Agent agent2 = dao.find(agent1.getId());
+        Agent agent2 = dao.findAgent(agent1.getId());
         System.out.println("Find: " + agent2);
 
         agent2.setServerName("another.sic.nwie.net");
         agent2.setId(null);
-        agent2 = dao.persist(agent2);
+        agent2 = dao.persistAgent(agent2);
         System.out.println("After store: " + agent2);
 
-        List<Agent> agents = dao.findAll();
+        List<Agent> agents = dao.findAgents();
         for (Agent agent : agents) {
-            System.out.println("Find all (both): " + agent);
+            System.out.println("Find agents (both): " + agent);
         }
 /*
         dao.remove(agent2.getId());
-        agents = dao.findAll();
+        agents = dao.findAgents();
         for (Agent agent : agents) {
-            System.out.println("Find all (one): " + agent);
+            System.out.println("Find agents (one): " + agent);
         }
 
         dao.remove(agent1.getId());
-        agents = dao.findAll();
+        agents = dao.findAgents();
         for (Agent agent : agents) {
-            System.out.println("Find all (none): " + agent);
+            System.out.println("Find agents (none): " + agent);
         }
  */
     }

@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package org.lazydog.preference.manager.utility;
+package org.lazydog.preference.manager.configuration;
 
 /**
- * Status.
+ * Agent status.
  *
  * @author  Ron Rickard
  */
-public enum Status {
+public enum AgentStatus {
     UP         ("Up"),
     DOWN       ("Down"),
     SYNCED     ("Sync'd"),
@@ -18,7 +13,7 @@ public enum Status {
 
     private String toString;
 
-    Status(String toString) {
+    AgentStatus(String toString) {
         this.toString = toString;
     }
 

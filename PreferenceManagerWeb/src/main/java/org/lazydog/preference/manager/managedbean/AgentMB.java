@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.configuration.dao.AgentDAO;
+import org.lazydog.preference.manager.configuration.Configuration;
 import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.manager.utility.AgentUtility;
 
 
 /**
@@ -17,7 +16,6 @@ import org.lazydog.preference.manager.utility.AgentUtility;
 public class AgentMB implements Serializable {
 
     private Agent agent;
-    private AgentDAO agentDao;
     private Integer agentId;
     
     /**
@@ -30,9 +28,9 @@ public class AgentMB implements Serializable {
     }
 
     /**
-     * Get all the agents.
+     * Get the agents.
      * 
-     * @return  all the agents.
+     * @return  the agents.
      */
     public List<Agent> getAgents() {
 
@@ -44,21 +42,8 @@ public class AgentMB implements Serializable {
         
         try {
 
-            // Declare.
-            AgentUtility agentUtility;
-
-            // Initialize.
-            agentUtility = new AgentUtility();
-
-            // Get all the agents.
-            agents = agentDao.findAll();
-
-            // Loop through the agents.
-            for (Agent agent : agents) {
-
-                // Set the status for the agent.
-                agent.setStatus(agentUtility.getStatus(agent));
-            }
+            // Get the agents.
+            agents = Configuration.getAgents();
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -75,9 +60,6 @@ public class AgentMB implements Serializable {
 
         // Create a new agent.
         this.agent = new Agent();
-
-        // Initialize the agent data access object.
-        this.agentDao = new AgentDAO();
     }
 
     /**
@@ -117,9 +99,7 @@ System.err.println("processDeleteButton invoked");
 System.err.println("processDisableButton invoked");
 
         try {
-        this.agent = this.agentDao.find(this.agentId);
-        this.agent.setEnabled(Boolean.FALSE);
-        this.agentDao.persist(this.agent);
+            this.agent = Configuration.disableAgent(this.agentId);
         }
         catch(Exception e) {}
     }
@@ -132,9 +112,7 @@ System.err.println("processDisableButton invoked");
     public void processEnableButton(ActionEvent actionEvent) {
 System.err.println("processEnableButton invoked");
         try {
-        this.agent = this.agentDao.find(this.agentId);
-        this.agent.setEnabled(Boolean.TRUE);
-        this.agentDao.persist(this.agent);
+            this.agent = Configuration.enableAgent(this.agentId);
         }
         catch(Exception e) {}
     }
@@ -147,7 +125,7 @@ System.err.println("processEnableButton invoked");
     public void processModifyButton(ActionEvent actionEvent) {
 System.err.println("processModifyButton invoked");
         try {
-        this.agent = this.agentDao.find(this.agentId);
+            this.agent = Configuration.getAgent(this.agentId);
         }
         catch(Exception e) {}
     }
@@ -160,8 +138,8 @@ System.err.println("processModifyButton invoked");
     public void processOkButton(ActionEvent actionEvent) {
 System.err.println("processOkButton invoked");
         try {
-        // Save the agent.
-        this.agentDao.persist(this.agent);
+            // Save the agent.
+            this.agent = Configuration.saveAgent(this.agent);
         }
         catch(Exception e) {}
     }
@@ -183,17 +161,18 @@ System.err.println("processRefreshButton invoked");
     public void processResetButton(ActionEvent actionEvent) {
 System.err.println("processResetButton invoked");
         try {
-        // Check if the agent is not new.
-        if (this.agent.getId() != null) {
+            
+            // Check if the agent is not new.
+            if (this.agent.getId() != null) {
 
-            // Restore the agent to the saved agent.
-            this.agent = this.agentDao.find(this.agent.getId());
-        }
-        else {
+                // Restore the agent to the saved agent.
+                this.agent = Configuration.getAgent(this.agent.getId());
+            }
+            else {
 
-            // Create a new agent.
-            this.agent = new Agent();
-        }
+                // Create a new agent.
+                this.agent = new Agent();
+            }
         }
         catch(Exception e) {}
     }
