@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager.exception;
+package org.lazydog.preference.manager.configuration.exception;
 
 import java.io.Serializable;
 
