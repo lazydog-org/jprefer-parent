@@ -184,9 +184,10 @@ public class RemotePreferenceService
             MBeanServerConnection connection;
             ObjectName name;
 
-            // Establish a connection to the MBean server
-            // and get the name of the MBean.
+            // Establish a connection to the MBean server.
             connection = connector.getMBeanServerConnection();
+
+            // Get the MBean object name.
             name = new ObjectName(AgentPreferenceServiceMBean.OBJECT_NAME);
 
             // Get the agent preference service MBean.
