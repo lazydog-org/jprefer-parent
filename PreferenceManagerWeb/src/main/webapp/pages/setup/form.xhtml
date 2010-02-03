@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:form id="pm-setup-form">
+                <fieldset>
+                    <ol>
+                        <li>
+                            <label for="type">Setup type: </label>
+                            <h:selectOneRadio
+                                id="type"
+                                value="#{setupMB.type}"
+                                layout="pageDirection">
+                                <f:selectItem itemLabel="Preference Manager" itemValue="MANAGER"/>
+                                <f:selectItem itemLabel="Preference Manager (Standalone)" itemValue="STANDALONE"/>
+                                <f:selectItem itemLabel="Preference Agent" itemValue="AGENT"/>
+                            </h:selectOneRadio>
+                        </li>
+                        <li>
+                            <label for="remove">Remove existing preferences </label>
+                            <h:selectBooleanCheckbox
+                                id="remove"
+                                value="#{setupMB.remove}"/>
+                        </li>
+                    </ol>
+                </fieldset>
+                <div class="pm-form-buttons">
+                    <h:commandButton
+                        value="Configure"
+                        action="#{setupMB.configure}"/>
+                </div>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>

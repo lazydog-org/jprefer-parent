@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.lazydog.preference.manager.configuration.Configuration;
 
 
 /**
@@ -13,8 +14,11 @@ import javax.faces.event.ActionEvent;
  */
 public class UserMB implements Serializable {
 
+    private static final String AGENT_SETUP = "agent";
     private static final String FAILURE = "failure";
-    private static final String SUCCESS = "success";
+    private static final String MANAGER_SETUP = "manager";
+    private static final String NO_SETUP = "setup";
+    private static final String STANDALONE_SETUP = "standalone";
 
     private boolean authenticated;
     private String name;
@@ -56,7 +60,7 @@ public class UserMB implements Serializable {
     /**
      * Login.
      *
-     * @return  success or failure outcome.
+     * @return  setup type or failure outcome.
      */
     public String login() {
 
@@ -66,10 +70,26 @@ public class UserMB implements Serializable {
         // Set the outcome to failure.
         outcome = FAILURE;
 
+        // Check if the user is authenticated.
         if (this.authenticated) {
 
-            // Set the outcome to success.
-            outcome = SUCCESS;
+            // Check if this is an agent setup.
+            if (Configuration.isAgentSetup()) {
+                outcome = AGENT_SETUP;
+            }
+
+            // Check if this is a manager setup.
+            else if (Configuration.isManagerSetup()) {
+                outcome = MANAGER_SETUP;
+            }
+
+            // Check if this is a standalone setup.
+            else if (Configuration.isStandaloneSetup()) {
+                outcome = STANDALONE_SETUP;
+            }
+            else {
+                outcome = NO_SETUP;
+            }
         }
         else {
 

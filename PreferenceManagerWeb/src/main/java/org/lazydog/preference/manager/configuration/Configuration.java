@@ -213,17 +213,17 @@ public class Configuration {
     }
 
     /**
-     * Is the configuration an agent service.
+     * Is this an agent setup.
      *
-     * @return  true if the configuration is an agent service, otherwise false.
+     * @return  true if this is an agent setup, otherwise false.
      */
-    public static boolean isAgent() {
+    public static boolean isAgentSetup() {
 
         // Declare.
-        boolean isAgent;
+        boolean isAgentSetup;
 
         // Initialize.
-        isAgent = false;
+        isAgentSetup = false;
 
         try {
 
@@ -233,30 +233,30 @@ public class Configuration {
             // Initialize.
             configurationDAO = new ConfigurationDAO();
 
-            // Check if the configuration is an agent service.
-            if (configurationDAO.findType() == ConfigurationType.AGENT) {
-                isAgent = true;
+            // Check if this is an agent setup.
+            if (configurationDAO.findSetupType() == SetupType.AGENT) {
+                isAgentSetup = true;
             }
         }
         catch(Exception e) {
             // Ignore.
         }
 
-        return isAgent;
+        return isAgentSetup;
     }
 
     /**
-     * Is the configuration a manager service.
+     * Is this a manager setup.
      *
-     * @return  true if the configuration is a manager service, otherwise false.
+     * @return  true if this is a manager setup, otherwise false.
      */
-    public static boolean isManager() {
+    public static boolean isManagerSetup() {
 
         // Declare.
-        boolean isManager;
+        boolean isManagerSetup;
 
         // Initialize.
-        isManager = false;
+        isManagerSetup = false;
 
         try {
 
@@ -266,30 +266,30 @@ public class Configuration {
             // Initialize.
             configurationDAO = new ConfigurationDAO();
 
-            // Check if the configuration is a manager service.
-            if (configurationDAO.findType() == ConfigurationType.MANAGER) {
-                isManager = true;
+            // Check if this is a manager setup.
+            if (configurationDAO.findSetupType() == SetupType.MANAGER) {
+                isManagerSetup = true;
             }
         }
         catch(Exception e) {
             // Ignore.
         }
 
-        return isManager;
+        return isManagerSetup;
     }
 
     /**
-     * Is the configuration a standalone service.
+     * Is this setup.
      *
-     * @return  true if the configuration is a standalone service, otherwise false.
+     * @return  true if this is setup, otherwise false.
      */
-    public static boolean isStandalone() {
+    public static boolean isSetup() {
 
         // Declare.
-        boolean isStandalone;
+        boolean isSetup;
 
         // Initialize.
-        isStandalone = false;
+        isSetup = false;
 
         try {
 
@@ -299,16 +299,49 @@ public class Configuration {
             // Initialize.
             configurationDAO = new ConfigurationDAO();
 
-            // Check if the configuration is a standalone service.
-            if (configurationDAO.findType() == ConfigurationType.STANDALONE) {
-                isStandalone = true;
+            // Check if this is setup.
+            if (configurationDAO.findSetupType() != null) {
+                isSetup = true;
             }
         }
         catch(Exception e) {
             // Ignore.
         }
 
-        return isStandalone;
+        return isSetup;
+    }
+
+    /**
+     * Is this a standalone setup.
+     *
+     * @return  true if this is a standalone setup, otherwise false.
+     */
+    public static boolean isStandaloneSetup() {
+
+        // Declare.
+        boolean isStandaloneSetup;
+
+        // Initialize.
+        isStandaloneSetup = false;
+
+        try {
+
+            // Declare.
+            ConfigurationDAO configurationDAO;
+
+            // Initialize.
+            configurationDAO = new ConfigurationDAO();
+
+            // Check if this is a standalone setup.
+            if (configurationDAO.findSetupType() == SetupType.STANDALONE) {
+                isStandaloneSetup = true;
+            }
+        }
+        catch(Exception e) {
+            // Ignore.
+        }
+
+        return isStandaloneSetup;
     }
 
     /**
@@ -336,5 +369,32 @@ public class Configuration {
         }
 
         return agent;
+    }
+
+    /**
+     * Save the setup type.
+     *
+     * @param  setupType  the setup type.
+     *
+     * @return  the setup type.
+     */
+    public static SetupType saveSetupType(SetupType setupType) {
+
+        try {
+
+            // Declare.
+            ConfigurationDAO configurationDAO;
+
+            // Initialize.
+            configurationDAO = new ConfigurationDAO();
+
+            // Save the setup type.
+            setupType = configurationDAO.persistSetupType(setupType);
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+        }
+
+        return setupType;
     }
 }

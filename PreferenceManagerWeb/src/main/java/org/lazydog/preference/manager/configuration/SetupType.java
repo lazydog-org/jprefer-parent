@@ -1,11 +1,11 @@
 package org.lazydog.preference.manager.configuration;
 
 /**
- * Configuration type.
+ * Setup type.
  *
  * @author  Ron Rickard
  */
-public enum ConfigurationType {
+public enum SetupType {
     AGENT,
     MANAGER,
     STANDALONE;

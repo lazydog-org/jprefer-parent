@@ -15,7 +15,7 @@
             </ui:define>
             <ui:define name="content">
                 <div id="pm-login">
-                    <h:form>
+                    <h:form id="pm-login-form">
                         <fieldset>
                             <ol>
                                 <li>
@@ -34,16 +34,14 @@
                                         size="25"
                                         maxlength="50"/>
                                 </li>
-                                <li>
-                                    <label style="background-color: #ffffff;"/>
-                                    <h:commandButton
-                                        value="Sign In"
-                                        action="#{userMB.login}"
-                                        actionListener="#{userMB.authenticate}">
-                                    </h:commandButton>
-                                </li>
                             </ol>
                         </fieldset>
+                        <div class="pm-form-buttons">
+                            <h:commandButton
+                                value="Sign In"
+                                action="#{userMB.login}"
+                                actionListener="#{userMB.authenticate}"/>
+                        </div>
                     </h:form>
                 </div>
             </ui:define>

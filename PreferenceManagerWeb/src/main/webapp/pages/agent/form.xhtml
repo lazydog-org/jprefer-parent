@@ -3,54 +3,75 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html
     xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
     xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <head/>
     <body>
         <ui:composition>
-            <fieldset>
-                <ol>
-                    <li>
-                        <label for="enabled">Enabled </label>
-                        <h:selectBooleanCheckbox
-                            id="enabled"
-                            value="#{agentMB.agent.enabled}"/>
-                        <h:inputHidden value="#{agentMB.agent.id}"/>
-                    </li>
-                    <li>
-                        <label for="server-name">Server Name: </label>
-                        <h:inputText
-                            id="server-name"
-                            value="#{agentMB.agent.serverName}"
-                            size="25"
-                            maxlength="50"/>
-                    </li>
-                    <li>
-                        <label for="jmx-port">JMX Port: </label>
-                        <h:inputText
-                            id="jmx-port"
-                            value="#{agentMB.agent.jmxPort}"
-                            size="10"
-                            maxlength="10"/>
-                    </li>
-                    <li>
-                        <label for="login">Login: </label>
-                        <h:inputText
-                            id="login"
-                            value="#{agentMB.agent.login}"
-                            size="25"
-                            maxlength="50"/>
-                    </li>
-                    <li>
-                        <label for="password">Password: </label>
-                        <h:inputText
-                            id="password"
-                            value="#{agentMB.agent.password}"
-                            size="25"
-                            maxlength="50"/>
-                    </li>
-                </ol>
-            </fieldset>
+            <h:form id="pm-#{type}-form">
+                <fieldset>
+                    <ol>
+                        <li>
+                            <label for="enabled">Enabled </label>
+                            <h:selectBooleanCheckbox
+                                id="enabled"
+                                value="#{agentMB.agent.enabled}"/>
+                            <h:inputHidden value="#{agentMB.agent.id}"/>
+                        </li>
+                        <li>
+                            <label for="server-name">Server Name: </label>
+                            <h:inputText
+                                id="server-name"
+                                value="#{agentMB.agent.serverName}"
+                                size="25"
+                                maxlength="50"/>
+                        </li>
+                        <li>
+                            <label for="jmx-port">JMX Port: </label>
+                            <h:inputText
+                                id="jmx-port"
+                                value="#{agentMB.agent.jmxPort}"
+                                size="10"
+                                maxlength="10"/>
+                        </li>
+                        <li>
+                            <label for="login">Login: </label>
+                            <h:inputText
+                                id="login"
+                                value="#{agentMB.agent.login}"
+                                size="25"
+                                maxlength="50"/>
+                        </li>
+                        <li>
+                            <label for="password">Password: </label>
+                            <h:inputText
+                                id="password"
+                                value="#{agentMB.agent.password}"
+                                size="25"
+                                maxlength="50"/>
+                        </li>
+                    </ol>
+                </fieldset>
+                <div class="pm-form-buttons">
+                    <a4j:commandButton
+                        value="Reset"
+                        actionListener="#{agentMB.processResetButton}"
+                        reRender="pm-agent-form"/>
+                    <a4j:commandButton
+                        value="Cancel"
+                        actionListener="#{agentMB.processCancelButton}"
+                        oncomplete="Richfaces.hideModalPanel('pm-agent-modal-panel');"
+                        reRender="pm-agent-table"/>
+                    <rich:spacer width="20"/>
+                    <a4j:commandButton
+                        value="OK"
+                        actionListener="#{agentMB.processOkButton}"
+                        oncomplete="Richfaces.hideModalPanel('pm-agent-modal-panel');"
+                        reRender="pm-agent-table"/>
+                </div>
+            </h:form>
         </ui:composition>
     </body>
 </html>

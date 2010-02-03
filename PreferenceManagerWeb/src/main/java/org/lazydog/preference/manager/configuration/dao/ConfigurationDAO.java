@@ -6,7 +6,7 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.lazydog.preference.manager.configuration.ConfigurationType;
+import org.lazydog.preference.manager.configuration.SetupType;
 import org.lazydog.preference.manager.model.Agent;
 
 
@@ -23,7 +23,7 @@ public class ConfigurationDAO {
     private static final String AGENT_VALUE_SEPARATOR = ",";
     private static final String SEQUENCE_KEY = "sequence";
     private static final int START_SEQUENCE = 1;
-    private static final String TYPE_KEY = "type";
+    private static final String SETUP_TYPE_KEY = "setup.type";
     private static final int SERVER_NAME_GROUP = 1;
     private static final int JMX_PORT_GROUP = 2;
     private static final int LOGIN_GROUP = 3;
@@ -136,31 +136,31 @@ public class ConfigurationDAO {
     }
 
     /**
-     * Find the type.
+     * Find the setup type.
      *
-     * @return  the type.
+     * @return  the setup type.
      *
-     * @throws  ConfigurationDAOException  if unable to find the type.
+     * @throws  ConfigurationDAOException  if unable to find the setup type.
      */
-    public ConfigurationType findType()
+    public SetupType findSetupType()
             throws ConfigurationDAOException {
 
         // Declare.
-        ConfigurationType type;
+        SetupType setupType;
 
         // Initialize.
-        type = null;
+        setupType = null;
 
         try {
 
-            // Get the type.
-            type = ConfigurationType.valueOf(this.preferences.get(TYPE_KEY, null));
+            // Get the setup type.
+            setupType = SetupType.valueOf(this.preferences.get(SETUP_TYPE_KEY, null));
         }
         catch(Exception e) {
             throw new ConfigurationDAOException(
-                    "Unable to find the type.", e);
+                    "Unable to find the setup type.", e);
         }
-        return type;
+        return setupType;
     }
 
     /**
@@ -327,32 +327,33 @@ public class ConfigurationDAO {
     }
     
     /**
-     * Persist the type.
+     * Persist the setup type.
      * 
-     * @param  type  the type.
+     * @param  setupType  the setup type.
      * 
-     * @return  the type.
+     * @return  the setup type.
      * 
-     * @throws  ConfigurationDAOException  if unable to persist the type.
+     * @throws  ConfigurationDAOException  if unable to persist the setup type.
      */
-    public ConfigurationType persistType(ConfigurationType type)
+    public SetupType persistSetupType(SetupType setupType)
             throws ConfigurationDAOException {
 
         try {
 
-            // Store the type.
-            this.preferences.put(TYPE_KEY, type.toString());
+            // Store the setup type.
+            this.preferences.put(SETUP_TYPE_KEY, setupType.toString());
             this.preferences.flush();
 
-            // Get the type.
-            type = this.findType();
+            // Get the setup type.
+            setupType = this.findSetupType();
         }
         catch(Exception e) {
             throw new ConfigurationDAOException(
-                    "Unable to persist the type, " + type.toString() + ".", e);
+                    "Unable to persist the setup type, "
+                    + setupType.toString() + ".", e);
         }
 
-        return type;
+        return setupType;
     }
 
     /**

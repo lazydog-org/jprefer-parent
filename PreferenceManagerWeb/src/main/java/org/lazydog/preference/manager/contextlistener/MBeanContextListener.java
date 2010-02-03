@@ -25,8 +25,8 @@ public class MBeanContextListener implements ServletContextListener {
 
         try {
 
-            // Check if this is an agent service.
-            if (Configuration.isAgent()) {
+            // Check if this is an agent setup.
+            if (Configuration.isAgentSetup()) {
                 
                 // Declare.
                 MBeanServer mBeanServer;
@@ -60,8 +60,8 @@ public class MBeanContextListener implements ServletContextListener {
 
         try {
 
-            // Check if this is an agent service.
-            if (Configuration.isAgent()) {
+            // Check if this is an agent setup.
+            if (Configuration.isAgentSetup()) {
 
                 // Declare.
                 MBeanServer mBeanServer;
