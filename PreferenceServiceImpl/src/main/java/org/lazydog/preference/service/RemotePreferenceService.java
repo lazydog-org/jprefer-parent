@@ -21,7 +21,8 @@ import org.lazydog.preference.model.Agent;
 public class RemotePreferenceService
         implements PreferenceService {
 
-    private JMXConnector connector;
+    private HashMap serviceEnv;
+    private JMXServiceURL serviceUrl;
 
     /**
      * Constructor.
@@ -41,26 +42,19 @@ public class RemotePreferenceService
 
         try {
 
-            // Declare.
-            HashMap serviceEnv;
-            JMXServiceURL serviceUrl;
-            String url;
-
-            // Set the service environment and URL.
-            serviceEnv = new HashMap();
-            serviceEnv.put(
+            // Set the service environment.
+            this.serviceEnv = new HashMap();
+            this.serviceEnv.put(
                     "jmx.remote.credentials",
                     new String[]{agent.getLogin(), agent.getPassword()});
-            url = "service:jmx:rmi:///jndi/rmi://"
+
+            // Set the service URL.
+            this.serviceUrl = new JMXServiceURL(
+                    "service:jmx:rmi:///jndi/rmi://"
                     + agent.getServerName()
                     + ":"
                     + agent.getJmxPort()
-                    + "/jmxrmi";
-            serviceUrl = new JMXServiceURL(url);
-
-            // Connect to the JMX service on the agent.
-            this.connector = JMXConnectorFactory.connect(
-                    serviceUrl, serviceEnv);
+                    + "/jmxrmi");
         }
         catch(Exception e) {
             throw new PreferenceServiceException(
@@ -69,30 +63,56 @@ public class RemotePreferenceService
     }
 
     /**
-     * Acquire the agent preference service MBean.
+     * Close the JMX service.
      *
-     * @return  the agent preference service MBean.
-     *
-     * @throws  Exception  if unable to acquire the agent preference service
-     *                     MBean.
+     * @param  connector  the JMX connector.
      */
-    private AgentPreferenceServiceMBean acquire()
-            throws Exception {
+    private void close(JMXConnector connector) {
 
+        try {
+
+            // Check to see if the JMX connector exists.
+            if (connector != null) {
+
+                // Close the connection to the JMX service.
+                connector.close();
+            }
+        }
+        catch(Exception e) {
+            // Ignore.
+        }
+    }
+
+    /**
+     * Connect to the JMX service.
+     *
+     * @return  the JMX connector.
+     *
+     * @throws  PreferenceServiceException  if unable to connect to the
+     *                                      JMX service.
+     */
+    private JMXConnector connect()
+            throws PreferenceServiceException {
 
         // Declare.
-        MBeanServerConnection connection;
-        ObjectName name;
-        AgentPreferenceServiceMBean preferenceService;
+        JMXConnector connector;
 
-        // Establish a connection to the MBean server
-        // and get the preference service MBean.
-        connection = this.connector.getMBeanServerConnection();
-        name = new ObjectName(AgentPreferenceServiceMBean.OBJECT_NAME);
-        preferenceService = JMX.newMXBeanProxy(
-                connection, name, AgentPreferenceServiceMBean.class);
+        // Initialize.
+        connector = null;
 
-        return preferenceService;
+        try {
+
+            // Connect to the JMX service.
+            connector = JMXConnectorFactory.connect(
+                    this.serviceUrl, this.serviceEnv);
+        }
+        catch(Exception e) {
+            throw new PreferenceServiceException(
+                    "Unable to connect to the JMX service "
+                    + this.serviceUrl + ".", e);
+        }
+
+        return connector;
     }
 
     /**
@@ -109,22 +129,76 @@ public class RemotePreferenceService
     public void createOrReplaceNode(String pathName, String xmlString)
             throws PreferenceServiceException {
 
+        // Declare.
+        JMXConnector connector;
+
+        // Initialize.
+        connector = null;
+
         try {
 
             // Declare.
             AgentPreferenceServiceMBean preferenceService;
 
-            // Acquire the MBean, create or replace the node, and
-            // release the MBean.
-            preferenceService = this.acquire();
+            // Connect to the JMX service.
+            connector = this.connect();
+
+            // Get the agent preference service MBean.
+            preferenceService = this.getAgentPreferenceServiceMBean(connector);
+
+            // Create or replace the node.
             preferenceService.createOrReplaceNode(pathName, xmlString);
-            this.release();
         }
         catch(Exception e) {
             throw new PreferenceServiceException(
                     "Unable to create or replace the node for path name "
                     + pathName + ".", e);
         }
+        finally {
+
+            // Close the JMX service.
+            this.close(connector);
+        }
+    }
+
+    /**
+     * Get the agent preference service MBean.
+     *
+     * @return  the agent preference service MBean.
+     *
+     * @throws  PreferenceServiceException  if unable to get the agent
+     *                                      preference service MBean.
+     */
+    private AgentPreferenceServiceMBean getAgentPreferenceServiceMBean(JMXConnector connector)
+            throws PreferenceServiceException {
+
+        // Declare.
+        AgentPreferenceServiceMBean preferenceService;
+
+        // Initialize.
+        preferenceService = null;
+
+        try {
+
+            // Declare.
+            MBeanServerConnection connection;
+            ObjectName name;
+
+            // Establish a connection to the MBean server
+            // and get the name of the MBean.
+            connection = connector.getMBeanServerConnection();
+            name = new ObjectName(AgentPreferenceServiceMBean.OBJECT_NAME);
+
+            // Get the agent preference service MBean.
+            preferenceService = JMX.newMXBeanProxy(
+                    connection, name, AgentPreferenceServiceMBean.class);
+        }
+        catch(Exception e) {
+            throw new PreferenceServiceException(
+                    "Unable to get the agent preference service MBean.", e);
+        }
+
+        return preferenceService;
     }
 
     /**
@@ -139,9 +213,11 @@ public class RemotePreferenceService
             throws PreferenceServiceException {
 
         // Declare.
+        JMXConnector connector;
         String xmlString;
 
         // Initialize.
+        connector = null;
         xmlString = null;
 
         try {
@@ -149,15 +225,23 @@ public class RemotePreferenceService
             // Declare.
             AgentPreferenceServiceMBean preferenceService;
 
-            // Acquire the MBean, get all the nodes, and
-            // release the MBean.
-            preferenceService = this.acquire();
+            // Connect to the JMX service.
+            connector = this.connect();
+
+            // Get the agent preference service MBean.
+            preferenceService = this.getAgentPreferenceServiceMBean(connector);
+
+            // Get all the nodes.
             xmlString = preferenceService.getAllNodes();
-            this.release();
         }
         catch(Exception e) {
             throw new PreferenceServiceException(
                     "Unable to get all the nodes.", e);
+        }
+        finally {
+
+            // Close the JMX service.
+            this.close(connector);
         }
 
         return xmlString;
@@ -177,9 +261,11 @@ public class RemotePreferenceService
             throws PreferenceServiceException {
 
         // Declare.
+        JMXConnector connector;
         String xmlString;
 
         // Initialize.
+        connector = null;
         xmlString = null;
 
         try {
@@ -187,32 +273,27 @@ public class RemotePreferenceService
             // Declare.
             AgentPreferenceServiceMBean preferenceService;
 
-            // Acquire the MBean, get the node, and
-            // release the MBean.
-            preferenceService = this.acquire();
+            // Connect to the JMX service.
+            connector = this.connect();
+
+            // Get the agent preference service MBean.
+            preferenceService = this.getAgentPreferenceServiceMBean(connector);
+
+            // Get the node.
             xmlString = preferenceService.getNode(pathName);
-            this.release();
         }
         catch(Exception e) {
             throw new PreferenceServiceException(
                     "Unable to get the node for path name "
                     + pathName + ".", e);
         }
+        finally {
+
+            // Close the JMX service.
+            this.close(connector);
+        }
 
         return xmlString;
-    }
-
-    /**
-     * Release the remote preference service MBean.
-     *
-     * @throws  Exception  if unable to release the remote preference service
-     *                     MBean.
-     */
-    private void release()
-            throws Exception {
-
-        // Close the connection to the MBean server.
-        this.connector.close();
     }
 
     /**
@@ -226,21 +307,35 @@ public class RemotePreferenceService
     public void removeNode(String pathName)
             throws PreferenceServiceException {
 
+        // Declare.
+        JMXConnector connector;
+
+        // Initialize.
+        connector = null;
+
         try {
 
             // Declare.
             AgentPreferenceServiceMBean preferenceService;
 
-            // Acquire the MBean, remove the node, and
-            // release the MBean.
-            preferenceService = this.acquire();
+            // Connect to the JMX service.
+            connector = this.connect();
+
+            // Get the agent preference service MBean.
+            preferenceService = this.getAgentPreferenceServiceMBean(connector);
+
+            // Remove the node.
             preferenceService.removeNode(pathName);
-            this.release();
         }
         catch(Exception e) {
             throw new PreferenceServiceException(
                     "Unable to remove the node for path name "
                     + pathName + ".", e);
+        }
+        finally {
+
+            // Close the JMX service.
+            this.close(connector);
         }
     }
 
@@ -255,20 +350,34 @@ public class RemotePreferenceService
     public void replaceAllNodes(String xmlString)
             throws PreferenceServiceException {
 
+        // Declare.
+        JMXConnector connector;
+
+        // Initialize.
+        connector = null;
+
         try {
 
             // Declare.
             AgentPreferenceServiceMBean preferenceService;
 
-            // Acquire the MBean, replace all the nodes, and
-            // release the MBean.
-            preferenceService = this.acquire();
+            // Connect to the JMX service.
+            connector = this.connect();
+
+            // Get the agent preference service MBean.
+            preferenceService = this.getAgentPreferenceServiceMBean(connector);
+
+            // Replace all the nodes.
             preferenceService.replaceAllNodes(xmlString);
-            this.release();
         }
         catch(Exception e) {
             throw new PreferenceServiceException(
                     "Unable to replace all the nodes.", e);
+        }
+        finally {
+
+            // Close the JMX service.
+            this.close(connector);
         }
     }
 }
