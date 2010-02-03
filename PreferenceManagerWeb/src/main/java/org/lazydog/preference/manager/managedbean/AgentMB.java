@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.dao.AgentDAO;
+import org.lazydog.preference.manager.configuration.dao.AgentDAO;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.utility.AgentUtility;
 

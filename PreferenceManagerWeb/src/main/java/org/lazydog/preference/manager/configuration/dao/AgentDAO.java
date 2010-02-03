@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager.dao;
+package org.lazydog.preference.manager.configuration.dao;
 
 import java.util.ArrayList;
 import java.util.List;
