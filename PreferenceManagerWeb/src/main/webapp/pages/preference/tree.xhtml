@@ -10,7 +10,7 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-preferences-tree">
+            <h:form id="pm-preference-tree">
                 <rich:tree
                     switchType="ajax">
                     <rich:recursiveTreeNodesAdaptor
@@ -21,25 +21,25 @@
                             var="preference"
                             nodes="#{preferenceNode.preferences}"/>
                         <rich:treeNode
-                            id="preferenceNode"
+                            id="pm-preference-tree-node"
                             icon="/images/iconFolder.gif"
                             iconLeaf="/images/iconFolder.gif">
                             <h:outputText value="#{preferenceNode}"/>
                             <rich:contextMenu
-                                attachTo="preferenceNode"
+                                attachTo="pm-preference-tree-node"
                                 submitMode="ajax">
                                 <rich:menuItem
                                     value="Add"
                                     actionListener="#{preferenceMB.processAddButton}"
-                                    reRender="pm-preferences-tree"/>
+                                    reRender="pm-preference-tree"/>
                                 <rich:menuItem
                                     value="Delete"
                                     actionListener="#{preferenceMB.processDeleteButton}"
-                                    reRender="pm-preferences-tree"/>
+                                    reRender="pm-preference-tree"/>
                                 <rich:menuItem
                                     value="Modify"
                                     actionListener="#{preferenceMB.processModifyButton}"
-                                    reRender="pm-preferences-tree"/>
+                                    reRender="pm-preference-tree"/>
                             </rich:contextMenu>
                         </rich:treeNode>
                     </rich:recursiveTreeNodesAdaptor>
