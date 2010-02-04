@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:form id="pm-preferences-tree">
+                <rich:tree
+                    switchType="ajax">
+                    <rich:recursiveTreeNodesAdaptor
+                        roots="#{preferenceMB.rootNodes}"
+                        var="preferenceNode"
+                        nodes="#{preferenceNode.children}">
+                        <rich:treeNodesAdaptor 
+                            var="preference"
+                            nodes="#{preferenceNode.preferences}"/>
+                        <rich:treeNode
+                            id="preferenceNode"
+                            icon="/images/iconFolder.gif"
+                            iconLeaf="/images/iconFolder.gif">
+                            <h:outputText value="#{preferenceNode}"/>
+                            <rich:contextMenu
+                                attachTo="preferenceNode"
+                                submitMode="ajax">
+                                <rich:menuItem
+                                    value="Add"
+                                    actionListener="#{preferenceMB.processAddButton}"
+                                    reRender="pm-preferences-tree"/>
+                                <rich:menuItem
+                                    value="Delete"
+                                    actionListener="#{preferenceMB.processDeleteButton}"
+                                    reRender="pm-preferences-tree"/>
+                                <rich:menuItem
+                                    value="Modify"
+                                    actionListener="#{preferenceMB.processModifyButton}"
+                                    reRender="pm-preferences-tree"/>
+                            </rich:contextMenu>
+                        </rich:treeNode>
+                    </rich:recursiveTreeNodesAdaptor>
+                </rich:tree>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>
