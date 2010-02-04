@@ -30,7 +30,7 @@
                 </div>
                 <rich:contextMenu
                     attached="false"
-                    id="menu"
+                    id="pm-agent-menu"
                     submitMode="ajax">
                     <rich:menuItem
                         value="Modify"
@@ -93,7 +93,7 @@
                         </f:facet>
                         <h:outputText value="#{agent.status}"/>
                     </rich:column>
-                    <rich:componentControl event="onRowClick" for="menu" operation="show">
+                    <rich:componentControl event="onRowClick" for="pm-agent-menu" operation="show">
                         <f:param name="agentId" value="#{agent.id}"/>
                         <f:param name="enabled" value="#{agent.enabled ? 'block' : 'none'}"/>
                         <f:param name="disabled" value="#{agent.enabled ? 'none' : 'block'}"/>

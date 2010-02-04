@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="pages/common/footer.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="index.jsp" x="400" y="300" zoom="true"/>
+        <Node id="layout/pageLayout.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="pages/setup/form.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="pages/agent/form.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="pages/standalone.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="pages/common/modalPanels.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="pages/login/form.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="pages/preference/tree.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="pages/agent/table.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="pages/agent/modalPanel.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="pages/setup.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="pages/manager.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="pages/agent.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="pages/common/header.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="pages/login.xhtml" x="650" y="450" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

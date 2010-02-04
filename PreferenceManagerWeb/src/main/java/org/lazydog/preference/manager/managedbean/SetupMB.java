@@ -17,7 +17,7 @@ public class SetupMB implements Serializable {
     private static final String MANAGER_SETUP = "manager";
     private static final String STANDALONE_SETUP = "standalone";
 
-    private Boolean remove;
+    private Boolean delete;
     private String type;
 
     /**
@@ -61,12 +61,12 @@ public class SetupMB implements Serializable {
     }
 
     /**
-     * Remove the existing preferences?
+     * Delete the existing preferences?
      *
-     * @return  true to remove the existing preferences, otherwise false.
+     * @return  true to delete the existing preferences, otherwise false.
      */
-    public Boolean getRemove() {
-        return this.remove;
+    public Boolean getDelete() {
+        return this.delete;
     }
 
     /**
@@ -79,12 +79,12 @@ public class SetupMB implements Serializable {
     }
 
     /**
-     * Set if the existing preferences are to be removed.
+     * Set if the existing preferences are to be deleted.
      * 
-     * @param  remove  true if the existing preferences are to be removed, otherwise false.
+     * @param  delete  true if the existing preferences are to be deleted, otherwise false.
      */
-    public void setRemove(Boolean remove) {
-        this.remove = remove;
+    public void setDelete(Boolean delete) {
+        this.delete = delete;
     }
 
     /**
