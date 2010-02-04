@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:form id="pm-login-form">
+                <fieldset>
+                    <ol>
+                        <li>
+                            <label for="user-name">User Name: </label>
+                            <h:inputText
+                                id="user-name"
+                                value="#{userMB.name}"
+                                size="25"
+                                maxlength="50"/>
+                        </li>
+                        <li>
+                            <label for="user-password">Password: </label>
+                            <h:inputSecret
+                                id="user-password"
+                                value="#{userMB.password}"
+                                size="25"
+                                maxlength="50"/>
+                        </li>
+                    </ol>
+                </fieldset>
+                <div class="pm-form-buttons">
+                    <h:commandButton
+                        value="Sign In"
+                        action="#{userMB.login}"
+                        actionListener="#{userMB.authenticate}"/>
+                </div>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>

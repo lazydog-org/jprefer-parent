@@ -12,6 +12,11 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
+        <managed-bean-name>preferencesMB</managed-bean-name>
+        <managed-bean-class>org.lazydog.preference.manager.managedbean.PreferencesMB</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>setupMB</managed-bean-name>
         <managed-bean-class>org.lazydog.preference.manager.managedbean.SetupMB</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>

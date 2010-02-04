@@ -1,15 +1,12 @@
 package org.lazydog.preference.manager.managedbean;
 
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.configuration.Configuration;
 import org.lazydog.preference.manager.configuration.SetupType;
 
 
 /**
- * User managed bean.
+ * Setup managed bean.
  * 
  * @author  Ron Rickard
  */

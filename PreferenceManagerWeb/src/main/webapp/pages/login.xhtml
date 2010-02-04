@@ -15,34 +15,7 @@
             </ui:define>
             <ui:define name="content">
                 <div id="pm-login">
-                    <h:form id="pm-login-form">
-                        <fieldset>
-                            <ol>
-                                <li>
-                                    <label for="user-name">User Name: </label>
-                                    <h:inputText
-                                        id="user-name"
-                                        value="#{userMB.name}"
-                                        size="25"
-                                        maxlength="50"/>
-                                </li>
-                                <li>
-                                    <label for="user-password">Password: </label>
-                                    <h:inputSecret
-                                        id="user-password"
-                                        value="#{userMB.password}"
-                                        size="25"
-                                        maxlength="50"/>
-                                </li>
-                            </ol>
-                        </fieldset>
-                        <div class="pm-form-buttons">
-                            <h:commandButton
-                                value="Sign In"
-                                action="#{userMB.login}"
-                                actionListener="#{userMB.authenticate}"/>
-                        </div>
-                    </h:form>
+                    <ui:include src="/pages/login/form.xhtml"/>
                 </div>
             </ui:define>
             <ui:define name="footer">
