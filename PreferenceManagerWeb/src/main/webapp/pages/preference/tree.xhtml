@@ -4,6 +4,7 @@
 
 <html
     xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:rich="http://richfaces.org/rich"
     xmlns:ui="http://java.sun.com/jsf/facelets">
@@ -31,15 +32,22 @@
                                 <rich:menuItem
                                     value="Add"
                                     actionListener="#{preferenceMB.processAddButton}"
-                                    reRender="pm-preference-tree"/>
+                                    oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
+                                    reRender="pm-preference-modal-panel-content"/>
                                 <rich:menuItem
                                     value="Delete"
                                     actionListener="#{preferenceMB.processDeleteButton}"
                                     reRender="pm-preference-tree"/>
                                 <rich:menuItem
                                     value="Modify"
-                                    actionListener="#{preferenceMB.processModifyButton}"
-                                    reRender="pm-preference-tree"/>
+                                    oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
+                                    reRender="pm-preference-modal-panel-content">
+                                    <a4j:actionparam
+                                        name="agentId"
+                                        assignTo="#{preferenceMB.absolutePath}"
+                                        value="#{preferenceNode.absolutePath}"
+                                        actionListener="#{preferenceMB.processModifyButton}"/>
+                                </rich:menuItem>
                             </rich:contextMenu>
                         </rich:treeNode>
                     </rich:recursiveTreeNodesAdaptor>

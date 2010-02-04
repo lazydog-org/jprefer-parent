@@ -37,6 +37,15 @@ public class PreferenceNode {
     }
 
     /**
+     * Get the absolute path.
+     * 
+     * @return  the absolute path.
+     */
+    public String getAbsolutePath() {
+        return this.preferences.absolutePath();
+    }
+
+    /**
      * Get the children.
      *
      * @return  the children.

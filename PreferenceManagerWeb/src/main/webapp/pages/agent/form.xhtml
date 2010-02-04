@@ -10,7 +10,7 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-#{type}-form">
+            <h:form id="pm-agent-form">
                 <fieldset>
                     <ol>
                         <li>
@@ -46,7 +46,7 @@
                         </li>
                         <li>
                             <label for="password">Password: </label>
-                            <h:inputText
+                            <h:inputSecret
                                 id="password"
                                 value="#{agentMB.agent.password}"
                                 size="25"
