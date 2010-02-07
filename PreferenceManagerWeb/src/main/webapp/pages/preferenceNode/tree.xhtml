@@ -11,42 +11,42 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-preference-tree">
+            <h:form id="pm-preference-node-tree">
                 <rich:tree
                     switchType="ajax">
                     <rich:recursiveTreeNodesAdaptor
-                        roots="#{preferenceMB.rootNodes}"
+                        roots="#{preferenceNodeMB.rootNodes}"
                         var="preferenceNode"
                         nodes="#{preferenceNode.children}">
                         <rich:treeNodesAdaptor 
                             var="preference"
                             nodes="#{preferenceNode.preferences}"/>
                         <rich:treeNode
-                            id="pm-preference-tree-node"
+                            id="pm-preference-node-tree-node"
                             icon="/images/iconFolder.gif"
                             iconLeaf="/images/iconFolder.gif">
                             <h:outputText value="#{preferenceNode}"/>
                             <rich:contextMenu
-                                attachTo="pm-preference-tree-node"
+                                attachTo="pm-preference-node-tree-node"
                                 submitMode="ajax">
                                 <rich:menuItem
                                     value="Add"
-                                    actionListener="#{preferenceMB.processAddButton}"
-                                    oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
-                                    reRender="pm-preference-modal-panel-content"/>
+                                    actionListener="#{preferenceNodeMB.processAddButton}"
+                                    oncomplete="Richfaces.showModalPanel('pm-preference-node-modal-panel');"
+                                    reRender="pm-preference-node-modal-panel-content"/>
                                 <rich:menuItem
                                     value="Delete"
-                                    actionListener="#{preferenceMB.processDeleteButton}"
-                                    reRender="pm-preference-tree"/>
+                                    actionListener="#{preferenceNodeMB.processDeleteButton}"
+                                    reRender="pm-preference-node-tree"/>
                                 <rich:menuItem
                                     value="Modify"
-                                    oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
-                                    reRender="pm-preference-modal-panel-content">
+                                    oncomplete="Richfaces.showModalPanel('pm-preference-node-modal-panel');"
+                                    reRender="pm-preference-node-modal-panel-content">
                                     <a4j:actionparam
-                                        name="agentId"
-                                        assignTo="#{preferenceMB.absolutePath}"
+                                        name="absolutePath"
+                                        assignTo="#{preferenceNodeMB.absolutePath}"
                                         value="#{preferenceNode.absolutePath}"
-                                        actionListener="#{preferenceMB.processModifyButton}"/>
+                                        actionListener="#{preferenceNodeMB.processModifyButton}"/>
                                 </rich:menuItem>
                             </rich:contextMenu>
                         </rich:treeNode>

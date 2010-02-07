@@ -10,43 +10,36 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-preference-form">
+            <h:form id="pm-preference-node-form">
                 <fieldset>
                     <ol>
                         <li>
-                            <label for="key">Key: </label>
+                            <label for="node">Absolute Path: </label>
                             <h:inputText
-                                id="key"
-                                value="#{preferenceMB.key}"
-                                size="25"
-                                maxlength="50"/>
-                        </li>
-                        <li>
-                            <label for="value">Value: </label>
-                            <h:inputText
-                                id="value"
-                                value="#{preferenceMB.value}"
+                                id="node"
+                                value="#{preferenceNodeMB.absolutePath}"
                                 size="25"
                                 maxlength="50"/>
                         </li>
                     </ol>
                 </fieldset>
+                <ui:include src="/pages/preference/table.xhtml"/>
                 <div class="pm-form-buttons">
                     <a4j:commandButton
                         value="Reset"
-                        actionListener="#{preferenceMB.processResetButton}"
-                        reRender="pm-preference-form"/>
+                        actionListener="#{preferenceNodeMB.processResetButton}"
+                        reRender="pm-preference-node-form"/>
                     <a4j:commandButton
                         value="Cancel"
-                        actionListener="#{preferenceMB.processCancelButton}"
-                        oncomplete="Richfaces.hideModalPanel('pm-preference-modal-panel');"
-                        reRender="pm-preference-table"/>
+                        actionListener="#{preferenceNodeMB.processCancelButton}"
+                        oncomplete="Richfaces.hideModalPanel('pm-preference-node-modal-panel');"
+                        reRender="pm-preference-node-tree"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
-                        actionListener="#{preferenceMB.processOkButton}"
-                        oncomplete="Richfaces.hideModalPanel('pm-preference-modal-panel');"
-                        reRender="pm-preference-table"/>
+                        actionListener="#{preferenceNodeMB.processOkButton}"
+                        oncomplete="Richfaces.hideModalPanel('pm-preference-node-modal-panel');"
+                        reRender="pm-preference-node-tree"/>
                 </div>
             </h:form>
         </ui:composition>

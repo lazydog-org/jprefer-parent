@@ -1,40 +1,46 @@
 package org.lazydog.preference.manager.managedbean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
-import javax.faces.event.ActionEvent;;
+import javax.faces.event.ActionEvent;
+import org.lazydog.preference.manager.model.PreferenceNode;
 
 
 /**
- * Preference managed bean.
+ * Preference node managed bean.
  * 
  * @author  Ron Rickard
  */
-public class PreferenceMB implements Serializable {
+public class PreferenceNodeMB implements Serializable {
 
-    private String key;
-    private String value;
+    private String absolutePath;
+    private List<PreferenceNode> rootNodes;
 
     /**
-     * Get the key.
+     * Get the absolute path.
      *
-     * @return  the key.
+     * @return  the absolute path.
      */
-    public String getKey() {
-        return this.key;
+    public String getAbsolutePath() {
+        return this.absolutePath;
     }
 
-    public List<Preferences> getPreferences() {
-        return null;
-    }
     /**
-     * Get the value.
+     * Get the root nodes.
      *
-     * @return  the value.
+     * @return  the root nodes.
      */
-    public String getValue() {
-        return this.value;
+    public List<PreferenceNode> getRootNodes() {
+
+        if (this.rootNodes == null) {
+
+            this.rootNodes = new ArrayList<PreferenceNode>();
+            this.rootNodes.add(new PreferenceNode(PreferenceNode.ROOT_NODE_NAME));
+        }
+
+        return this.rootNodes;
     }
 
     /**
@@ -80,6 +86,12 @@ System.err.println("processModifyButton invoked");
      */
     public void processOkButton(ActionEvent actionEvent) {
 System.err.println("processOkButton invoked");
+        try {
+
+            Preferences.userRoot().node(this.absolutePath);
+            Preferences.userRoot().flush();
+        }
+        catch(Exception e) {}
     }
 
     /**
@@ -92,20 +104,11 @@ System.err.println("processResetButton invoked");
     }
 
     /**
-     * Set the key.
+     * Set the absolute path.
      *
-     * @param  key  the key.
+     * @param  absolutePath  the absolute path.
      */
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     * Set the value.
-     *
-     * @param  value  the value.
-     */
-    public void setValue(String value) {
-        this.value = value;
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
     }
 }

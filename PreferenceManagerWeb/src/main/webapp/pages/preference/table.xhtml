@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:form id="pm-preference-table">
+                <div class="pm-form-buttons">
+                    <a4j:commandButton
+                        value="Add"
+                        actionListener="#{preferenceMB.processAddButton}"
+                        oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
+                        reRender="pm-preference-modal-panel-content"/>
+                </div>
+                <rich:dataTable
+                    value="#{preferenceMB.preferences}"
+                    var="preference">
+                    <rich:column id="pm-preference-key" headerClass="pm-table-cell pm-table-preference-key-cell">
+                        <f:facet name="header">
+                            <h:outputText value="Key"/>
+                        </f:facet>
+                        <h:outputText value="#{preference.key}"/>
+                    </rich:column>
+                    <rich:column id="pm-preference-value" headerClass="pm-table-cell pm-table-preference-value-cell">
+                        <f:facet name="header">
+                            <h:outputText value="Value"/>
+                        </f:facet>
+                        <h:outputText value="#{preference.value}"/>
+                        <rich:contextMenu
+                            attachTo="pm-preference-key,pm-preference-value"
+                            submitMode="ajax">
+                            <rich:menuItem
+                                value="Modify"
+                                oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
+                                reRender="pm-preference-modal-panel-content">
+                                <a4j:actionparam
+                                    name="key"
+                                    assignTo="#{preferenceMB.key}"
+                                    value="#{preference.key}"
+                                    actionListener="#{preferenceMB.processModifyButton}"/>
+                            </rich:menuItem>
+                            <rich:menuItem
+                                value="Delete"
+                                actionListener="#{preferenceMB.processDeleteButton}"
+                                reRender="pm-preference-table"/>
+                        </rich:contextMenu>
+                    </rich:column>
+                </rich:dataTable>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>
