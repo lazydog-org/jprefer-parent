@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.prefs.Preferences;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.PreferenceNode;
+import org.lazydog.preference.manager.utility.SessionKey;
+import org.lazydog.preference.manager.utility.SessionUtility;
 
 
 /**
@@ -34,8 +36,10 @@ public class PreferenceNodeMB implements Serializable {
      */
     public List<PreferenceNode> getRootNodes() {
 
+        // Check if there are root nodes.
         if (this.rootNodes == null) {
 
+            // Get the root nodes.
             this.rootNodes = new ArrayList<PreferenceNode>();
             this.rootNodes.add(new PreferenceNode(PreferenceNode.ROOT_NODE_NAME));
         }
@@ -109,6 +113,12 @@ System.err.println("processResetButton invoked");
      * @param  absolutePath  the absolute path.
      */
     public void setAbsolutePath(String absolutePath) {
+
+        // Set the absolute path.
         this.absolutePath = absolutePath;
+
+        // Put the preference node on the session.
+        SessionUtility.putValue(SessionKey.PREFERENCE_NODE, new PreferenceNode(absolutePath));
+        
     }
 }

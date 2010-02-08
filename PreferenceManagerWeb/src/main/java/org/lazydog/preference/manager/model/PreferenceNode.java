@@ -19,12 +19,12 @@ public class PreferenceNode {
     /**
      * Constructor.
      *
-     * @param  path  the path.
+     * @param  absolutePath  the absolute path.
      */
-    public PreferenceNode(String path) {
+    public PreferenceNode(String absolutePath) {
 
-        // Set the preferences according to the path.
-        this.preferences = Preferences.userRoot().node(path);
+        // Set the preferences according to the absolute path.
+        this.preferences = Preferences.userRoot().node(absolutePath);
     }
 
     /**
