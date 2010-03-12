@@ -28,7 +28,6 @@
     <modules>
         <module>PreferenceAPI</module>
         <module>PreferenceServiceImpl</module>
-        <module>PreferenceAgent</module>
         <module>PreferenceManagerWeb</module>
     </modules>
 </project>
