@@ -2,8 +2,10 @@ package org.lazydog.preference.manager.configuration;
 
 import java.util.Hashtable;
 import java.util.List;
-import org.lazydog.preference.manager.configuration.dao.ConfigurationDAO;
-import org.lazydog.preference.manager.model.Agent;
+import org.lazydog.preference.configuration.model.Agent;
+import org.lazydog.preference.configuration.model.SetupType;
+import org.lazydog.preference.configuration.service.ConfigurationService;
+import org.lazydog.preference.configuration.service.ConfigurationServiceFactory;
 import org.lazydog.preference.group.service.GroupService;
 import org.lazydog.preference.group.service.GroupServiceFactory;
 
@@ -95,15 +97,15 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Disable the agent.
-            agent = configurationDAO.findAgent(id);
+            agent = configurationService.findAgent(id);
             agent.setEnabled(Boolean.FALSE);
-            agent = configurationDAO.persistAgent(agent);
+            agent = configurationService.persistAgent(agent);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -129,15 +131,15 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Enable the agent.
-            agent = configurationDAO.findAgent(id);
+            agent = configurationService.findAgent(id);
             agent.setEnabled(Boolean.TRUE);
-            agent = configurationDAO.persistAgent(agent);
+            agent = configurationService.persistAgent(agent);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -164,13 +166,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Get the agent.
-            agent = configurationDAO.findAgent(id);
+            agent = configurationService.findAgent(id);
 
             // Set the status for the agent.
             agent.setStatus(determineStatus(agent));
@@ -198,13 +200,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Get the agents.
-            agents = configurationDAO.findAgents();
+            agents = configurationService.findAgents();
 
             // Loop through the agents.
             for (Agent agent : agents) {
@@ -236,13 +238,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Check if this is an agent setup.
-            if (configurationDAO.findSetupType() == SetupType.AGENT) {
+            if (configurationService.findSetupType() == SetupType.AGENT) {
                 isAgentSetup = true;
             }
         }
@@ -269,13 +271,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Check if this is a manager setup.
-            if (configurationDAO.findSetupType() == SetupType.MANAGER) {
+            if (configurationService.findSetupType() == SetupType.MANAGER) {
                 isManagerSetup = true;
             }
         }
@@ -302,13 +304,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Check if this is setup.
-            if (configurationDAO.findSetupType() != null) {
+            if (configurationService.findSetupType() != null) {
                 isSetup = true;
             }
         }
@@ -335,13 +337,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Check if this is a standalone setup.
-            if (configurationDAO.findSetupType() == SetupType.STANDALONE) {
+            if (configurationService.findSetupType() == SetupType.STANDALONE) {
                 isStandaloneSetup = true;
             }
         }
@@ -364,13 +366,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Save the agent.
-            agent = configurationDAO.persistAgent(agent);
+            agent = configurationService.persistAgent(agent);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -391,13 +393,13 @@ public class Configuration {
         try {
 
             // Declare.
-            ConfigurationDAO configurationDAO;
+            ConfigurationService configurationService;
 
             // Initialize.
-            configurationDAO = new ConfigurationDAO();
+            configurationService = ConfigurationServiceFactory.create();
 
             // Save the setup type.
-            setupType = configurationDAO.persistSetupType(setupType);
+            setupType = configurationService.persistSetupType(setupType);
         }
         catch(Exception e) {
             // TO DO: handle exception.

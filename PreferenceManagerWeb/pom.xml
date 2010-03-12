@@ -59,7 +59,12 @@
         </dependency>
         <dependency>
             <groupId>org.lazydog</groupId>
-            <artifactId>PreferenceServiceImpl</artifactId>
+            <artifactId>ConfigurationServiceImpl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lazydog</groupId>
+            <artifactId>GroupServiceImpl</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
