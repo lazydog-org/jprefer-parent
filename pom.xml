@@ -28,6 +28,7 @@
     <modules>
         <module>PreferenceAPI</module>
         <module>GroupServiceImpl</module>
+        <module>ConfigurationServiceImpl</module>
         <module>PreferenceManagerWeb</module>
     </modules>
 </project>
