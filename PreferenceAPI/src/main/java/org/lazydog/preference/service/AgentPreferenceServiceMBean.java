@@ -1,4 +1,4 @@
-package org.lazydog.preference.api;
+package org.lazydog.preference.service;
 
 
 /**

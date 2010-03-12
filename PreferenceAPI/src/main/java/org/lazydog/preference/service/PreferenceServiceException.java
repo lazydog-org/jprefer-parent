@@ -1,4 +1,4 @@
-package org.lazydog.preference.exception;
+package org.lazydog.preference.service;
 
 import java.io.Serializable;
 
