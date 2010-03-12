@@ -1,15 +1,15 @@
-package org.lazydog.preference.service;
+package org.lazydog.preference.group.service;
 
 import java.util.Hashtable;
 import java.util.ServiceLoader;
 
 
 /**
- * Preference service factory.
+ * Group service factory.
  * 
  * @author  Ron Rickard
  */
-public class PreferenceServiceFactory {
+public class GroupServiceFactory {
 
     /**
      * Create the service.
@@ -55,8 +55,8 @@ public class PreferenceServiceFactory {
      *
      * @return  the preference service.
      */
-    public static PreferenceService create() {
-        return PreferenceServiceFactory.create(LocalPreferenceService.class);
+    public static GroupService create() {
+        return GroupServiceFactory.create(LocalGroupService.class);
     }
 
     /**
@@ -66,13 +66,13 @@ public class PreferenceServiceFactory {
      *
      * @return  the preference service.
      */
-    public static PreferenceService create(Hashtable environment) {
+    public static GroupService create(Hashtable environment) {
 
         // Declare.
-        RemotePreferenceService remotePreferenceService;
+        RemoteGroupService remotePreferenceService;
         
         // Create the remote preference service.
-        remotePreferenceService = PreferenceServiceFactory.create(RemotePreferenceService.class);
+        remotePreferenceService = GroupServiceFactory.create(RemoteGroupService.class);
         remotePreferenceService.setEnvironment(environment);
 
         return remotePreferenceService;

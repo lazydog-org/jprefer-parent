@@ -1,21 +1,21 @@
-package org.lazydog.preference.service;
+package org.lazydog.preference.group.service;
 
 import java.io.Serializable;
 
 
 /**
- * Thrown to indicate that an error occurred in the PreferenceService class.
+ * Thrown to indicate that an error occurred in the GroupService class.
  *
  * @author  Ronald Rickard
  */
-public class PreferenceServiceException 
+public class GroupServiceException
         extends Exception
         implements Serializable {
 
     /**
      * Constructs a new exception.
      */
-    public PreferenceServiceException() {
+    public GroupServiceException() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class PreferenceServiceException
      *
      * @param  message  the message.
      */
-    public PreferenceServiceException(String message) {
+    public GroupServiceException(String message) {
         super(message);
     }
 
@@ -34,7 +34,7 @@ public class PreferenceServiceException
      * @param  message  the message.
      * @param  cause    the cause.
      */
-    public PreferenceServiceException(String message, Throwable cause) {
+    public GroupServiceException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -43,7 +43,7 @@ public class PreferenceServiceException
      *
      * @param  cause  the cause.
      */
-    public PreferenceServiceException(Throwable cause) {
+    public GroupServiceException(Throwable cause) {
         super(cause);
     }
 }

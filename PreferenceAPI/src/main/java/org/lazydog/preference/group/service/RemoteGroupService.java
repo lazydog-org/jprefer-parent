@@ -1,14 +1,14 @@
-package org.lazydog.preference.service;
+package org.lazydog.preference.group.service;
 
 import java.util.Hashtable;
 
 
 /**
- * Remote preference service.
+ * Remote group service.
  *
  * @author  Ron Rickard
  */
-public interface RemotePreferenceService extends PreferenceService {
+public interface RemoteGroupService extends GroupService {
 
     public Hashtable<String,String> getEnvironment();
 
