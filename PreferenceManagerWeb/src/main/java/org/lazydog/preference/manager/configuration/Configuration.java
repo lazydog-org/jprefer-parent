@@ -1,9 +1,10 @@
 package org.lazydog.preference.manager.configuration;
 
+import java.util.Hashtable;
 import java.util.List;
-import org.lazydog.preference.api.PreferenceService;
 import org.lazydog.preference.manager.configuration.dao.ConfigurationDAO;
 import org.lazydog.preference.manager.model.Agent;
+import org.lazydog.preference.service.PreferenceService;
 import org.lazydog.preference.service.PreferenceServiceFactory;
 
 
@@ -26,33 +27,34 @@ public class Configuration {
         // Declare.
         String status;
 
-        // Set the status to down.
-        status = AgentStatus.DOWN.toString();
+        // Set the status to up.
+        status = AgentStatus.UP.toString() + ", ";
 
         try {
 
             // Declare.
-            String agentConfiguration;
             PreferenceService agentPreferenceService;
-            String localConfiguration;
+            Hashtable<String,String> env;
+            String localPreferences;
             PreferenceService localPreferenceService;
 
+            // Set the environment.
+            env = new Hashtable<String,String>();
+            env.put(PreferenceService.JMX_PORT, agent.getJmxPort().toString());
+            env.put(PreferenceService.LOGIN, agent.getLogin());
+            env.put(PreferenceService.PASSWORD, agent.getPassword());
+            env.put(PreferenceService.SERVER_NAME, agent.getServerName());
+
             // Get the preference services.
-            agentPreferenceService = PreferenceServiceFactory.createPreferenceService(agent);
-            localPreferenceService = PreferenceServiceFactory.createPreferenceService();
+            agentPreferenceService = PreferenceServiceFactory.create(env);
+            localPreferenceService = PreferenceServiceFactory.create();
 
-            // Get the agent configuration for all the nodes.
-            agentConfiguration = agentPreferenceService.getAllNodes();
+            // Get the local preferences for all the nodes.
+            localPreferences = localPreferenceService.getAll();
 
-            // Get the local configuration for all the nodes.
-            localConfiguration = localPreferenceService.getAllNodes();
-
-            // The agent is up.
-            status = AgentStatus.UP.toString() + ", ";
-
-            // Check if the agent configuration is the same as the local
-            // configuration.
-            if (agentConfiguration.equals(localConfiguration)) {
+            // Check if the agent preferences are equal to the local
+            // preferences.
+            if (agentPreferenceService.areEqual(localPreferences)) {
 
                 // The agent is synced.
                 status += AgentStatus.SYNCED.toString();
@@ -64,7 +66,9 @@ public class Configuration {
             }
         }
         catch(Exception e) {
-            // Already handled.
+
+            // Set the status to down.
+            status = AgentStatus.DOWN.toString();
         }
 
         return status;

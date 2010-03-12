@@ -8,8 +8,8 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-import org.lazydog.preference.api.AgentPreferenceServiceMBean;
-import org.lazydog.preference.api.PreferenceService;
+import org.lazydog.preference.service.AgentPreferenceServiceMBean;
+import org.lazydog.preference.service.PreferenceService;
 import org.lazydog.preference.service.PreferenceServiceFactory;
 
 
@@ -22,7 +22,7 @@ public class Tester {
 
     public void run() throws Exception {
 
-        PreferenceService preferenceService = PreferenceServiceFactory.createPreferenceService();
+        PreferenceService preferenceService = PreferenceServiceFactory.create();
         String pathName = "/org/lazydog/test";
         Preferences prefs;
         prefs = Preferences.systemRoot().node(pathName);
@@ -31,11 +31,11 @@ public class Tester {
         prefs.put("middle", "John");
         prefs.put("zipcode", "85254");
 
-        String xmlString = preferenceService.getNode(pathName);
+        String xmlString = preferenceService.get(pathName);
 
         System.out.println(xmlString);
 
-        preferenceService.removeNode("");
+        preferenceService.remove("");
 
         JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://SIC36565.sic.nwie.net:8686/jmxrmi");
         HashMap environment = new HashMap();
@@ -48,8 +48,8 @@ public class Tester {
         ObjectName name = new ObjectName(AgentPreferenceServiceMBean.OBJECT_NAME);
         AgentPreferenceServiceMBean preferenceAgent = JMX.newMXBeanProxy(connection, name, AgentPreferenceServiceMBean.class);
 
-        //preferenceAgent.removeNode(pathName);
-        preferenceAgent.createOrReplaceNode(pathName, xmlString);
+        //preferenceAgent.remove(pathName);
+        preferenceAgent.createOrReplace(pathName, xmlString);
 
         connector.close();
     }

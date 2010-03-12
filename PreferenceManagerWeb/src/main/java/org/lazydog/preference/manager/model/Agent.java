@@ -1,15 +1,19 @@
 package org.lazydog.preference.manager.model;
 
+
 /**
  * Agent.
  *
  * @author  Ron Rickard
  */
-public class Agent
-    extends org.lazydog.preference.model.Agent {
+public class Agent {
 
     private Boolean enabled;
     private Integer id;
+    private Integer jmxPort;
+    private String login;
+    private String password;
+    private String serverName;
     private String status;
 
     /**
@@ -28,6 +32,42 @@ public class Agent
      */
     public Integer getId() {
         return this.id;
+    }
+
+    /**
+     * Get the JMX port.
+     *
+     * @return  the JMX port.
+     */
+    public Integer getJmxPort() {
+        return this.jmxPort;
+    }
+
+    /**
+     * Get the login.
+     *
+     * @return  the login.
+     */
+    public String getLogin() {
+        return this.login;
+    }
+
+    /**
+     * Get the password.
+     *
+     * @return  the password.
+     */
+    public String getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Get the server name.
+     *
+     * @return  the server name.
+     */
+    public String getServerName() {
+        return this.serverName;
     }
 
     /**
@@ -55,6 +95,42 @@ public class Agent
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    /**
+     * Set the JMX port.
+     *
+     * @param  jmxPort  the JMX port.
+     */
+    public void setJmxPort(Integer jmxPort) {
+        this.jmxPort = jmxPort;
+    }
+
+    /**
+     * Set the login.
+     *
+     * @param  login  the login.
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    /**
+     * Set the password.
+     *
+     * @param  password  the password.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Set the server name.
+     *
+     * @param  serverName  the server name.
+     */
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.lazydog.preference.manager.model;
 
+
 /**
  * Preference.
  *

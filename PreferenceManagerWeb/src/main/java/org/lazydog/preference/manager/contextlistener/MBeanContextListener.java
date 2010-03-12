@@ -5,7 +5,7 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.lazydog.preference.api.AgentPreferenceService;
+import org.lazydog.preference.service.AgentPreferenceService;
 import org.lazydog.preference.manager.configuration.Configuration;
 
 
