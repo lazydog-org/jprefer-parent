@@ -1,6 +1,7 @@
 package org.lazydog.preference.api;
 
-import org.lazydog.preference.service.LocalPreferenceService;
+import org.lazydog.preference.service.AgentPreferenceServiceMBean;
+import org.lazydog.preference.service.internal.LocalPreferenceServiceImpl;
 
 
 /**
@@ -9,6 +10,6 @@ import org.lazydog.preference.service.LocalPreferenceService;
  * @author  Ron Rickard
  */
 public class AgentPreferenceService
-        extends LocalPreferenceService
+        extends LocalPreferenceServiceImpl
         implements AgentPreferenceServiceMBean {
 }
