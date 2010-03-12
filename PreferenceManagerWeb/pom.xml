@@ -55,15 +55,12 @@
         <dependency>
             <groupId>org.lazydog</groupId>
             <artifactId>PreferenceAPI</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lazydog</groupId>
             <artifactId>PreferenceServiceImpl</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
-    <properties>
-        <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
-    </properties>
 </project>
