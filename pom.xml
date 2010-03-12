@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>Preference Manager</name>
     <properties>
+        <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
