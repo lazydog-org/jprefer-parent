@@ -51,30 +51,30 @@ public class GroupServiceFactory {
     }
 
     /**
-     * Create the preference service.
+     * Create the group service.
      *
-     * @return  the preference service.
+     * @return  the group service.
      */
     public static GroupService create() {
         return GroupServiceFactory.create(LocalGroupService.class);
     }
 
     /**
-     * Create the preference service.
+     * Create the group service.
      *
      * @param  environment  the environment.
      *
-     * @return  the preference service.
+     * @return  the group service.
      */
     public static GroupService create(Hashtable environment) {
 
         // Declare.
-        RemoteGroupService remotePreferenceService;
+        RemoteGroupService remoteGroupService;
         
-        // Create the remote preference service.
-        remotePreferenceService = GroupServiceFactory.create(RemoteGroupService.class);
-        remotePreferenceService.setEnvironment(environment);
+        // Create the remote group service.
+        remoteGroupService = GroupServiceFactory.create(RemoteGroupService.class);
+        remoteGroupService.setEnvironment(environment);
 
-        return remotePreferenceService;
+        return remoteGroupService;
     }
 }
