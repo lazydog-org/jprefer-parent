@@ -8,9 +8,9 @@
         <artifactId>PreferenceManager</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>PreferenceServiceImpl</artifactId>
+    <artifactId>GroupServiceImpl</artifactId>
     <packaging>jar</packaging>
-    <name>Preference Service Implementation</name>
+    <name>Group Service Implementation</name>
     <dependencies>
         <dependency>
             <groupId>org.lazydog</groupId>
