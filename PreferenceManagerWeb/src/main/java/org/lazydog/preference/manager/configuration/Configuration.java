@@ -4,8 +4,8 @@ import java.util.Hashtable;
 import java.util.List;
 import org.lazydog.preference.manager.configuration.dao.ConfigurationDAO;
 import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.service.PreferenceService;
-import org.lazydog.preference.service.PreferenceServiceFactory;
+import org.lazydog.preference.group.service.GroupService;
+import org.lazydog.preference.group.service.GroupServiceFactory;
 
 
 /**
@@ -33,28 +33,32 @@ public class Configuration {
         try {
 
             // Declare.
-            PreferenceService agentPreferenceService;
+            GroupService agentGroupService;
+            Object agentPreferenceGroups;
             Hashtable<String,String> env;
-            String localPreferences;
-            PreferenceService localPreferenceService;
+            GroupService localGroupService;
+            Object localPreferenceGroups;
 
             // Set the environment.
             env = new Hashtable<String,String>();
-            env.put(PreferenceService.JMX_PORT, agent.getJmxPort().toString());
-            env.put(PreferenceService.LOGIN, agent.getLogin());
-            env.put(PreferenceService.PASSWORD, agent.getPassword());
-            env.put(PreferenceService.SERVER_NAME, agent.getServerName());
+            env.put(GroupService.JMX_PORT, agent.getJmxPort().toString());
+            env.put(GroupService.LOGIN, agent.getLogin());
+            env.put(GroupService.PASSWORD, agent.getPassword());
+            env.put(GroupService.SERVER_NAME, agent.getServerName());
 
-            // Get the preference services.
-            agentPreferenceService = PreferenceServiceFactory.create(env);
-            localPreferenceService = PreferenceServiceFactory.create();
+            // Get the group services.
+            agentGroupService = GroupServiceFactory.create(env);
+            localGroupService = GroupServiceFactory.create();
 
-            // Get the local preferences for all the nodes.
-            localPreferences = localPreferenceService.getAll();
+            // Export the agent preference groups.
+            agentPreferenceGroups = agentGroupService.exportGroups();
 
-            // Check if the agent preferences are equal to the local
-            // preferences.
-            if (agentPreferenceService.areEqual(localPreferences)) {
+            // Export the local preference groups.
+            localPreferenceGroups = localGroupService.exportGroups();
+ 
+            // Check if the agent preference groups are equal to the local
+            // preference groups.
+            if (((String)agentPreferenceGroups).equals((String)localPreferenceGroups)) {
 
                 // The agent is synced.
                 status += AgentStatus.SYNCED.toString();

@@ -8,9 +8,9 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-import org.lazydog.preference.service.AgentPreferenceServiceMBean;
-import org.lazydog.preference.service.PreferenceService;
-import org.lazydog.preference.service.PreferenceServiceFactory;
+import org.lazydog.preference.group.service.AgentGroupServiceMBean;
+import org.lazydog.preference.group.service.GroupService;
+import org.lazydog.preference.group.service.GroupServiceFactory;
 
 
 /**
@@ -22,20 +22,20 @@ public class Tester {
 
     public void run() throws Exception {
 
-        PreferenceService preferenceService = PreferenceServiceFactory.create();
-        String pathName = "/org/lazydog/test";
+        GroupService groupService = GroupServiceFactory.create();
+        String id = "/org/lazydog/test";
         Preferences prefs;
-        prefs = Preferences.systemRoot().node(pathName);
+        prefs = Preferences.systemRoot().node(id);
         prefs.put("first", "Ronald");
         prefs.put("last", "Rickard");
         prefs.put("middle", "John");
         prefs.put("zipcode", "85254");
 
-        String xmlString = preferenceService.get(pathName);
+        Object preferenceGroup = groupService.exportGroup(id);
 
-        System.out.println(xmlString);
+        System.out.println((String)preferenceGroup);
 
-        preferenceService.remove("");
+        groupService.removeGroup("");
 
         JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://SIC36565.sic.nwie.net:8686/jmxrmi");
         HashMap environment = new HashMap();
@@ -45,11 +45,11 @@ public class Tester {
 
         MBeanServerConnection connection = connector.getMBeanServerConnection();
 
-        ObjectName name = new ObjectName(AgentPreferenceServiceMBean.OBJECT_NAME);
-        AgentPreferenceServiceMBean preferenceAgent = JMX.newMXBeanProxy(connection, name, AgentPreferenceServiceMBean.class);
+        ObjectName name = new ObjectName(AgentGroupServiceMBean.OBJECT_NAME);
+        AgentGroupServiceMBean agentGroupService = JMX.newMXBeanProxy(connection, name, AgentGroupServiceMBean.class);
 
-        //preferenceAgent.remove(pathName);
-        preferenceAgent.createOrReplace(pathName, xmlString);
+        //agentGroupService.removeGroup(id);
+        agentGroupService.importGroup(id, preferenceGroup);
 
         connector.close();
     }
