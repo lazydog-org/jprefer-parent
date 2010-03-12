@@ -27,7 +27,7 @@
     </build>
     <modules>
         <module>PreferenceAPI</module>
-        <module>PreferenceServiceImpl</module>
+        <module>GroupServiceImpl</module>
         <module>PreferenceManagerWeb</module>
     </modules>
 </project>
