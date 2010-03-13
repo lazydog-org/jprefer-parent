@@ -6,7 +6,7 @@ import java.util.prefs.Preferences;
 
 
 /**
- * Preferences node.
+ * Preference node.
  *
  * @author  Ron Rickard
  */
