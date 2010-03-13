@@ -2,12 +2,12 @@ package org.lazydog.preference.manager.configuration;
 
 import java.util.Hashtable;
 import java.util.List;
-import org.lazydog.preference.configuration.model.Agent;
-import org.lazydog.preference.configuration.model.SetupType;
-import org.lazydog.preference.configuration.service.ConfigurationService;
-import org.lazydog.preference.configuration.service.ConfigurationServiceFactory;
-import org.lazydog.preference.group.service.GroupService;
-import org.lazydog.preference.group.service.GroupServiceFactory;
+import org.lazydog.preference.manager.configuration.model.Agent;
+import org.lazydog.preference.manager.configuration.model.SetupType;
+import org.lazydog.preference.manager.configuration.service.ConfigurationService;
+import org.lazydog.preference.manager.configuration.service.ConfigurationServiceFactory;
+import org.lazydog.preference.manager.group.service.GroupService;
+import org.lazydog.preference.manager.group.service.GroupServiceFactory;
 
 
 /**
