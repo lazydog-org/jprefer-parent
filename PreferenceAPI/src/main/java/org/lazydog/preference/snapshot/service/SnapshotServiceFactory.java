@@ -1,14 +1,14 @@
-package org.lazydog.preference.configuration.service;
+package org.lazydog.preference.snapshot.service;
 
 import java.util.ServiceLoader;
 
 
 /**
- * Group service factory.
+ * Snapshot service factory.
  * 
  * @author  Ron Rickard
  */
-public class ConfigurationServiceFactory {
+public class SnapshotServiceFactory {
 
     /**
      * Create the service.
@@ -50,11 +50,11 @@ public class ConfigurationServiceFactory {
     }
 
     /**
-     * Create the configuration service.
+     * Create the snapshot service.
      *
-     * @return  the configuration service.
+     * @return  the snapshot service.
      */
-    public static ConfigurationService create() {
-        return ConfigurationServiceFactory.create(ConfigurationService.class);
+    public static SnapshotService create() {
+        return SnapshotServiceFactory.create(SnapshotService.class);
     }
 }
