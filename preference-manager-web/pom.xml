@@ -4,11 +4,11 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.lazydog</groupId>
-        <artifactId>PreferenceManager</artifactId>
+        <groupId>org.lazydog.preference.manager</groupId>
+        <artifactId>preference-manager-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>PreferenceManagerWeb</artifactId>
+    <artifactId>preference-manager-web</artifactId>
     <packaging>war</packaging>
     <name>Preference Manager Web</name>
     <dependencies>
@@ -53,18 +53,18 @@
             <version>3.3.2.GA</version>
         </dependency>
         <dependency>
-            <groupId>org.lazydog</groupId>
-            <artifactId>PreferenceAPI</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.lazydog</groupId>
-            <artifactId>ConfigurationServiceImpl</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-configuration</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.lazydog</groupId>
-            <artifactId>GroupServiceImpl</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-group</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

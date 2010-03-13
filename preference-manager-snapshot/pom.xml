@@ -4,17 +4,17 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.lazydog</groupId>
-        <artifactId>PreferenceManager</artifactId>
+        <groupId>org.lazydog.preference.manager</groupId>
+        <artifactId>preference-manager-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>SnapshotServiceImpl</artifactId>
+    <artifactId>preference-manager-snapshot</artifactId>
     <packaging>jar</packaging>
-    <name>Snapshot Service Implementation</name>
+    <name>Preference Manager Snapshot</name>
     <dependencies>
         <dependency>
-            <groupId>org.lazydog</groupId>
-            <artifactId>PreferenceAPI</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
