@@ -13,7 +13,7 @@ import org.lazydog.preference.configuration.service.ConfigurationServiceExceptio
 
 
 /**
- * Configuration data access object.
+ * Configuration service implementation.
  *
  * @author  Ron Rickard
  */
