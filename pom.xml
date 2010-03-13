@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.lazydog</groupId>
-    <artifactId>PreferenceManager</artifactId>
+    <groupId>org.lazydog.preference.manager</groupId>
+    <artifactId>preference-manager-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>Preference Manager</name>
+    <name>Preference Manager Parent</name>
     <properties>
         <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,10 +26,10 @@
         </plugins>
     </build>
     <modules>
-        <module>PreferenceAPI</module>
-        <module>GroupServiceImpl</module>
-        <module>ConfigurationServiceImpl</module>
-        <module>SnapshotServiceImpl</module>
-        <module>PreferenceManagerWeb</module>
+        <module>preference-manager-api</module>
+        <module>preference-manager-group</module>
+        <module>preference-manager-configuration</module>
+        <module>preference-manager-snapshot</module>
+        <module>preference-manager-web</module>
     </modules>
 </project>
