@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-preference-group</artifactId>
+            <artifactId>preference-manager-preference</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

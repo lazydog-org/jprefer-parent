@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager.preference.group.internal;
+package org.lazydog.preference.manager.preference.service.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,16 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
 import org.lazydog.preference.manager.model.Preference;
-import org.lazydog.preference.manager.preference.group.PreferenceGroup;
-import org.lazydog.preference.manager.preference.group.PreferenceGroupException;
+import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import org.lazydog.preference.manager.preference.service.PreferenceService;
+import org.lazydog.preference.manager.preference.service.PreferenceServiceException;
 
 
 /**
- * Preference group implementation.
+ * Preference service implementation.
  *
  * @author  Ron Rickard
  */
-public class PreferenceGroupImpl implements PreferenceGroup {
+public class PreferenceServiceImpl implements PreferenceService {
 
     public static final String ROOT_GROUP_ID = "/";
     private static final String SLASH = "/";
@@ -25,10 +26,10 @@ public class PreferenceGroupImpl implements PreferenceGroup {
     /**
      * Constructor.
      *
-     * @throws  PreferenceGroupException  if unable to create.
+     * @throws  PreferenceServiceException  if unable to create.
      */
-    public PreferenceGroupImpl()
-            throws PreferenceGroupException {
+    public PreferenceServiceImpl()
+            throws PreferenceServiceException {
         this.setId(ROOT_GROUP_ID);
     }
 
@@ -37,10 +38,10 @@ public class PreferenceGroupImpl implements PreferenceGroup {
      *
      * @param  id  the ID.
      *
-     * @throws  PreferenceGroupException  if unable to create.
+     * @throws  PreferenceServiceException  if unable to create.
      */
-    private PreferenceGroupImpl(String id)
-            throws PreferenceGroupException {
+    private PreferenceServiceImpl(String id)
+            throws PreferenceServiceException {
         this.setId(id);
     }
 
@@ -49,12 +50,12 @@ public class PreferenceGroupImpl implements PreferenceGroup {
      *
      * @return  the document.
      *
-     * @throws  PreferenceGroupException  if unable to export the
-     *                                    preference group.
+     * @throws  PreferenceServiceException  if unable to export the
+     *                                      preference group.
      */
     @Override
     public Object exportDocument()
-            throws PreferenceGroupException {
+            throws PreferenceServiceException {
 
         // Declare.
         String preferenceGroup;
@@ -77,7 +78,7 @@ public class PreferenceGroupImpl implements PreferenceGroup {
             preferenceGroup = outputStream.toString(STRING_ENCODING);
         }
         catch(Exception e) {
-            throw new PreferenceGroupException(
+            throw new PreferenceServiceException(
                     "Unable to export the preference group " 
                     + this.getId() + ".", e);
         }
@@ -91,13 +92,13 @@ public class PreferenceGroupImpl implements PreferenceGroup {
      * @return  the children.
      */
     @Override
-    public List<PreferenceGroup> getChildren() {
+    public List<PreferenceGroupTree> getChildren() {
 
         // Declare.
-        List<PreferenceGroup> children;
+        List<PreferenceGroupTree> children;
 
         // Initialize.
-        children = new ArrayList<PreferenceGroup>();
+        children = new ArrayList<PreferenceGroupTree>();
 
         try {
 
@@ -105,18 +106,18 @@ public class PreferenceGroupImpl implements PreferenceGroup {
             for (String childName : this.preferences.childrenNames()) {
                 
                 // Declare.
-                PreferenceGroupImpl child;
+                PreferenceServiceImpl child;
 
                 // Check if this is the root group.
                 if (this.isRootGroup()) {
 
                     // Get the child for the root group.
-                    child = new PreferenceGroupImpl(SLASH + childName);
+                    child = new PreferenceServiceImpl(SLASH + childName);
                 }
                 else {
 
                     // Get the child.
-                    child = new PreferenceGroupImpl(this.preferences.absolutePath() + SLASH + childName);
+                    child = new PreferenceServiceImpl(this.preferences.absolutePath() + SLASH + childName);
                 }
 
                 // Add the child to the children.
@@ -187,12 +188,12 @@ public class PreferenceGroupImpl implements PreferenceGroup {
      *
      * @param  document  the document.
      *
-     * @throws  PreferenceGroupException  if unable to import the
-     *                                    preference group.
+     * @throws  PreferenceServiceException  if unable to import the
+     *                                      preference group.
      */
     @Override
     public void importDocument(Object document)
-            throws PreferenceGroupException {
+            throws PreferenceServiceException {
 
         try {
 
@@ -217,7 +218,7 @@ public class PreferenceGroupImpl implements PreferenceGroup {
             this.setId(id);
         }
         catch(Exception e) {
-            throw new PreferenceGroupException(
+            throw new PreferenceServiceException(
                     "Unable to import the preference group " 
                     + this.getId() + ".", e);
         }
@@ -235,12 +236,12 @@ public class PreferenceGroupImpl implements PreferenceGroup {
     /**
      * Remove the preference group.
      *
-     * @throws  PreferenceGroupException  if unable to remove the
-     *                                    preference group.
+     * @throws  PreferenceServiceException  if unable to remove the
+     *                                      preference group.
      */
     @Override
     public void remove()
-            throws PreferenceGroupException {
+            throws PreferenceServiceException {
 
         try {
 
@@ -251,7 +252,7 @@ public class PreferenceGroupImpl implements PreferenceGroup {
             this.preferences.flush();
         }
         catch(Exception e) {
-            throw new PreferenceGroupException(
+            throw new PreferenceServiceException(
                     "Unable to remove the preference group "
                     + this.getId() + ".", e);
         }
@@ -262,11 +263,11 @@ public class PreferenceGroupImpl implements PreferenceGroup {
      *
      * @return  the ID.
      *
-     * @throws  PreferenceGroupException  if unable to set the ID.
+     * @throws  PreferenceServiceException  if unable to set the ID.
      */
     @Override
     public void setId(String id)
-            throws PreferenceGroupException {
+            throws PreferenceServiceException {
 
         try {
 
@@ -277,7 +278,7 @@ public class PreferenceGroupImpl implements PreferenceGroup {
             this.preferences.flush();
         }
         catch(Exception e) {
-            throw new PreferenceGroupException(
+            throw new PreferenceServiceException(
                     "Unable to create preference group " + id + ".", e);
         }
     }
@@ -287,11 +288,11 @@ public class PreferenceGroupImpl implements PreferenceGroup {
      *
      * @return  the preferences.
      *
-     * @throws  PreferenceGroupException  if unable to set the preferences.
+     * @throws  PreferenceServiceException  if unable to set the preferences.
      */
     @Override
     public void setPreferences(List<Preference> preferences)
-            throws PreferenceGroupException {
+            throws PreferenceServiceException {
 
         try {
 
@@ -313,7 +314,7 @@ public class PreferenceGroupImpl implements PreferenceGroup {
             this.preferences.flush();
         }
         catch(Exception e) {
-            throw new PreferenceGroupException(
+            throw new PreferenceServiceException(
                     "Unable to set the preferences for preference group "
                     + this.getId() + ".", e);
         }

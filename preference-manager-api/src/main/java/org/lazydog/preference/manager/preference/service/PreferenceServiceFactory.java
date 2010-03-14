@@ -1,15 +1,14 @@
-package org.lazydog.preference.manager.preference.group;
+package org.lazydog.preference.manager.preference.service;
 
-import org.lazydog.preference.manager.preference.group.PreferenceGroup;
 import java.util.ServiceLoader;
 
 
 /**
- * Preference group factory.
+ * Preference service factory.
  *
  * @author  Ron Rickard
  */
-public class PreferenceGroupFactory {
+public class PreferenceServiceFactory {
 
     /**
      * Create the service.
@@ -51,39 +50,39 @@ public class PreferenceGroupFactory {
     }
 
     /**
-     * Create the preference group.
+     * Create the preference service.
      *
-     * @return  the preference group.
+     * @return  the preference service.
      */
-    public static PreferenceGroup create() {
-        return PreferenceGroupFactory.create(PreferenceGroup.class);
+    public static PreferenceService create() {
+        return PreferenceServiceFactory.create(PreferenceService.class);
     }
 
     /**
-     * Create the preference group.
+     * Create the preference service.
      *
      * @param  id  the ID.
      *
-     * @return  the preference group.
+     * @return  the preference service.
      */
-    public static PreferenceGroup create(String id) {
+    public static PreferenceService create(String id) {
 
         // Declare.
-        PreferenceGroup preferenceGroup;
+        PreferenceService preferenceService;
 
-        // Create the preference group.
-        preferenceGroup = PreferenceGroupFactory.create(PreferenceGroup.class);
+        // Create the preference service.
+        preferenceService = PreferenceServiceFactory.create(PreferenceService.class);
 
         try {
 
             // Set the ID.
-            preferenceGroup.setId(id);
+            preferenceService.setId(id);
         }
-        catch(PreferenceGroupException e) {
+        catch(PreferenceServiceException e) {
             throw new IllegalArgumentException(
-                    "Unable to create preference group " + id + ".", e);
+                    "Unable to create preference service " + id + ".", e);
         }
 
-        return preferenceGroup;
+        return preferenceService;
     }
 }

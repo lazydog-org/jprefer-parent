@@ -8,9 +8,9 @@
         <artifactId>preference-manager-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>preference-manager-preference-group</artifactId>
+    <artifactId>preference-manager-preference</artifactId>
     <packaging>jar</packaging>
-    <name>Preference Manager Preference Group</name>
+    <name>Preference Manager Preference</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

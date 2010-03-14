@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.preference.group.PreferenceGroup;
-import org.lazydog.preference.manager.preference.group.PreferenceGroupFactory;
+import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import org.lazydog.preference.manager.Preference;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
 
@@ -18,7 +18,7 @@ import org.lazydog.preference.manager.web.utility.SessionUtility;
 public class PreferenceGroupMB implements Serializable {
 
     private String id;
-    private List<PreferenceGroup> rootGroups;
+    private List<PreferenceGroupTree> preferenceGroupTree;
 
     /**
      * Get the ID.
@@ -30,21 +30,21 @@ public class PreferenceGroupMB implements Serializable {
     }
 
     /**
-     * Get the root groups.
+     * Get the preference group tree.
      *
-     * @return  the root groups.
+     * @return  the preference group tree.
      */
-    public List<PreferenceGroup> getRootGroups() {
+    public List<PreferenceGroupTree> getPreferenceGroupTree() {
 
-        // Check if there are root groups.
-        if (this.rootGroups == null) {
+        // Check if there is a preference group tree.
+        if (this.preferenceGroupTree == null) {
 
-            // Get the root groups.
-            this.rootGroups = new ArrayList<PreferenceGroup>();
-            this.rootGroups.add(PreferenceGroupFactory.create());
+            // Get the preference group tree.
+            this.preferenceGroupTree = new ArrayList<PreferenceGroupTree>();
+            this.preferenceGroupTree.add(Preference.getPreferenceGroupTree());
         }
 
-        return this.rootGroups;
+        return this.preferenceGroupTree;
     }
 
     /**
@@ -90,11 +90,6 @@ System.err.println("processModifyButton invoked");
      */
     public void processOkButton(ActionEvent actionEvent) {
 System.err.println("processOkButton invoked");
-        try {
-
-            PreferenceGroupFactory.create(this.id);
-        }
-        catch(Exception e) {}
     }
 
     /**
@@ -117,7 +112,7 @@ System.err.println("processResetButton invoked");
         this.id = id;
 
         // Put the preference group on the session.
-        SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, PreferenceGroupFactory.create(id));
+        SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(id));
         
     }
 }

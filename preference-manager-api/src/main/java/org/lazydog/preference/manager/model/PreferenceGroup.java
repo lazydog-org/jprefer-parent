@@ -4,11 +4,11 @@ import java.util.List;
 
 
 /**
- * Preferences.
+ * Preference group.
  *
  * @author  Ron Rickard
  */
-public class Preferences {
+public class PreferenceGroup {
 
     private String id;
     private List<Preference> preferences;

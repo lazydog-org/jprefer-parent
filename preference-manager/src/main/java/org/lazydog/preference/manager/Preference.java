@@ -1,8 +1,9 @@
 package org.lazydog.preference.manager;
 
-import org.lazydog.preference.manager.model.Preferences;
-import org.lazydog.preference.manager.preference.group.PreferenceGroup;
-import org.lazydog.preference.manager.preference.group.PreferenceGroupFactory;
+import org.lazydog.preference.manager.model.PreferenceGroup;
+import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import org.lazydog.preference.manager.preference.service.PreferenceService;
+import org.lazydog.preference.manager.preference.service.PreferenceServiceFactory;
 
 
 /**
@@ -13,11 +14,36 @@ import org.lazydog.preference.manager.preference.group.PreferenceGroupFactory;
 public class Preference {
 
     /**
-     * Get the preference group.
+     * Get the preference group tree.
      *
-     * @return  the preference group.
+     * @return  the preference group tree.
      */
-    public static PreferenceGroup getPreferenceGroup() {
+    public static PreferenceGroupTree getPreferenceGroupTree() {
+
+        // Declare.
+        PreferenceGroupTree prefrenceGroupTree;
+
+        // Initialize.
+        prefrenceGroupTree = null;
+
+        try {
+
+            // Get the preference group tree.
+            prefrenceGroupTree = PreferenceServiceFactory.create();
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+        }
+
+        return prefrenceGroupTree;
+    }
+
+    /**
+     * Get the preferences.
+     *
+     * @return  the preferences.
+     */
+    public static PreferenceGroup getPreferenceGroup(String id) {
 
         // Declare.
         PreferenceGroup preferenceGroup;
@@ -27,46 +53,21 @@ public class Preference {
 
         try {
 
+            // Declare.
+            PreferenceService preferenceService;
+
+            // Get the preference service.
+            preferenceService = PreferenceServiceFactory.create(id);
+
             // Get the preference group.
-            preferenceGroup = PreferenceGroupFactory.create();
+            preferenceGroup = new PreferenceGroup();
+            preferenceGroup.setId(id);
+            preferenceGroup.setPreferences(preferenceService.getPreferences());
         }
         catch(Exception e) {
             // TO DO: handle exception.
         }
 
         return preferenceGroup;
-    }
-
-    /**
-     * Get the preferences.
-     *
-     * @return  the preferences.
-     */
-    public static Preferences getPreferences(String id) {
-
-        // Declare.
-        Preferences preferences;
-
-        // Initialize.
-        preferences = null;
-
-        try {
-
-            // Declare.
-            PreferenceGroup preferenceGroup;
-
-            // Get the preference group.
-            preferenceGroup = PreferenceGroupFactory.create(id);
-
-            // Get the preferences.
-            preferences = new Preferences();
-            preferences.setId(preferenceGroup.getId());
-            preferences.setPreferences(preferenceGroup.getPreferences());
-        }
-        catch(Exception e) {
-            // TO DO: handle exception.
-        }
-
-        return preferences;
     }
 }

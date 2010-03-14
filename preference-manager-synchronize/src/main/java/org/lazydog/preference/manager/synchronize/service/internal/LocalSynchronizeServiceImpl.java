@@ -1,7 +1,7 @@
 package org.lazydog.preference.manager.synchronize.service.internal;
 
-import org.lazydog.preference.manager.preference.group.PreferenceGroup;
-import org.lazydog.preference.manager.preference.group.PreferenceGroupFactory;
+import org.lazydog.preference.manager.preference.service.PreferenceService;
+import org.lazydog.preference.manager.preference.service.PreferenceServiceFactory;
 import org.lazydog.preference.manager.synchronize.service.LocalSynchronizeService;
 import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceException;
 
@@ -35,13 +35,13 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
         try {
 
             // Declare.
-            PreferenceGroup preferenceGroup;
+            PreferenceService preferenceService;
 
-            // Get the preference group.
-            preferenceGroup = PreferenceGroupFactory.create(id);
+            // Get the preference service.
+            preferenceService = PreferenceServiceFactory.create(id);
 
             // Export the document.
-            document = preferenceGroup.exportDocument();
+            document = preferenceService.exportDocument();
         }
         catch(Exception e) {
             throw new SynchronizeServiceException(
@@ -72,13 +72,13 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
         try {
             
             // Declare.
-            PreferenceGroup preferenceGroups;
+            PreferenceService preferenceService;
 
-            // Get the preference group.
-            preferenceGroups = PreferenceGroupFactory.create();
+            // Get the preference service.
+            preferenceService = PreferenceServiceFactory.create();
 
             // Export the document.
-            document = preferenceGroups.exportDocument();
+            document = preferenceService.exportDocument();
         }
         catch(Exception e) {
             throw new SynchronizeServiceException(
@@ -103,13 +103,13 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
         try {
 
             // Declare.
-            PreferenceGroup preferenceGroup;
+            PreferenceService preferenceService;
 
-            // Get the preference group.
-            preferenceGroup = PreferenceGroupFactory.create(id);
+            // Get the preference service.
+            preferenceService = PreferenceServiceFactory.create(id);
 
             // Import the document.
-            preferenceGroup.importDocument(document);
+            preferenceService.importDocument(document);
         }
         catch(Exception e) {
             throw new SynchronizeServiceException(
@@ -131,13 +131,13 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
         try {
 
             // Declare.
-            PreferenceGroup preferenceGroups;
+            PreferenceService preferenceService;
 
-            // Get the preference groups.
-            preferenceGroups = PreferenceGroupFactory.create();
+            // Get the preference service.
+            preferenceService = PreferenceServiceFactory.create();
 
             // Import the document.
-            preferenceGroups.importDocument(document);
+            preferenceService.importDocument(document);
         }
         catch(Exception e) {
             throw new SynchronizeServiceException(

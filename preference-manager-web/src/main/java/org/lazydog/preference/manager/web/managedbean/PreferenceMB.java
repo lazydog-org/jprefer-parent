@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.Preference;
-import org.lazydog.preference.manager.preference.group.PreferenceGroup;
+import org.lazydog.preference.manager.model.PreferenceGroup;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
 
