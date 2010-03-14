@@ -10,14 +10,14 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-preference-node-form">
+            <h:form id="pm-preference-group-form">
                 <fieldset>
                     <ol>
                         <li>
-                            <label for="node">Absolute Path: </label>
+                            <label for="id">ID: </label>
                             <h:inputText
-                                id="node"
-                                value="#{preferenceNodeMB.absolutePath}"
+                                id="id"
+                                value="#{preferenceGroupMB.id}"
                                 size="25"
                                 maxlength="50"/>
                         </li>
@@ -27,19 +27,19 @@
                 <div class="pm-form-buttons">
                     <a4j:commandButton
                         value="Reset"
-                        actionListener="#{preferenceNodeMB.processResetButton}"
-                        reRender="pm-preference-node-form"/>
+                        actionListener="#{preferenceGroupMB.processResetButton}"
+                        reRender="pm-preference-group-form"/>
                     <a4j:commandButton
                         value="Cancel"
-                        actionListener="#{preferenceNodeMB.processCancelButton}"
-                        oncomplete="Richfaces.hideModalPanel('pm-preference-node-modal-panel');"
-                        reRender="pm-preference-node-tree"/>
+                        actionListener="#{preferenceGroupMB.processCancelButton}"
+                        oncomplete="Richfaces.hideModalPanel('pm-preference-group-modal-panel');"
+                        reRender="pm-preference-group-tree"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
-                        actionListener="#{preferenceNodeMB.processOkButton}"
-                        oncomplete="Richfaces.hideModalPanel('pm-preference-node-modal-panel');"
-                        reRender="pm-preference-node-tree"/>
+                        actionListener="#{preferenceGroupMB.processOkButton}"
+                        oncomplete="Richfaces.hideModalPanel('pm-preference-group-modal-panel');"
+                        reRender="pm-preference-group-tree"/>
                 </div>
             </h:form>
         </ui:composition>
