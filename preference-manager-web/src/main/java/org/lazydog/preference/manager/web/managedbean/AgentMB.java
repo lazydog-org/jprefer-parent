@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.configuration.Configuration;
+import org.lazydog.preference.manager.Configuration;
 import org.lazydog.preference.manager.configuration.model.Agent;
 
 

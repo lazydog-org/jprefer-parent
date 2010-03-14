@@ -6,7 +6,7 @@ import javax.management.ObjectName;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.lazydog.preference.manager.group.service.AgentGroupService;
-import org.lazydog.preference.manager.configuration.Configuration;
+import org.lazydog.preference.manager.Configuration;
 
 
 /**

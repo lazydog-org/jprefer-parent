@@ -1,8 +1,8 @@
 package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
-import org.lazydog.preference.manager.configuration.Configuration;
-import org.lazydog.preference.manager.configuration.model.SetupType;
+import org.lazydog.preference.manager.Configuration;
+import org.lazydog.preference.manager.model.SetupType;
 
 
 /**
