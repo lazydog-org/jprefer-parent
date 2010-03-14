@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager.configuration.model;
+package org.lazydog.preference.manager.model;
 
 /**
  * Setup type.

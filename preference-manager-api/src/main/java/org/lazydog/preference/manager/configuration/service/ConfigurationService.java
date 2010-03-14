@@ -2,7 +2,7 @@ package org.lazydog.preference.manager.configuration.service;
 
 import java.util.List;
 import org.lazydog.preference.manager.configuration.model.Agent;
-import org.lazydog.preference.manager.configuration.model.SetupType;
+import org.lazydog.preference.manager.model.SetupType;
 
 
 /**

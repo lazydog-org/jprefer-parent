@@ -30,6 +30,7 @@
         <module>preference-manager-group</module>
         <module>preference-manager-configuration</module>
         <module>preference-manager-snapshot</module>
+        <module>preference-manager</module>
         <module>preference-manager-web</module>
     </modules>
 </project>

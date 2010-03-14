@@ -6,7 +6,7 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.lazydog.preference.manager.configuration.model.SetupType;
+import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.configuration.model.Agent;
 import org.lazydog.preference.manager.configuration.service.ConfigurationService;
 import org.lazydog.preference.manager.configuration.service.ConfigurationServiceException;
