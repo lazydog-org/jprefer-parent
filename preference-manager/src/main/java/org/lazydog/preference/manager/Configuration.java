@@ -4,8 +4,8 @@ import java.util.Hashtable;
 import java.util.List;
 import org.lazydog.preference.manager.configuration.service.ConfigurationService;
 import org.lazydog.preference.manager.configuration.service.ConfigurationServiceFactory;
-import org.lazydog.preference.manager.group.service.GroupService;
-import org.lazydog.preference.manager.group.service.GroupServiceFactory;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceFactory;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.model.AgentStatus;
 import org.lazydog.preference.manager.model.SetupType;
@@ -39,32 +39,31 @@ public class Configuration {
         try {
 
             // Declare.
-            GroupService agentGroupService;
-            Object agentPreferenceGroups;
+            SynchronizeService remoteSynchronizeService;
+            Object remoteDocument;
             Hashtable<String,String> env;
-            GroupService localGroupService;
-            Object localPreferenceGroups;
+            SynchronizeService localSynchronizeService;
+            Object localDocument;
 
             // Set the environment.
             env = new Hashtable<String,String>();
-            env.put(GroupService.JMX_PORT, agent.getJmxPort().toString());
-            env.put(GroupService.LOGIN, agent.getLogin());
-            env.put(GroupService.PASSWORD, agent.getPassword());
-            env.put(GroupService.SERVER_NAME, agent.getServerName());
+            env.put(SynchronizeService.JMX_PORT, agent.getJmxPort().toString());
+            env.put(SynchronizeService.LOGIN, agent.getLogin());
+            env.put(SynchronizeService.PASSWORD, agent.getPassword());
+            env.put(SynchronizeService.SERVER_NAME, agent.getServerName());
 
-            // Get the group services.
-            agentGroupService = GroupServiceFactory.create(env);
-            localGroupService = GroupServiceFactory.create();
+            // Get the synchronize services.
+            remoteSynchronizeService = SynchronizeServiceFactory.create(env);
+            localSynchronizeService = SynchronizeServiceFactory.create();
 
-            // Export the agent preference groups.
-            agentPreferenceGroups = agentGroupService.exportGroups();
+            // Export the remote document.
+            remoteDocument = remoteSynchronizeService.exportDocument();
 
-            // Export the local preference groups.
-            localPreferenceGroups = localGroupService.exportGroups();
+            // Export the local document.
+            localDocument = localSynchronizeService.exportDocument();
  
-            // Check if the agent preference groups are equal to the local
-            // preference groups.
-            if (((String)agentPreferenceGroups).equals((String)localPreferenceGroups)) {
+            // Check if the remote document is equal to the local document.
+            if (((String)remoteDocument).equals((String)localDocument)) {
 
                 // The agent is synced.
                 status = AgentStatus.UP_SYNCED;

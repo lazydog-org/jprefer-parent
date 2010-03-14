@@ -1,21 +1,21 @@
-package org.lazydog.preference.manager.group.service;
+package org.lazydog.preference.manager.synchronize.service;
 
 import java.io.Serializable;
 
 
 /**
- * Thrown to indicate that an error occurred in the GroupService class.
+ * Thrown to indicate that an error occurred in the SynchronizeService class.
  *
  * @author  Ronald Rickard
  */
-public class GroupServiceException
+public class SynchronizeServiceException
         extends Exception
         implements Serializable {
 
     /**
      * Constructs a new exception.
      */
-    public GroupServiceException() {
+    public SynchronizeServiceException() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class GroupServiceException
      *
      * @param  message  the message.
      */
-    public GroupServiceException(String message) {
+    public SynchronizeServiceException(String message) {
         super(message);
     }
 
@@ -34,7 +34,7 @@ public class GroupServiceException
      * @param  message  the message.
      * @param  cause    the cause.
      */
-    public GroupServiceException(String message, Throwable cause) {
+    public SynchronizeServiceException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -43,7 +43,7 @@ public class GroupServiceException
      *
      * @param  cause  the cause.
      */
-    public GroupServiceException(Throwable cause) {
+    public SynchronizeServiceException(Throwable cause) {
         super(cause);
     }
 }

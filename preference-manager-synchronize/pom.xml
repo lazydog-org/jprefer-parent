@@ -8,13 +8,18 @@
         <artifactId>preference-manager-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>preference-manager-group</artifactId>
+    <artifactId>preference-manager-synchronize</artifactId>
     <packaging>jar</packaging>
-    <name>Preference Manager Group</name>
+    <name>Preference Manager Synchronize</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>preference-manager-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-preference-group</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

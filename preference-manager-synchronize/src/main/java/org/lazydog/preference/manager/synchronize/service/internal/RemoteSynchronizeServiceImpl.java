@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager.group.service.internal;
+package org.lazydog.preference.manager.synchronize.service.internal;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -8,17 +8,17 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-import org.lazydog.preference.manager.group.service.AgentGroupServiceMBean;
-import org.lazydog.preference.manager.group.service.GroupServiceException;
-import org.lazydog.preference.manager.group.service.RemoteGroupService;
+import org.lazydog.preference.manager.synchronize.service.AgentSynchronizeServiceMBean;
+import org.lazydog.preference.manager.synchronize.service.RemoteSynchronizeService;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceException;
 
 
 /**
- * Remote group service.
+ * Remote synchronize service.
  *
  * @author  Ron Rickard
  */
-public class RemoteGroupServiceImpl implements RemoteGroupService {
+public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
 
     private Hashtable<String,String> environment;
 
@@ -51,7 +51,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
      * @throws  GroupServiceException  if unable to connect to the JMX service.
      */
     private JMXConnector connect()
-            throws GroupServiceException {
+            throws SynchronizeServiceException {
 
         // Declare.
         JMXConnector connector;
@@ -80,28 +80,28 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
 
                 // Check if the JMX port exists.
                 if (jmxPort == null) {
-                    throw new GroupServiceException(
+                    throw new SynchronizeServiceException(
                             "Unable to connect to the JMX service: "
                             + "jmxPort not supplied.");
                 }
 
                 // Check if the login exists.
                 if (login == null) {
-                    throw new GroupServiceException(
+                    throw new SynchronizeServiceException(
                             "Unable to connect to the JMX service: "
                             + "login not supplied.");
                 }
 
                 // Check if the password exists.
                 if (password == null) {
-                    throw new GroupServiceException(
+                    throw new SynchronizeServiceException(
                             "Unable to connect to the JMX service: "
                             + "password not supplied.");
                 }
 
                 // Check if the server name exists.
                 if (serverName == null) {
-                    throw new GroupServiceException(
+                    throw new SynchronizeServiceException(
                             "Unable to connect to the JMX service: "
                             + "serverName not supplied.");
                 }
@@ -122,13 +122,13 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
                         serviceUrl, serviceEnv);
             }
             else {
-                throw new GroupServiceException(
+                throw new SynchronizeServiceException(
                         "Unable to connect to the JMX service: "
                         + "environment not supplied.");
             }
         }
         catch(Exception e) {
-            throw new GroupServiceException(
+            throw new SynchronizeServiceException(
                     "Unable to connect to the JMX service "
                     + serviceUrl + ".", e);
         }
@@ -137,30 +137,30 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
     }
 
     /**
-     * Export the preference group.
+     * Export the preference group as a document.
      *
      * @param  id  the ID.
      *
-     * @return  the preference group.
+     * @return  the document.
      *
      * @throws  GroupServiceException  if unable to export the preference group.
      */
     @Override
-    public Object exportGroup(String id)
-            throws GroupServiceException {
+    public Object exportDocument(String id)
+            throws SynchronizeServiceException {
 
         // Declare.
         JMXConnector connector;
-        Object preferenceGroup;
+        Object document;
 
         // Initialize.
         connector = null;
-        preferenceGroup = null;
+        document = null;
 
         try {
 
             // Declare.
-            AgentGroupServiceMBean groupService;
+            AgentSynchronizeServiceMBean groupService;
 
             // Connect to the JMX service.
             connector = this.connect();
@@ -169,10 +169,10 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
             groupService = this.getAgentGroupServiceMBean(connector);
 
             // Export the preference group.
-            preferenceGroup = groupService.exportGroup(id);
+            document = groupService.exportDocument(id);
         }
         catch(Exception e) {
-            throw new GroupServiceException(
+            throw new SynchronizeServiceException(
                     "Unable to export the preference group " + id + ".", e);
         }
         finally {
@@ -181,32 +181,32 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
             this.close(connector);
         }
 
-        return preferenceGroup;
+        return document;
     }
 
     /**
-     * Export the preference groups.
+     * Export the preference groups as a document.
      *
-     * @return  all the preferences.
+     * @return  the document.
      *
      * @throws  GroupServiceException  if unable to export the preference groups.
      */
     @Override
-    public Object exportGroups()
-            throws GroupServiceException {
+    public Object exportDocument()
+            throws SynchronizeServiceException {
 
         // Declare.
         JMXConnector connector;
-        Object preferenceGroups;
+        Object document;
 
         // Initialize.
         connector = null;
-        preferenceGroups = null;
+        document = null;
 
         try {
 
             // Declare.
-            AgentGroupServiceMBean groupService;
+            AgentSynchronizeServiceMBean groupService;
 
             // Connect to the JMX service.
             connector = this.connect();
@@ -215,10 +215,10 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
             groupService = this.getAgentGroupServiceMBean(connector);
 
             // Export the preference groups.
-            preferenceGroups = groupService.exportGroups();
+            document = groupService.exportDocument();
         }
         catch(Exception e) {
-            throw new GroupServiceException(
+            throw new SynchronizeServiceException(
                     "Unable to export the preference groups.", e);
         }
         finally {
@@ -227,7 +227,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
             this.close(connector);
         }
 
-        return preferenceGroups;
+        return document;
     }
 
     /**
@@ -238,12 +238,12 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
      * @throws  GroupServiceException  if unable to get the agent
      *                                 group service MBean.
      */
-    private AgentGroupServiceMBean getAgentGroupServiceMBean(
+    private AgentSynchronizeServiceMBean getAgentGroupServiceMBean(
             JMXConnector connector)
-            throws GroupServiceException {
+            throws SynchronizeServiceException {
 
         // Declare.
-        AgentGroupServiceMBean groupService;
+        AgentSynchronizeServiceMBean groupService;
 
         // Initialize.
         groupService = null;
@@ -258,14 +258,14 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
             connection = connector.getMBeanServerConnection();
 
             // Get the MBean object name.
-            name = new ObjectName(AgentGroupServiceMBean.OBJECT_NAME);
+            name = new ObjectName(AgentSynchronizeServiceMBean.OBJECT_NAME);
 
             // Get the agent group service MBean.
             groupService = JMX.newMXBeanProxy(
-                    connection, name, AgentGroupServiceMBean.class);
+                    connection, name, AgentSynchronizeServiceMBean.class);
         }
         catch(Exception e) {
-            throw new GroupServiceException(
+            throw new SynchronizeServiceException(
                     "Unable to get the agent group service MBean.", e);
         }
 
@@ -283,16 +283,16 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
     }
 
     /**
-     * Import the preference group.
+     * Import the preference group as a document.
      *
-     * @param  id               the ID.
-     * @param  preferenceGroup  the preference group.
+     * @param  id        the ID.
+     * @param  document  the document.
      *
      * @throws  GroupServiceException  if unable to import the preference group.
      */
     @Override
-    public void importGroup(String id, Object preferenceGroup)
-            throws GroupServiceException {
+    public void importDocument(String id, Object document)
+            throws SynchronizeServiceException {
 
         // Declare.
         JMXConnector connector;
@@ -303,7 +303,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
         try {
 
             // Declare.
-            AgentGroupServiceMBean groupService;
+            AgentSynchronizeServiceMBean groupService;
 
             // Connect to the JMX service.
             connector = this.connect();
@@ -312,10 +312,10 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
             groupService = this.getAgentGroupServiceMBean(connector);
 
             // Import the preference group.
-            groupService.importGroup(id, preferenceGroup);
+            groupService.importDocument(id, document);
         }
         catch(Exception e) {
-            throw new GroupServiceException(
+            throw new SynchronizeServiceException(
                     "Unable to import the preference group " + id + ".", e);
         }
         finally {
@@ -326,16 +326,15 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
     }
 
     /**
-     * Import the preference groups.
+     * Import the preference groups as a document.
      *
-     * @param  id                the ID.
-     * @param  preferenceGroups  the preference groups.
+     * @param  document  the document.
      *
      * @throws  GroupServiceException  if unable to import the preference groups.
      */
     @Override
-    public void importGroups(Object preferenceGroups)
-            throws GroupServiceException {
+    public void importDocument(Object document)
+            throws SynchronizeServiceException {
 
         // Declare.
         JMXConnector connector;
@@ -346,7 +345,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
         try {
 
             // Declare.
-            AgentGroupServiceMBean groupService;
+            AgentSynchronizeServiceMBean groupService;
 
             // Connect to the JMX service.
             connector = this.connect();
@@ -355,93 +354,11 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
             groupService = this.getAgentGroupServiceMBean(connector);
 
             // Import the preference groups.
-            groupService.importGroups(preferenceGroups);
+            groupService.importDocument(document);
         }
         catch(Exception e) {
-            throw new GroupServiceException(
+            throw new SynchronizeServiceException(
                     "Unable to import the preference groups.", e);
-        }
-        finally {
-
-            // Close the JMX service.
-            this.close(connector);
-        }
-    }
-
-    /**
-     * Remove the preference group.
-     *
-     * @param  id  the ID.
-     *
-     * @throws  GroupServiceException  if unable to remove the preference group.
-     */
-    @Override
-    public void removeGroup(String id)
-            throws GroupServiceException {
-
-        // Declare.
-        JMXConnector connector;
-
-        // Initialize.
-        connector = null;
-
-        try {
-
-            // Declare.
-            AgentGroupServiceMBean groupService;
-
-            // Connect to the JMX service.
-            connector = this.connect();
-
-            // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
-
-            // Remove the preference group.
-            groupService.removeGroup(id);
-        }
-        catch(Exception e) {
-            throw new GroupServiceException(
-                    "Unable to remove the preference group " + id + ".", e);
-        }
-        finally {
-
-            // Close the JMX service.
-            this.close(connector);
-        }
-    }
-
-    /**
-     * Remove the preference groups.
-     *
-     * @throws  GroupServiceException  if unable to remove the preference groups.
-     */
-    @Override
-    public void removeGroups()
-            throws GroupServiceException {
-
-        // Declare.
-        JMXConnector connector;
-
-        // Initialize.
-        connector = null;
-
-        try {
-
-            // Declare.
-            AgentGroupServiceMBean groupService;
-
-            // Connect to the JMX service.
-            connector = this.connect();
-
-            // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
-
-            // Remove the preference groups.
-            groupService.removeGroups();
-        }
-        catch(Exception e) {
-            throw new GroupServiceException(
-                    "Unable to remove the preference groups.", e);
         }
         finally {
 

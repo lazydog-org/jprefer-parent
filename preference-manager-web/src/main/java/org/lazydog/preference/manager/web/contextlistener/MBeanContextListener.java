@@ -5,7 +5,7 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.lazydog.preference.manager.group.service.AgentGroupService;
+import org.lazydog.preference.manager.synchronize.service.AgentSynchronizeService;
 import org.lazydog.preference.manager.Configuration;
 
 
@@ -36,7 +36,7 @@ public class MBeanContextListener implements ServletContextListener {
                 mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
                 // Get the MBean object name.
-                name = new ObjectName(AgentGroupService.OBJECT_NAME);
+                name = new ObjectName(AgentSynchronizeService.OBJECT_NAME);
 
                 // Check if the MBean is registered with the MBean server.
                 if (mBeanServer.isRegistered(name)) {
@@ -71,13 +71,13 @@ public class MBeanContextListener implements ServletContextListener {
                 mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
                 // Get the MBean object name.
-                name = new ObjectName(AgentGroupService.OBJECT_NAME);
+                name = new ObjectName(AgentSynchronizeService.OBJECT_NAME);
 
                 // Check if the MBean is not registered with the MBean server.
                 if (!mBeanServer.isRegistered(name)) {
 
                     // Register the MBean with the MBean server.
-                    mBeanServer.registerMBean(new AgentGroupService(), name);
+                    mBeanServer.registerMBean(new AgentSynchronizeService(), name);
                 }
             }
         }

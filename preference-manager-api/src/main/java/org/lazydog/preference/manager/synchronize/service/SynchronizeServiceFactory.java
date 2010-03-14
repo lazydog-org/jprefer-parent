@@ -1,15 +1,15 @@
-package org.lazydog.preference.manager.group.service;
+package org.lazydog.preference.manager.synchronize.service;
 
 import java.util.Hashtable;
 import java.util.ServiceLoader;
 
 
 /**
- * Group service factory.
+ * Synchronize service factory.
  * 
  * @author  Ron Rickard
  */
-public class GroupServiceFactory {
+public class SynchronizeServiceFactory {
 
     /**
      * Create the service.
@@ -51,28 +51,28 @@ public class GroupServiceFactory {
     }
 
     /**
-     * Create the group service.
+     * Create the synchronize service.
      *
-     * @return  the group service.
+     * @return  the synchronize service.
      */
-    public static GroupService create() {
-        return GroupServiceFactory.create(LocalGroupService.class);
+    public static SynchronizeService create() {
+        return SynchronizeServiceFactory.create(LocalSynchronizeService.class);
     }
 
     /**
-     * Create the group service.
+     * Create the synchronize service.
      *
      * @param  environment  the environment.
      *
-     * @return  the group service.
+     * @return  the synchronize service.
      */
-    public static GroupService create(Hashtable environment) {
+    public static SynchronizeService create(Hashtable environment) {
 
         // Declare.
-        RemoteGroupService remoteGroupService;
+        RemoteSynchronizeService remoteGroupService;
         
-        // Create the remote group service.
-        remoteGroupService = GroupServiceFactory.create(RemoteGroupService.class);
+        // Create the remote synchronize service.
+        remoteGroupService = SynchronizeServiceFactory.create(RemoteSynchronizeService.class);
         remoteGroupService.setEnvironment(environment);
 
         return remoteGroupService;

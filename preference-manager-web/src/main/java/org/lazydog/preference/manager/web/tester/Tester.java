@@ -8,9 +8,9 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-import org.lazydog.preference.manager.group.service.AgentGroupServiceMBean;
-import org.lazydog.preference.manager.group.service.GroupService;
-import org.lazydog.preference.manager.group.service.GroupServiceFactory;
+import org.lazydog.preference.manager.synchronize.service.AgentSynchronizeServiceMBean;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceFactory;
 
 
 /**
@@ -22,7 +22,7 @@ public class Tester {
 
     public void run() throws Exception {
 
-        GroupService groupService = GroupServiceFactory.create();
+        SynchronizeService groupService = SynchronizeServiceFactory.create();
         String id = "/org/lazydog/test";
         Preferences prefs;
         prefs = Preferences.systemRoot().node(id);
@@ -31,11 +31,11 @@ public class Tester {
         prefs.put("middle", "John");
         prefs.put("zipcode", "85254");
 
-        Object preferenceGroup = groupService.exportGroup(id);
+        Object document = groupService.exportDocument(id);
 
-        System.out.println((String)preferenceGroup);
+        System.out.println((String)document);
 
-        groupService.removeGroup("");
+        //groupService.removeGroup("");
 
         JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://SIC36565.sic.nwie.net:8686/jmxrmi");
         HashMap environment = new HashMap();
@@ -45,11 +45,11 @@ public class Tester {
 
         MBeanServerConnection connection = connector.getMBeanServerConnection();
 
-        ObjectName name = new ObjectName(AgentGroupServiceMBean.OBJECT_NAME);
-        AgentGroupServiceMBean agentGroupService = JMX.newMXBeanProxy(connection, name, AgentGroupServiceMBean.class);
+        ObjectName name = new ObjectName(AgentSynchronizeServiceMBean.OBJECT_NAME);
+        AgentSynchronizeServiceMBean agentGroupService = JMX.newMXBeanProxy(connection, name, AgentSynchronizeServiceMBean.class);
 
         //agentGroupService.removeGroup(id);
-        agentGroupService.importGroup(id, preferenceGroup);
+        agentGroupService.importDocument(id, document);
 
         connector.close();
     }
