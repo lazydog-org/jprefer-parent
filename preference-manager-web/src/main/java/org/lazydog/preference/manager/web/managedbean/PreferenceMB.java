@@ -3,8 +3,8 @@ package org.lazydog.preference.manager.web.managedbean;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.web.model.Preference;
-import org.lazydog.preference.manager.web.model.PreferenceNode;
+import org.lazydog.preference.manager.model.Preference;
+import org.lazydog.preference.manager.preference.group.PreferenceGroup;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
 
@@ -34,9 +34,9 @@ public class PreferenceMB implements Serializable {
         // Check if there are preferences.
         if (this.preferences == null) {
 
-            // Get the preferences from the preference node on the session.
-            this.preferences = (SessionUtility.getValue(SessionKey.PREFERENCE_NODE, PreferenceNode.class) != null) ?
-                SessionUtility.getValue(SessionKey.PREFERENCE_NODE, PreferenceNode.class).getPreferences() :
+            // Get the preferences from the preference group on the session.
+            this.preferences = (SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class) != null) ?
+                SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class).getPreferences() :
                 null;
         }
 

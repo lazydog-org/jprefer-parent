@@ -146,7 +146,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
      * @throws  GroupServiceException  if unable to export the preference group.
      */
     @Override
-    public Object exportGroup(Object id)
+    public Object exportGroup(String id)
             throws GroupServiceException {
 
         // Declare.
@@ -173,8 +173,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
         }
         catch(Exception e) {
             throw new GroupServiceException(
-                    "Unable to export the preference group "
-                    + (String)id + ".", e);
+                    "Unable to export the preference group " + id + ".", e);
         }
         finally {
 
@@ -292,7 +291,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
      * @throws  GroupServiceException  if unable to import the preference group.
      */
     @Override
-    public void importGroup(Object id, Object preferenceGroup)
+    public void importGroup(String id, Object preferenceGroup)
             throws GroupServiceException {
 
         // Declare.
@@ -317,8 +316,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
         }
         catch(Exception e) {
             throw new GroupServiceException(
-                    "Unable to import the preference group "
-                    + (String)id + ".", e);
+                    "Unable to import the preference group " + id + ".", e);
         }
         finally {
 
@@ -378,7 +376,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
      * @throws  GroupServiceException  if unable to remove the preference group.
      */
     @Override
-    public void removeGroup(Object id)
+    public void removeGroup(String id)
             throws GroupServiceException {
 
         // Declare.
@@ -403,8 +401,7 @@ public class RemoteGroupServiceImpl implements RemoteGroupService {
         }
         catch(Exception e) {
             throw new GroupServiceException(
-                    "Unable to remove the preference group "
-                    + (String)id + ".", e);
+                    "Unable to remove the preference group " + id + ".", e);
         }
         finally {
 

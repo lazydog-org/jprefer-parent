@@ -3,48 +3,48 @@ package org.lazydog.preference.manager.web.managedbean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.Preferences;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.web.model.PreferenceNode;
+import org.lazydog.preference.manager.preference.group.PreferenceGroup;
+import org.lazydog.preference.manager.preference.group.PreferenceGroupFactory;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
 
 
 /**
- * Preference node managed bean.
+ * Preference group managed bean.
  * 
  * @author  Ron Rickard
  */
-public class PreferenceNodeMB implements Serializable {
+public class PreferenceGroupMB implements Serializable {
 
-    private String absolutePath;
-    private List<PreferenceNode> rootNodes;
+    private String id;
+    private List<PreferenceGroup> rootGroups;
 
     /**
-     * Get the absolute path.
+     * Get the ID.
      *
-     * @return  the absolute path.
+     * @return  the ID.
      */
-    public String getAbsolutePath() {
-        return this.absolutePath;
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * Get the root nodes.
+     * Get the root groups.
      *
-     * @return  the root nodes.
+     * @return  the root groups.
      */
-    public List<PreferenceNode> getRootNodes() {
+    public List<PreferenceGroup> getRootGroups() {
 
-        // Check if there are root nodes.
-        if (this.rootNodes == null) {
+        // Check if there are root groups.
+        if (this.rootGroups == null) {
 
-            // Get the root nodes.
-            this.rootNodes = new ArrayList<PreferenceNode>();
-            this.rootNodes.add(new PreferenceNode(PreferenceNode.ROOT_NODE_NAME));
+            // Get the root groups.
+            this.rootGroups = new ArrayList<PreferenceGroup>();
+            this.rootGroups.add(PreferenceGroupFactory.create());
         }
 
-        return this.rootNodes;
+        return this.rootGroups;
     }
 
     /**
@@ -92,8 +92,7 @@ System.err.println("processModifyButton invoked");
 System.err.println("processOkButton invoked");
         try {
 
-            Preferences.userRoot().node(this.absolutePath);
-            Preferences.userRoot().flush();
+            PreferenceGroupFactory.create(this.id);
         }
         catch(Exception e) {}
     }
@@ -108,17 +107,17 @@ System.err.println("processResetButton invoked");
     }
 
     /**
-     * Set the absolute path.
+     * Set the ID.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  id  the ID.
      */
-    public void setAbsolutePath(String absolutePath) {
+    public void setId(String id) {
 
-        // Set the absolute path.
-        this.absolutePath = absolutePath;
+        // Set the ID.
+        this.id = id;
 
-        // Put the preference node on the session.
-        SessionUtility.putValue(SessionKey.PREFERENCE_NODE, new PreferenceNode(absolutePath));
+        // Put the preference group on the session.
+        SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, PreferenceGroupFactory.create(id));
         
     }
 }

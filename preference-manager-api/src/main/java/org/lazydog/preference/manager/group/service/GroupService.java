@@ -13,15 +13,15 @@ public interface GroupService {
     public static final String PASSWORD = "password";
     public static final String SERVER_NAME = "serverName";
 
-    public Object exportGroup(Object id)
+    public Object exportGroup(String id)
             throws GroupServiceException;
     public Object exportGroups()
             throws GroupServiceException;
-    public void importGroup(Object id, Object preferenceGroup)
+    public void importGroup(String id, Object preferenceGroup)
             throws GroupServiceException;
     public void importGroups(Object preferenceGroups)
             throws GroupServiceException;
-    public void removeGroup(Object id)
+    public void removeGroup(String id)
             throws GroupServiceException;
     public void removeGroups()
             throws GroupServiceException;

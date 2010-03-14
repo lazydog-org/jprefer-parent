@@ -26,7 +26,7 @@ public class LocalGroupServiceImpl implements LocalGroupService {
      * @throws  GroupServiceException  if unable to export the preference group.
      */
     @Override
-    public Object exportGroup(Object id)
+    public Object exportGroup(String id)
             throws GroupServiceException {
 
         // Declare.
@@ -44,15 +44,14 @@ public class LocalGroupServiceImpl implements LocalGroupService {
             outputStream = new ByteArrayOutputStream();
 
             // Export the preference group as a output stream.
-            Preferences.systemRoot().node((String)id).exportNode(outputStream);
+            Preferences.systemRoot().node(id).exportNode(outputStream);
 
             // Convert the output stream to a string.
             preferenceGroup = outputStream.toString(STRING_ENCODING);
         }
         catch(Exception e) {
             throw new GroupServiceException(
-                    "Unable to export the preference group "
-                    + (String)id + ".", e);
+                    "Unable to export the preference group " + id + ".", e);
         }
 
         return preferenceGroup;
@@ -106,7 +105,7 @@ public class LocalGroupServiceImpl implements LocalGroupService {
      * @throws  GroupServiceException  if unable to import the preference group.
      */
     @Override
-    public void importGroup(Object id, Object preferenceGroup)
+    public void importGroup(String id, Object preferenceGroup)
             throws GroupServiceException {
 
         try {
@@ -115,10 +114,10 @@ public class LocalGroupServiceImpl implements LocalGroupService {
             ByteArrayInputStream inputStream;
 
             // Check if the preference group exists.
-            if (Preferences.systemRoot().nodeExists((String)id)) {
+            if (Preferences.systemRoot().nodeExists(id)) {
 
                 // Remove the preference group.
-                Preferences.systemRoot().node((String)id).removeNode();
+                Preferences.systemRoot().node(id).removeNode();
             }
 
             // Convert the preference group to an input stream.
@@ -130,8 +129,7 @@ public class LocalGroupServiceImpl implements LocalGroupService {
         }
         catch(Exception e) {
             throw new GroupServiceException(
-                    "Unable to import the preference group "
-                    + (String)id + ".", e);
+                    "Unable to import the preference group " + id + ".", e);
         }
     }
 
@@ -144,7 +142,7 @@ public class LocalGroupServiceImpl implements LocalGroupService {
      * @throws  GroupServiceException  if unable to import the preference groups.
      */
     @Override
-    public void importGroups(Object preferences)
+    public void importGroups(Object preferenceGroups)
             throws GroupServiceException {
 
         try {
@@ -157,7 +155,7 @@ public class LocalGroupServiceImpl implements LocalGroupService {
 
             // Convert the preference groups to an input stream.
             inputStream = new ByteArrayInputStream(
-                    ((String)preferences).getBytes((STRING_ENCODING)));
+                    ((String)preferenceGroups).getBytes((STRING_ENCODING)));
 
             // Import the preference groups.
             Preferences.importPreferences(inputStream);
@@ -176,18 +174,17 @@ public class LocalGroupServiceImpl implements LocalGroupService {
      * @throws  GroupServiceException  if unable to remove the preference group.
      */
     @Override
-    public void removeGroup(Object id)
+    public void removeGroup(String id)
             throws GroupServiceException {
 
         try {
 
             // Remove the preference group.
-            Preferences.systemRoot().node((String)id).removeNode();
+            Preferences.systemRoot().node(id).removeNode();
         }
         catch(Exception e) {
             throw new GroupServiceException(
-                    "Unable to remove the preference group "
-                    + (String)id + ".", e);
+                    "Unable to remove the preference group " + id + ".", e);
         }
     }
 

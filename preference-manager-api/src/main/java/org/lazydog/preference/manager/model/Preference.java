@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager.web.model;
+package org.lazydog.preference.manager.model;
 
 
 /**
