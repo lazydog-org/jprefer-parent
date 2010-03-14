@@ -18,6 +18,8 @@ import org.lazydog.preference.manager.web.utility.SessionUtility;
 public class PreferenceMB implements Serializable {
 
     private String key;
+    private String oldKey;
+    private String oldValue;
     private String value;
 
     /**
@@ -27,6 +29,24 @@ public class PreferenceMB implements Serializable {
      */
     public String getKey() {
         return this.key;
+    }
+
+    /**
+     * Get the old key.
+     *
+     * @return  the old key.
+     */
+    public String getOldKey() {
+        return this.oldKey;
+    }
+
+    /**
+     * Get the old value.
+     *
+     * @return  the old value.
+     */
+    public String getOldValue() {
+        return this.oldValue;
     }
 
     /**
@@ -105,6 +125,15 @@ System.err.println("processCancelButton invoked");
      */
     public void processDeleteButton(ActionEvent actionEvent) {
 System.err.println("processDeleteButton invoked");
+
+        try {
+
+            // Remove the preference.
+            this.getPreferences().remove(this.key);
+        }
+        catch(Exception e) {
+            // TODO: handle
+        }
     }
 
     /**
@@ -115,12 +144,15 @@ System.err.println("processDeleteButton invoked");
     public void processModifyButton(ActionEvent actionEvent) {
 System.err.println("processModifyButton invoked");
         try {
-System.err.println("key = " + this.key);
-            // Get the value.
+
+            // Set the value, old key, and old value from the key.
             this.value = (String)this.getPreferences().get(this.key);
-System.err.println("value = " + this.value);
+            this.oldKey = this.key;
+            this.oldValue = this.value;
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            // TODO: handle
+        }
     }
 
     /**
@@ -130,6 +162,25 @@ System.err.println("value = " + this.value);
      */
     public void processOkButton(ActionEvent actionEvent) {
 System.err.println("processOkButton invoked");
+        try {
+
+            // Check if the key exists.
+            if (this.key != null) {
+
+                // Check if the old key exists.
+                if (this.oldKey != null) {
+
+                    // Remove the old preference.
+                    this.getPreferences().remove(this.oldKey);
+                }
+
+                // Add the new preference.
+                this.getPreferences().put(this.key, this.value);
+            }
+        }
+        catch(Exception e) {
+            // TODO: handle
+        }
     }
 
     /**
@@ -139,6 +190,15 @@ System.err.println("processOkButton invoked");
      */
     public void processResetButton(ActionEvent actionEvent) {
 System.err.println("processResetButton invoked");
+        try {
+
+            // Reset the key and value.
+            this.key = this.oldKey;
+            this.value = this.oldValue;
+        }
+        catch(Exception e) {
+            // TODO: handle
+        }
     }
 
     /**
@@ -148,6 +208,24 @@ System.err.println("processResetButton invoked");
      */
     public void setKey(String key) {
         this.key = key;
+    }
+
+    /**
+     * Set the old key.
+     *
+     * @param  oldKey  the old key.
+     */
+    public void setOldKey(String oldKey) {
+        this.oldKey = oldKey;
+    }
+
+    /**
+     * Set the old value.
+     *
+     * @param  oldValue  the old value.
+     */
+    public void setOldValue(String oldValue) {
+        this.oldValue = oldValue;
     }
 
     /**

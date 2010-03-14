@@ -11,6 +11,7 @@
     <head/>
     <body>
         <ui:composition>
+            <h:panelGrid id="pm-preference-table">
                 <div class="pm-form-buttons">
                     <a4j:commandButton
                         value="Add"
@@ -47,11 +48,17 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Delete"
-                                actionListener="#{preferenceMB.processDeleteButton}"
-                                reRender="pm-preference-group-form"/>
+                                reRender="pm-preference-table">
+                                <a4j:actionparam
+                                    name="key"
+                                    assignTo="#{preferenceMB.key}"
+                                    value="#{key}"
+                                    actionListener="#{preferenceMB.processDeleteButton}"/>
+                            </rich:menuItem>
                         </rich:contextMenu>
                     </rich:column>
                 </rich:dataTable>
+            </h:panelGrid>
         </ui:composition>
     </body>
 </html>

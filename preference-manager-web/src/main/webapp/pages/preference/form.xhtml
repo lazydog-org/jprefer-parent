@@ -20,6 +20,7 @@
                                 value="#{preferenceMB.key}"
                                 size="25"
                                 maxlength="50"/>
+                            <h:inputHidden value="#{preferenceMB.oldKey}"/>
                         </li>
                         <li>
                             <label for="value">Value: </label>
@@ -28,6 +29,7 @@
                                 value="#{preferenceMB.value}"
                                 size="25"
                                 maxlength="50"/>
+                            <h:inputHidden value="#{preferenceMB.oldValue}"/>
                         </li>
                     </ol>
                 </fieldset>
