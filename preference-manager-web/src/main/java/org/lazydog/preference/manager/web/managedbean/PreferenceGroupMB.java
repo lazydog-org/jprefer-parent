@@ -81,6 +81,12 @@ System.err.println("processDeleteButton invoked");
      */
     public void processModifyButton(ActionEvent actionEvent) {
 System.err.println("processModifyButton invoked");
+        try {
+
+            // Put the preference group on the session.
+            SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.id));
+        }
+        catch(Exception e) {}
     }
 
     /**
@@ -110,9 +116,5 @@ System.err.println("processResetButton invoked");
 
         // Set the ID.
         this.id = id;
-
-        // Put the preference group on the session.
-        SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(id));
-        
     }
 }

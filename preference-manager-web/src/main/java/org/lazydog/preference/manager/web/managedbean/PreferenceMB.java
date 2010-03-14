@@ -2,6 +2,7 @@ package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.model.PreferenceGroup;
@@ -17,8 +18,7 @@ import org.lazydog.preference.manager.web.utility.SessionUtility;
 public class PreferenceMB implements Serializable {
 
     private String key;
-    private List<Preference> preferences;
-    private String value;
+    private Preference preference;
 
     /**
      * Get the key.
@@ -29,26 +29,41 @@ public class PreferenceMB implements Serializable {
         return this.key;
     }
 
+    /**
+     * Get the preference.
+     *
+     * @return  the preference.
+     */
+    public Preference getPreference() {
+        return this.preference;
+    }
+
+    /**
+     * Get the preferences.
+     *
+     * @return  the preferences.
+     */
     public List<Preference> getPreferences() {
 
-        // Check if there are preferences.
-        if (this.preferences == null) {
+        // Declare.
+        List<Preference> preferences;
 
-            // Get the preferences from the preference group on the session.
-            this.preferences = (SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class) != null) ?
+        // Get the preferences from the preference group on the session.
+        preferences = (SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class) != null) ?
                 SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class).getPreferences() :
                 null;
-        }
 
-        return this.preferences;
+        return preferences;
     }
+
     /**
-     * Get the value.
-     *
-     * @return  the value.
+     * Initialize.
      */
-    public String getValue() {
-        return this.value;
+    @PostConstruct
+    public void initialize() {
+
+        // Create a new preference.
+        this.preference = new Preference();
     }
 
     /**
@@ -115,11 +130,11 @@ System.err.println("processResetButton invoked");
     }
 
     /**
-     * Set the value.
+     * Set the preference.
      *
-     * @param  value  the value.
+     * @param  preference  the preference.
      */
-    public void setValue(String value) {
-        this.value = value;
+    public void setPreference(Preference preference) {
+        this.preference = preference;
     }
 }
