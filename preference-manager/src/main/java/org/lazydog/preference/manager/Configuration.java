@@ -1,14 +1,14 @@
 package org.lazydog.preference.manager;
 
-import org.lazydog.preference.manager.model.AgentStatus;
 import java.util.Hashtable;
 import java.util.List;
-import org.lazydog.preference.manager.configuration.model.Agent;
-import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.configuration.service.ConfigurationService;
 import org.lazydog.preference.manager.configuration.service.ConfigurationServiceFactory;
 import org.lazydog.preference.manager.group.service.GroupService;
 import org.lazydog.preference.manager.group.service.GroupServiceFactory;
+import org.lazydog.preference.manager.model.Agent;
+import org.lazydog.preference.manager.model.AgentStatus;
+import org.lazydog.preference.manager.model.SetupType;
 
 
 /**
@@ -18,6 +18,9 @@ import org.lazydog.preference.manager.group.service.GroupServiceFactory;
  */
 public class Configuration {
 
+    private static ConfigurationService configurationService
+            = ConfigurationServiceFactory.create();
+
     /**
      * Determine the status of the specified agent.
      *
@@ -25,13 +28,13 @@ public class Configuration {
      *
      * @return  the status of the specified agent.
      */
-    private static String determineStatus(Agent agent) {
+    private static AgentStatus determineStatus(Agent agent) {
 
         // Declare.
-        String status;
+        AgentStatus status;
 
         // Set the status to up.
-        status = AgentStatus.UP.toString() + ", ";
+        status = AgentStatus.UNKNOWN;
 
         try {
 
@@ -64,18 +67,18 @@ public class Configuration {
             if (((String)agentPreferenceGroups).equals((String)localPreferenceGroups)) {
 
                 // The agent is synced.
-                status += AgentStatus.SYNCED.toString();
+                status = AgentStatus.UP_SYNCED;
             }
             else {
 
                 // The agent is not synced.
-                status += AgentStatus.NOT_SYNCED.toString();
+                status = AgentStatus.UP_NOT_SYNCED;
             }
         }
         catch(Exception e) {
 
             // Set the status to down.
-            status = AgentStatus.DOWN.toString();
+            status = AgentStatus.DOWN;
         }
 
         return status;
@@ -96,12 +99,6 @@ public class Configuration {
         agent = null;
 
         try {
-
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
 
             // Disable the agent.
             agent = configurationService.findAgent(id);
@@ -130,12 +127,6 @@ public class Configuration {
         agent = null;
 
         try {
-
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
 
             // Enable the agent.
             agent = configurationService.findAgent(id);
@@ -166,12 +157,6 @@ public class Configuration {
 
         try {
 
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
-
             // Get the agent.
             agent = configurationService.findAgent(id);
 
@@ -199,12 +184,6 @@ public class Configuration {
         agents = null;
 
         try {
-
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
 
             // Get the agents.
             agents = configurationService.findAgents();
@@ -238,12 +217,6 @@ public class Configuration {
 
         try {
 
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
-
             // Check if this is an agent setup.
             if (configurationService.findSetupType() == SetupType.AGENT) {
                 isAgentSetup = true;
@@ -270,12 +243,6 @@ public class Configuration {
         isManagerSetup = false;
 
         try {
-
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
 
             // Check if this is a manager setup.
             if (configurationService.findSetupType() == SetupType.MANAGER) {
@@ -304,12 +271,6 @@ public class Configuration {
 
         try {
 
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
-
             // Check if this is setup.
             if (configurationService.findSetupType() != null) {
                 isSetup = true;
@@ -337,12 +298,6 @@ public class Configuration {
 
         try {
 
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
-
             // Check if this is a standalone setup.
             if (configurationService.findSetupType() == SetupType.STANDALONE) {
                 isStandaloneSetup = true;
@@ -366,12 +321,6 @@ public class Configuration {
 
         try {
 
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
-
             // Save the agent.
             agent = configurationService.persistAgent(agent);
         }
@@ -392,12 +341,6 @@ public class Configuration {
     public static SetupType saveSetupType(SetupType setupType) {
 
         try {
-
-            // Declare.
-            ConfigurationService configurationService;
-
-            // Initialize.
-            configurationService = ConfigurationServiceFactory.create();
 
             // Save the setup type.
             setupType = configurationService.persistSetupType(setupType);

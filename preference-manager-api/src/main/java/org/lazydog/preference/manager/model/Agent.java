@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager.configuration.model;
+package org.lazydog.preference.manager.model;
 
 
 /**
@@ -14,7 +14,7 @@ public class Agent {
     private String login;
     private String password;
     private String serverName;
-    private String status;
+    private AgentStatus status;
 
     /**
      * Is the agent enabled?
@@ -75,7 +75,7 @@ public class Agent {
      * 
      * @return  the status.
      */
-    public String getStatus() {
+    public AgentStatus getStatus() {
         return this.status;
     }
 
@@ -138,7 +138,7 @@ public class Agent {
      * 
      * @param  status  the status.
      */
-    public void setStatus(String status) {
+    public void setStatus(AgentStatus status) {
         this.status = status;
     }
 
@@ -163,6 +163,7 @@ public class Agent {
         toString.append(", login = ").append(this.getLogin());
         toString.append(", password = ").append(this.getPassword());
         toString.append(", serverName = ").append(this.getServerName());
+        toString.append(", status = ").append(this.getStatus().toString());
         toString.append("]");
 
         return toString.toString();

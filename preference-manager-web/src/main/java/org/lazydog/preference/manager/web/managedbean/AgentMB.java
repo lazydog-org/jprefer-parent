@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.Configuration;
-import org.lazydog.preference.manager.configuration.model.Agent;
+import org.lazydog.preference.manager.model.Agent;
 
 
 /**

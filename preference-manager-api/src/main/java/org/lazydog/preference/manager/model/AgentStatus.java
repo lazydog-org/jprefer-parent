@@ -6,10 +6,10 @@ package org.lazydog.preference.manager.model;
  * @author  Ron Rickard
  */
 public enum AgentStatus {
-    UP         ("Up"),
-    DOWN       ("Down"),
-    SYNCED     ("Sync'd"),
-    NOT_SYNCED ("Not Sync'd");
+    DOWN          ("Down"),
+    UNKNOWN       ("Unknown"),
+    UP_SYNCED     ("Up, Sync'd"),
+    UP_NOT_SYNCED ("Up, Not Sync'd");
 
     private String toString;
 

@@ -3,8 +3,8 @@ package org.lazydog.preference.manager.group.service.internal;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.prefs.Preferences;
-import org.lazydog.preference.manager.group.service.LocalGroupService;
 import org.lazydog.preference.manager.group.service.GroupServiceException;
+import org.lazydog.preference.manager.group.service.LocalGroupService;
 
 
 /**

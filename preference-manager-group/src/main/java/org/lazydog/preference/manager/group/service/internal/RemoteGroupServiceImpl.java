@@ -9,8 +9,8 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 import org.lazydog.preference.manager.group.service.AgentGroupServiceMBean;
-import org.lazydog.preference.manager.group.service.RemoteGroupService;
 import org.lazydog.preference.manager.group.service.GroupServiceException;
+import org.lazydog.preference.manager.group.service.RemoteGroupService;
 
 
 /**
