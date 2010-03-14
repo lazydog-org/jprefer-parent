@@ -18,7 +18,7 @@ import org.lazydog.preference.manager.web.utility.SessionUtility;
 public class PreferenceGroupMB implements Serializable {
 
     private String id;
-    private List<PreferenceGroupTree> preferenceGroupTree;
+    private List<PreferenceGroupTree> preferenceGroupTrees;
 
     /**
      * Get the ID.
@@ -30,21 +30,21 @@ public class PreferenceGroupMB implements Serializable {
     }
 
     /**
-     * Get the preference group tree.
+     * Get the preference group trees.
      *
-     * @return  the preference group tree.
+     * @return  the preference group trees.
      */
-    public List<PreferenceGroupTree> getPreferenceGroupTree() {
+    public List<PreferenceGroupTree> getPreferenceGroupTrees() {
 
         // Check if there is a preference group tree.
-        if (this.preferenceGroupTree == null) {
+        if (this.preferenceGroupTrees == null) {
 
-            // Get the preference group tree.
-            this.preferenceGroupTree = new ArrayList<PreferenceGroupTree>();
-            this.preferenceGroupTree.add(Preference.getPreferenceGroupTree());
+            // Get the preference group trees.
+            this.preferenceGroupTrees = new ArrayList<PreferenceGroupTree>();
+            this.preferenceGroupTrees.addAll(Preference.getPreferenceGroupTree().getChildren());
         }
 
-        return this.preferenceGroupTree;
+        return this.preferenceGroupTrees;
     }
 
     /**

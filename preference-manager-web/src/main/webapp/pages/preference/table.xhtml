@@ -20,34 +20,34 @@
                         reRender="pm-preference-modal-panel-content"/>
                 </div>
                 <rich:dataTable
-                    value="#{preferenceMB.preferences}"
-                    var="preference">
+                    value="#{preferenceMB.preferenceKeys}"
+                    var="key">
                     <rich:column id="pm-preference-key" headerClass="pm-table-cell pm-table-preference-key-cell">
                         <f:facet name="header">
                             <h:outputText value="Key"/>
                         </f:facet>
-                        <h:outputText value="#{preference.key}"/>
+                        <h:outputText value="#{key}"/>
                     </rich:column>
                     <rich:column id="pm-preference-value" headerClass="pm-table-cell pm-table-preference-value-cell">
                         <f:facet name="header">
                             <h:outputText value="Value"/>
                         </f:facet>
-                        <h:outputText value="#{preference.value}"/>
+                        <h:outputText value="#{preferenceMB.preferences[key]}"/>
                         <rich:contextMenu
                             attachTo="pm-preference-key,pm-preference-value"
                             submitMode="ajax">
                             <rich:menuItem
-                                value="Modify"
+                                value="Modify #{key}"
                                 oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
                                 reRender="pm-preference-modal-panel-content">
                                 <a4j:actionparam
-                                    name="key"
+                                    name="preferenceKey"
                                     assignTo="#{preferenceMB.key}"
-                                    value="#{preference.key}"
+                                    value="#{key}"
                                     actionListener="#{preferenceMB.processModifyButton}"/>
                             </rich:menuItem>
                             <rich:menuItem
-                                value="Delete"
+                                value="Delete #{key}"
                                 actionListener="#{preferenceMB.processDeleteButton}"
                                 reRender="pm-preference-table"/>
                         </rich:contextMenu>

@@ -1,6 +1,6 @@
 package org.lazydog.preference.manager.model;
 
-import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -11,7 +11,7 @@ import java.util.List;
 public class PreferenceGroup {
 
     private String id;
-    private List<Preference> preferences;
+    private Map<String,String> preferences;
     
     /**
      * Get the ID.
@@ -27,7 +27,7 @@ public class PreferenceGroup {
      *
      * @return  the preferences.
      */
-    public List<Preference> getPreferences() {
+    public Map<String,String> getPreferences() {
         return this.preferences;
     }
 
@@ -45,7 +45,7 @@ public class PreferenceGroup {
      *
      * @param  preferences  the preferences.
      */
-    public void setPreferences(List<Preference> preferences) {
+    public void setPreferences(Map<String,String> preferences) {
         this.preferences = preferences;
     }
 }

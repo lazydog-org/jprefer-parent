@@ -3,9 +3,10 @@ package org.lazydog.preference.manager.preference.service.internal;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.Preferences;
-import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.model.PreferenceGroupTree;
 import org.lazydog.preference.manager.preference.service.PreferenceService;
 import org.lazydog.preference.manager.preference.service.PreferenceServiceException;
@@ -19,7 +20,6 @@ import org.lazydog.preference.manager.preference.service.PreferenceServiceExcept
 public class PreferenceServiceImpl implements PreferenceService {
 
     public static final String ROOT_GROUP_ID = "/";
-    private static final String SLASH = "/";
     private static final String STRING_ENCODING = "UTF-8";
     private Preferences preferences;
 
@@ -104,21 +104,12 @@ public class PreferenceServiceImpl implements PreferenceService {
 
             // Loop through the children names.
             for (String childName : this.preferences.childrenNames()) {
-                
+
                 // Declare.
                 PreferenceServiceImpl child;
 
-                // Check if this is the root group.
-                if (this.isRootGroup()) {
-
-                    // Get the child for the root group.
-                    child = new PreferenceServiceImpl(SLASH + childName);
-                }
-                else {
-
-                    // Get the child.
-                    child = new PreferenceServiceImpl(this.preferences.absolutePath() + SLASH + childName);
-                }
+                // Get the child.
+                child = new PreferenceServiceImpl(this.preferences.node(childName).absolutePath());
 
                 // Add the child to the children.
                 children.add(child);
@@ -147,13 +138,13 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @return  the preferences.
      */
     @Override
-    public List<Preference> getPreferences() {
+    public Map<String,String> getPreferences() {
 
         // Declare.
-        List<Preference> preferences;
+        Map<String,String> preferences;
 
         // Initialize.
-        preferences = new ArrayList<Preference>();
+        preferences = new LinkedHashMap<String,String>();
 
         try {
 
@@ -162,18 +153,12 @@ public class PreferenceServiceImpl implements PreferenceService {
 
                 // Declare.
                 String value;
-                Preference preference;
 
                 // Get the value for the key.
                 value = this.preferences.get(key, "");
 
-                // Get the preference.
-                preference = new Preference();
-                preference.setKey(key);
-                preference.setValue(value);
-
                 // Add the preference to the preferences.
-                preferences.add(preference);
+                preferences.put(key, value);
             }
         }
         catch(Exception e) {
@@ -286,12 +271,12 @@ public class PreferenceServiceImpl implements PreferenceService {
     /**
      * Set the preferences.
      *
-     * @return  the preferences.
+     * @param  preferences  the preferences.
      *
      * @throws  PreferenceServiceException  if unable to set the preferences.
      */
     @Override
-    public void setPreferences(List<Preference> preferences)
+    public void setPreferences(Map<String,String> preferences)
             throws PreferenceServiceException {
 
         try {
@@ -303,10 +288,10 @@ public class PreferenceServiceImpl implements PreferenceService {
             if (preferences != null && preferences.size() > 0) {
 
                 // Loop through the preferences.
-                for (Preference preference : preferences) {
+                for (String key : preferences.keySet()) {
 
                     // Add the preference to the preference group.
-                    this.preferences.put(preference.getKey(), preference.getValue());
+                    this.preferences.put(key, preferences.get(key));
                 }
             }
 

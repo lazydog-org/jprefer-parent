@@ -1,10 +1,10 @@
 package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import java.util.Map;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.model.PreferenceGroup;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
@@ -18,7 +18,7 @@ import org.lazydog.preference.manager.web.utility.SessionUtility;
 public class PreferenceMB implements Serializable {
 
     private String key;
-    private Preference preference;
+    private String value;
 
     /**
      * Get the key.
@@ -30,12 +30,12 @@ public class PreferenceMB implements Serializable {
     }
 
     /**
-     * Get the preference.
+     * Get the value.
      *
-     * @return  the preference.
+     * @return  the value.
      */
-    public Preference getPreference() {
-        return this.preference;
+    public String getValue() {
+        return this.value;
     }
 
     /**
@@ -43,10 +43,10 @@ public class PreferenceMB implements Serializable {
      *
      * @return  the preferences.
      */
-    public List<Preference> getPreferences() {
+    public Map<String,String> getPreferences() {
 
         // Declare.
-        List<Preference> preferences;
+        Map<String,String> preferences;
 
         // Get the preferences from the preference group on the session.
         preferences = (SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class) != null) ?
@@ -57,13 +57,27 @@ public class PreferenceMB implements Serializable {
     }
 
     /**
-     * Initialize.
+     * Get the preference keys.
+     *
+     * @return  the preference keys.
      */
-    @PostConstruct
-    public void initialize() {
+    public List<String> getPreferenceKeys() {
 
-        // Create a new preference.
-        this.preference = new Preference();
+        // Declare.
+        List<String> preferenceKeys;
+
+        // Initialize.
+        preferenceKeys = null;
+
+        // Check if there are preferences.
+        if (this.getPreferences() != null) {
+
+            // Get the preference keys.
+            preferenceKeys = new ArrayList();
+            preferenceKeys.addAll(this.getPreferences().keySet());
+        }
+
+        return preferenceKeys;
     }
 
     /**
@@ -100,6 +114,13 @@ System.err.println("processDeleteButton invoked");
      */
     public void processModifyButton(ActionEvent actionEvent) {
 System.err.println("processModifyButton invoked");
+        try {
+System.err.println("key = " + this.key);
+            // Get the value.
+            this.value = (String)this.getPreferences().get(this.key);
+System.err.println("value = " + this.value);
+        }
+        catch(Exception e) {}
     }
 
     /**
@@ -130,11 +151,11 @@ System.err.println("processResetButton invoked");
     }
 
     /**
-     * Set the preference.
+     * Set the value.
      *
-     * @param  preference  the preference.
+     * @param  value  the value.
      */
-    public void setPreference(Preference preference) {
-        this.preference = preference;
+    public void setValue(String value) {
+        this.value = value;
     }
 }
