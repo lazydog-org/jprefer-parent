@@ -70,4 +70,27 @@ public class Preference {
 
         return preferenceGroup;
     }
+
+    /**
+     * Remove the preference group.
+     *
+     * @param  id  the ID.
+     */
+    public static void removePreferenceGroup(String id) {
+
+        try {
+
+            // Declare.
+            PreferenceService preferenceService;
+
+            // Get the preference service.
+            preferenceService = PreferenceServiceFactory.create(id);
+
+            // Remove the preference group.
+            preferenceService.remove();
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+        }
+    }
 }

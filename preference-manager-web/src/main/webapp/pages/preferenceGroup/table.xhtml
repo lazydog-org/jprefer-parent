@@ -11,7 +11,7 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-preference-group-tree">
+            <h:form id="pm-preference-group-table">
                 <rich:tree
                     switchType="ajax">
                     <rich:recursiveTreeNodesAdaptor
@@ -36,8 +36,13 @@
                                     reRender="pm-preference-group-modal-panel-content"/>
                                 <rich:menuItem
                                     value="Delete"
-                                    actionListener="#{preferenceGroupMB.processDeleteButton}"
-                                    reRender="pm-preference-group-tree"/>
+                                    reRender="pm-preference-group-table">
+                                    <a4j:actionparam
+                                        name="id"
+                                        assignTo="#{preferenceGroupMB.id}"
+                                        value="#{preferenceGroup.id}"
+                                        actionListener="#{preferenceGroupMB.processDeleteButton}"/>
+                                </rich:menuItem>
                                 <rich:menuItem
                                     value="Modify"
                                     oncomplete="Richfaces.showModalPanel('pm-preference-group-modal-panel');"

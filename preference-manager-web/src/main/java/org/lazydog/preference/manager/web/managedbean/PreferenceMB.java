@@ -101,30 +101,11 @@ public class PreferenceMB implements Serializable {
     }
 
     /**
-     * Process the add button.
-     *
-     * @param  actionEvent  the action event.
-     */
-    public void processAddButton(ActionEvent actionEvent) {
-System.err.println("processAddButton invoked");
-    }
-
-    /**
-     * Process the cancel button.
-     *
-     * @param  actionEvent  the action event.
-     */
-    public void processCancelButton(ActionEvent actionEvent) {
-System.err.println("processCancelButton invoked");
-    }
-
-    /**
      * Process the delete button.
      *
      * @param  actionEvent  the action event.
      */
     public void processDeleteButton(ActionEvent actionEvent) {
-System.err.println("processDeleteButton invoked");
 
         try {
 
@@ -132,7 +113,8 @@ System.err.println("processDeleteButton invoked");
             this.getPreferences().remove(this.key);
         }
         catch(Exception e) {
-            // TODO: handle
+            // TODO: handle exception.
+System.err.println("Unable to delete the preference " + this.key + ".\n" + e);
         }
     }
 
@@ -142,7 +124,7 @@ System.err.println("processDeleteButton invoked");
      * @param  actionEvent  the action event.
      */
     public void processModifyButton(ActionEvent actionEvent) {
-System.err.println("processModifyButton invoked");
+
         try {
 
             // Set the value, old key, and old value from the key.
@@ -151,7 +133,8 @@ System.err.println("processModifyButton invoked");
             this.oldValue = this.value;
         }
         catch(Exception e) {
-            // TODO: handle
+            // TODO: handle exception.
+System.err.println("Unable to modify the preference " + this.key + ".\n" + e);
         }
     }
 
@@ -161,25 +144,22 @@ System.err.println("processModifyButton invoked");
      * @param  actionEvent  the action event.
      */
     public void processOkButton(ActionEvent actionEvent) {
-System.err.println("processOkButton invoked");
+
         try {
 
-            // Check if the key exists.
-            if (this.key != null) {
+            // Check if the old key exists.
+            if (this.oldKey != null) {
 
-                // Check if the old key exists.
-                if (this.oldKey != null) {
-
-                    // Remove the old preference.
-                    this.getPreferences().remove(this.oldKey);
-                }
-
-                // Add the new preference.
-                this.getPreferences().put(this.key, this.value);
+                // Remove the old preference.
+                this.getPreferences().remove(this.oldKey);
             }
+
+            // Add the new preference.
+            this.getPreferences().put(this.key, this.value);
         }
         catch(Exception e) {
-            // TODO: handle
+            // TODO: handle exception.
+System.err.println("Unable to add/modify the preference " + this.key + ".\n" + e);
         }
     }
 
@@ -189,7 +169,7 @@ System.err.println("processOkButton invoked");
      * @param  actionEvent  the action event.
      */
     public void processResetButton(ActionEvent actionEvent) {
-System.err.println("processResetButton invoked");
+
         try {
 
             // Reset the key and value.
@@ -197,7 +177,8 @@ System.err.println("processResetButton invoked");
             this.value = this.oldValue;
         }
         catch(Exception e) {
-            // TODO: handle
+            // TODO: handle exception.
+System.err.println("Unable to reset the preference " + this.oldKey + ".\n" + e);
         }
     }
 

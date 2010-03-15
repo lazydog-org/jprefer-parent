@@ -20,6 +20,7 @@
                                 value="#{preferenceGroupMB.id}"
                                 size="25"
                                 maxlength="50"/>
+                            <h:inputHidden value="#{preferenceGroupMB.oldId}"/>
                         </li>
                     </ol>
                 </fieldset>
@@ -33,13 +34,13 @@
                         value="Cancel"
                         actionListener="#{preferenceGroupMB.processCancelButton}"
                         oncomplete="Richfaces.hideModalPanel('pm-preference-group-modal-panel');"
-                        reRender="pm-preference-group-tree"/>
+                        reRender="pm-preference-group-table"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
                         actionListener="#{preferenceGroupMB.processOkButton}"
                         oncomplete="Richfaces.hideModalPanel('pm-preference-group-modal-panel');"
-                        reRender="pm-preference-group-tree"/>
+                        reRender="pm-preference-group-table"/>
                 </div>
             </h:form>
         </ui:composition>

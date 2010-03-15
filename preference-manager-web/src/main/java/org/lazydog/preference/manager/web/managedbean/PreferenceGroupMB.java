@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
+import org.lazydog.preference.manager.model.PreferenceGroup;
 import org.lazydog.preference.manager.model.PreferenceGroupTree;
 import org.lazydog.preference.manager.Preference;
 import org.lazydog.preference.manager.web.utility.SessionKey;
@@ -18,6 +19,7 @@ import org.lazydog.preference.manager.web.utility.SessionUtility;
 public class PreferenceGroupMB implements Serializable {
 
     private String id;
+    private String oldId;
     private List<PreferenceGroupTree> preferenceGroupTrees;
 
     /**
@@ -27,6 +29,15 @@ public class PreferenceGroupMB implements Serializable {
      */
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Get the old ID.
+     *
+     * @return  the old ID.
+     */
+    public String getOldId() {
+        return this.oldId;
     }
 
     /**
@@ -54,6 +65,15 @@ public class PreferenceGroupMB implements Serializable {
      */
     public void processAddButton(ActionEvent actionEvent) {
 System.err.println("processAddButton invoked");
+        try {
+
+            // Put a new preference the session.
+            SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, new PreferenceGroup());
+        }
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to add the preference group.\n" + e);
+        }
     }
 
     /**
@@ -63,6 +83,15 @@ System.err.println("processAddButton invoked");
      */
     public void processCancelButton(ActionEvent actionEvent) {
 System.err.println("processCancelButton invoked");
+        try {
+
+            // Reove the preference group from the session.
+            SessionUtility.removeValue(SessionKey.PREFERENCE_GROUP);
+        }
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to cancel the add/modify of the preference group " + this.oldId + ".\n" + e);
+        }
     }
 
     /**
@@ -72,6 +101,15 @@ System.err.println("processCancelButton invoked");
      */
     public void processDeleteButton(ActionEvent actionEvent) {
 System.err.println("processDeleteButton invoked");
+        try {
+
+            // Remove the preference group.
+            Preference.removePreferenceGroup(this.id);
+        }
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to delete the preference group " + this.oldId + ".\n" + e);
+        }
     }
 
     /**
@@ -85,8 +123,14 @@ System.err.println("processModifyButton invoked");
 
             // Put the preference group on the session.
             SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.id));
+
+            // Set the old ID.
+            this.oldId = this.id;
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to modify the preference group " + this.id + ".\n" + e);
+        }
     }
 
     /**
@@ -96,6 +140,29 @@ System.err.println("processModifyButton invoked");
      */
     public void processOkButton(ActionEvent actionEvent) {
 System.err.println("processOkButton invoked");
+        try {
+
+            // Declare.
+            PreferenceGroup preferenceGroup;
+
+            // Check if the old ID exists.
+            if (this.oldId != null) {
+
+                // Remove the old preference group.
+                Preference.removePreferenceGroup(this.oldId);
+            }
+
+            // Get the preference group from the session.
+            preferenceGroup = SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class);
+            preferenceGroup.setId(id);
+
+            // Add the new preference.
+            //Preference.addPreferenceGroup(preferenceGroup);
+        }
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to add/modify the preference group " + this.id + ".\n" + e);
+        }
     }
 
     /**
@@ -105,6 +172,27 @@ System.err.println("processOkButton invoked");
      */
     public void processResetButton(ActionEvent actionEvent) {
 System.err.println("processResetButton invoked");
+        try {
+
+            // Check if the old ID exists.
+            if (this.oldId != null && !this.oldId.equals("")) {
+
+                // Put the old preference group on the session.
+                SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.oldId));
+
+                // Reset the preference group ID.
+                this.id = this.oldId;
+            }
+            else {
+
+                // Put a new preference the session.
+                SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, new PreferenceGroup());
+            }
+        }
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to reset the preference group " + this.oldId + ".\n" + e);
+        }
     }
 
     /**
@@ -116,5 +204,16 @@ System.err.println("processResetButton invoked");
 
         // Set the ID.
         this.id = id;
+    }
+
+    /**
+     * Set the old ID.
+     *
+     * @param  oldId  the old ID.
+     */
+    public void setOldId(String oldId) {
+
+        // Set the old ID.
+        this.oldId = oldId;
     }
 }
