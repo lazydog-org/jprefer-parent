@@ -64,7 +64,7 @@ public class PreferenceServiceImpl implements PreferenceService {
                 outputStream = new ByteArrayOutputStream();
 
                 // Export the preference group to a output stream.
-                Preferences.systemRoot().node(absolutePath).exportNode(outputStream);
+                Preferences.systemRoot().node(absolutePath).exportSubtree(outputStream);
 
                 // Convert the output stream to a document.
                 document = outputStream.toString(STRING_ENCODING);
