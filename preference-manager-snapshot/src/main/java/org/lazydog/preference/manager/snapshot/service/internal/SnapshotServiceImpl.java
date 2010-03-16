@@ -18,10 +18,10 @@ import org.lazydog.preference.manager.snapshot.service.SnapshotServiceException;
 public class SnapshotServiceImpl implements SnapshotService {
 
     private static final String CREATE_DATE_KEY = "create.date";
-    private static final String DATE_PATTERN = "MM/DD/yyyy HH:mm:ss.SSS";
+    private static final String DATE_PATTERN = "MM/dd/yyyy HH:mm:ss.SSS";
     private static final String RESTORE_DATE_KEY = "restore.date";
     private static final String ROOT_PATH = "/";
-    private static final String SNAPSHOT_NAME_PREFIX = "snapshot.";
+    private static final String SNAPSHOT_NAME_PREFIX = "snapshot-";
     private static DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
     private static Preferences snapshotSystem = Preferences.userRoot();
     private static Preferences sourceSystem = Preferences.systemRoot();
@@ -63,7 +63,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             // Flush the target preferences.
             targetSystem.flush();
 
-            // Loop through the source children names.
+            // Loop through the source children.
             for (String childName : sourcePreferences.childrenNames()) {
 
                 // Generate the source and target paths.
@@ -281,9 +281,13 @@ public class SnapshotServiceImpl implements SnapshotService {
             // Check if the snapshot exist.
             if (snapshotSystem.nodeExists(getSnapshotPath(name))) {
 
-                // Remove the source system.
-                sourceSystem.removeNode();
+                // Loop through the root children.
+                for (String childName : sourceSystem.childrenNames()) {
 
+                    // Remove the child.
+                    sourceSystem.node(childName).removeNode();
+                }
+                
                 // Flush the source system.
                 sourceSystem.flush();
 

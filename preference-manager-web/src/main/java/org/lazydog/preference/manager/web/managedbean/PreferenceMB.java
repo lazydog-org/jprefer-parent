@@ -2,6 +2,7 @@ package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.faces.event.ActionEvent;
@@ -71,7 +72,7 @@ public class PreferenceMB implements Serializable {
         // Get the preferences from the preference group on the session.
         preferences = (SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class) != null) ?
                 SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class).getPreferences() :
-                null;
+                new LinkedHashMap<String,String>();
 
         return preferences;
     }
@@ -87,15 +88,10 @@ public class PreferenceMB implements Serializable {
         List<String> preferenceKeys;
 
         // Initialize.
-        preferenceKeys = null;
+        preferenceKeys = new ArrayList();
 
-        // Check if there are preferences.
-        if (this.getPreferences() != null) {
-
-            // Get the preference keys.
-            preferenceKeys = new ArrayList();
-            preferenceKeys.addAll(this.getPreferences().keySet());
-        }
+        // Get the preference keys.
+        preferenceKeys.addAll(this.getPreferences().keySet());
 
         return preferenceKeys;
     }

@@ -18,6 +18,10 @@
                         actionListener="#{preferenceGroupMB.processAddButton}"
                         oncomplete="Richfaces.showModalPanel('pm-preference-group-modal-panel');"
                         reRender="pm-preference-group-modal-panel-content"/>
+                    <a4j:commandButton
+                        value="Manage Snapshots"
+                        oncomplete="Richfaces.showModalPanel('pm-snapshots-modal-panel');"
+                        reRender="pm-snapshots-modal-panel-content"/>
                 </div>
                 <rich:tree
                     switchType="ajax">

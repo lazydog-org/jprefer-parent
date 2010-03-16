@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:form id="pm-snapshot-form">
+                <fieldset>
+                    <ol>
+                        <li>
+                            <label for="name">Name: </label>
+                            <h:inputText
+                                id="name"
+                                value="#{snapshotMB.name}"
+                                size="25"
+                                maxlength="50"/>
+                            <h:inputHidden value="#{snapshotMB.oldName}"/>
+                        </li>
+                    </ol>
+                </fieldset>
+                <div class="pm-form-buttons">
+                    <a4j:commandButton
+                        value="Reset"
+                        actionListener="#{snapshotMB.processResetButton}"
+                        reRender="pm-snapshot-form"/>
+                    <a4j:commandButton
+                        value="Cancel"
+                        oncomplete="Richfaces.hideModalPanel('pm-snapshot-modal-panel');"
+                        reRender="pm-snapshots-table"/>
+                    <rich:spacer width="20"/>
+                    <a4j:commandButton
+                        value="OK"
+                        actionListener="#{snapshotMB.processOkButton}"
+                        oncomplete="Richfaces.hideModalPanel('pm-snapshot-modal-panel');"
+                        reRender="pm-snapshots-table"/>
+                </div>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>
