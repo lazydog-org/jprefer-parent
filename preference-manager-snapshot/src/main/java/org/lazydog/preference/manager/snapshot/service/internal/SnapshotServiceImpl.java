@@ -1,10 +1,12 @@
 package org.lazydog.preference.manager.snapshot.service.internal;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import org.lazydog.preference.manager.snapshot.service.SnapshotService;
 import org.lazydog.preference.manager.snapshot.service.SnapshotServiceException;
@@ -34,51 +36,42 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  targetSystem  the target system.
      * @param  targetPath    the target path.
      *
-     * @throws  SnapshotServiceException  if unable to copy the
-     *                                    preferences tree.
+     * @throws  BackingStoreException  if unable to copy the preferences tree.
      */
     private static void copyTree(Preferences sourceSystem, String sourcePath,
             Preferences targetSystem, String targetPath)
-            throws SnapshotServiceException {
+            throws BackingStoreException {
 
-        try {
+        // Declare.
+        Preferences sourcePreferences;
+        Preferences targetPreferences;
 
-            // Declare.
-            Preferences sourcePreferences;
-            Preferences targetPreferences;
+        // Get the source preferences.
+        sourcePreferences = sourceSystem.node(sourcePath);
 
-            // Get the source preferences.
-            sourcePreferences = sourceSystem.node(sourcePath);
+        // Create the target preferences.
+        targetPreferences = targetSystem.node(targetPath);
 
-            // Create the target preferences.
-            targetPreferences = targetSystem.node(targetPath);
+        // Loop through the keys.
+        for (String key : sourcePreferences.keys()) {
 
-            // Loop through the keys.
-            for (String key : sourcePreferences.keys()) {
-
-                // Add the source preference to the target preferences.
-                targetPreferences.put(key, sourcePreferences.get(key, null));
-            }
-
-            // Flush the target preferences.
-            targetSystem.flush();
-
-            // Loop through the source children.
-            for (String childName : sourcePreferences.childrenNames()) {
-
-                // Generate the source and target paths.
-                sourcePath = generatePath(sourcePath, childName);
-                targetPath = generatePath(targetPath, childName);
-
-                // Copy the child preference tree.
-                copyTree(sourceSystem, sourcePath,
-                        targetSystem, targetPath);
-            }
+            // Add the source preference to the target preferences.
+            targetPreferences.put(key, sourcePreferences.get(key, null));
         }
-        catch(Exception e) {
-            throw new SnapshotServiceException(
-                    "Unable to copy the preference tree " + sourcePath + " to "
-                    + targetPath + ".", e);
+
+        // Flush the target preferences.
+        targetSystem.flush();
+
+        // Loop through the source children.
+        for (String childName : sourcePreferences.childrenNames()) {
+
+            // Generate the source and target paths.
+            sourcePath = generatePath(sourcePath, childName);
+            targetPath = generatePath(targetPath, childName);
+
+            // Copy the child preference tree.
+            copyTree(sourceSystem, sourcePath,
+                    targetSystem, targetPath);
         }
     }
 
@@ -88,6 +81,9 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  name  the name.
      *
      * @throws  SnapshotServiceException  if unable to create the snapshot.
+     * @throws  NullPointerException      if the name is null.
+     * @throws  IllegalArgumentException  if the name refers to an existing
+     *                                    snapshot.
      */
     @Override
     public void createSnapshot(String name)
@@ -99,20 +95,22 @@ public class SnapshotServiceImpl implements SnapshotService {
             if (!snapshotSystem.nodeExists(getSnapshotPath(name))) {
 
                 // Create the snapshot.
-                copyTree(sourceSystem, ROOT_PATH, snapshotSystem, getSnapshotPath(name));
+                copyTree(sourceSystem, ROOT_PATH,
+                        snapshotSystem, getSnapshotPath(name));
 
                 // Add timestamp to snapshot.
                 snapshotSystem.node(getSnapshotPath(name))
                         .put(CREATE_DATE_KEY, dateFormat.format(new Date()));
             }
             else {
-                throw new SnapshotServiceException(
-                        "Unable to create existing snapshot " + name + ".");
+                throw new IllegalArgumentException(
+                        "The name, " + name
+                        + ", refers to an existing snapshot.");
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
             throw new SnapshotServiceException(
-                    "Unable to create a snapshot " + name + ".", e);
+                    "Unable to create the snapshot, " + name + ".", e);
         }
     }
 
@@ -142,20 +140,24 @@ public class SnapshotServiceImpl implements SnapshotService {
                 if (childName.startsWith(SNAPSHOT_NAME_PREFIX)) {
 
                     // Declare.
-                    String name;
                     Date date;
+                    String name;
 
                     // Get the name and date.
                     name = childName.replaceFirst(SNAPSHOT_NAME_PREFIX, "");
-                    date = dateFormat.parse(
-                            snapshotSystem.node(childName).get(CREATE_DATE_KEY, null));
+                    date = dateFormat.parse(snapshotSystem.node(childName)
+                            .get(CREATE_DATE_KEY, null));
 
                     // Put the name and date on the list.
                     snapshots.put(name, date);
                 }
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
+            throw new SnapshotServiceException(
+                    "Unable to find the snapshot names.", e);
+        }
+        catch(ParseException e) {
             throw new SnapshotServiceException(
                     "Unable to find the snapshot names.", e);
         }
@@ -170,8 +172,21 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  name  the name.
      *
      * @return  the new absolute path.
+     *
+     * @throws  NullPointerException  if either the path or name is null.
      */
     private static String generatePath(String path, String name) {
+
+        // Check if the path is null.
+        if (path == null) {
+            throw new NullPointerException("Path is null.");
+        }
+
+        // Check if the name is null.
+        if (name == null) {
+            throw new NullPointerException("Name is null.");
+        }
+        
         return (path.equals(ROOT_PATH)) ?
                 path + name :
                 path + "/" + name;
@@ -183,8 +198,16 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  name  the name.
      *
      * @return  the snapshot path.
+     *
+     * @throws  NullPointerException  if the name is null.
      */
     private static String getSnapshotPath(String name) {
+
+        // Check if the name is null.
+        if (name == null) {
+            throw new NullPointerException("Name is null.");
+        }
+        
         return ROOT_PATH + SNAPSHOT_NAME_PREFIX + name;
     }
 
@@ -194,6 +217,9 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  name  the name.
      *
      * @throws  SnapshotServiceException  if unable to remove the snapshot.
+     * @throws  NullPointerException      if the name is null.
+     * @throws  IllegalArgumentException  if the name does not refers to an
+     *                                    existing snapshot.
      */
     @Override
     public void removeSnapshot(String name)
@@ -211,13 +237,14 @@ public class SnapshotServiceImpl implements SnapshotService {
                 snapshotSystem.flush();
             }
             else {
-                throw new SnapshotServiceException(
-                        "Unable to remove missing snapshot " + name + ".");
+                throw new IllegalArgumentException(
+                        "The name, " + name
+                        + ", does not refers to an existing snapshot.");
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
             throw new SnapshotServiceException(
-                    "Unable to restore a snapshot " + name + ".", e);
+                    "Unable to remove the snapshot, " + name + ".", e);
         }
     }
 
@@ -228,6 +255,10 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  newName  the new name.
      *
      * @throws  SnapshotServiceException  if unable to rename the snapshot.
+     * @throws  NullPointerException      if the name or new name are null.
+     * @throws  IllegalArgumentException  if the name does not refers to an 
+     *                                    existing snapshot or the new name
+     *                                    refers to an existing snapshot.
      */
     @Override
     public void renameSnapshot(String name, String newName)
@@ -242,26 +273,27 @@ public class SnapshotServiceImpl implements SnapshotService {
                 if (!snapshotSystem.nodeExists(getSnapshotPath(newName))) {
 
                     // Copy the snapshot to the new name.
-                    copyTree(snapshotSystem, getSnapshotPath(name), snapshotSystem, getSnapshotPath(newName));
+                    copyTree(snapshotSystem, getSnapshotPath(name),
+                            snapshotSystem, getSnapshotPath(newName));
 
                     // Remove the snapshot.
                     this.removeSnapshot(name);
                 }
                 else {
-                    throw new SnapshotServiceException(
-                            "Unable to rename snapshot " + name
-                            + " to existing snapshot " + newName + ".");
+                    throw new IllegalArgumentException(
+                            "The new name, " + name
+                            + ", refers to an existing snapshot.");
                 }
             }
             else {
-                throw new SnapshotServiceException(
-                        "Unable to rename missing snapshot " + name
-                        + " to " + newName + ".");
+                throw new IllegalArgumentException(
+                        "The name, " + name
+                        + ", does not refers to an existing snapshot.");
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
             throw new SnapshotServiceException(
-                    "Unable to restore a snapshot " + name + ".", e);
+                    "Unable to rename the snapshot, " + name + ".", e);
         }
     }
 
@@ -271,6 +303,9 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  name  the name.
      *
      * @throws  SnapshotServiceException  if unable to restore the snapshot.
+     * @throws  NullPointerException      if the name is null.
+     * @throws  IllegalArgumentException  if the name does not refers to an
+     *                                    existing snapshot.
      */
     @Override
     public void restoreSnapshot(String name)
@@ -292,20 +327,22 @@ public class SnapshotServiceImpl implements SnapshotService {
                 sourceSystem.flush();
 
                 // Restore the snapshot.
-                copyTree(snapshotSystem, getSnapshotPath(name), sourceSystem, ROOT_PATH);
+                copyTree(snapshotSystem, getSnapshotPath(name),
+                        sourceSystem, ROOT_PATH);
 
                 // Add timestamp to snapshot.
                 snapshotSystem.node(getSnapshotPath(name))
                         .put(RESTORE_DATE_KEY, dateFormat.format(new Date()));
             }
             else {
-                throw new SnapshotServiceException(
-                        "Unable to restore missing snapshot " + name + ".");
+                throw new IllegalArgumentException(
+                        "The name, " + name
+                        + ", does not refers to an existing snapshot.");
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
             throw new SnapshotServiceException(
-                    "Unable to restore a snapshot " + name + ".", e);
+                    "Unable to restore the snapshot, " + name + ".", e);
         }
     }
 }
