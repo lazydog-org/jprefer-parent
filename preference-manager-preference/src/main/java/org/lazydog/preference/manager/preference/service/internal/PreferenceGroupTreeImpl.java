@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import org.lazydog.preference.manager.model.PreferenceGroupTree;
-import org.lazydog.preference.manager.preference.service.PreferenceServiceException;
 
 
 /**
@@ -22,32 +22,20 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
     /**
      * Private constructor.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      *
-     * @throws  PreferenceServiceException  if unable to instantiate.
      */
-    public PreferenceGroupTreeImpl(String absolutePath)
-            throws PreferenceServiceException {
-
-        try {
-
-            // Get the preferences for the absolute path.
-            this.preferences = Preferences.systemRoot().node(absolutePath);
-        }
-        catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to instantiate the preference group tree "
-                    + absolutePath + ".", e);
-        }
+    public PreferenceGroupTreeImpl(String path) {
+        this.preferences = Preferences.systemRoot().node(path);
     }
 
     /**
-     * Get the absolute path.
+     * Get the path.
      *
      * @return  the absolute path.
      */
     @Override
-    public String getAbsolutePath() {
+    public String getPath() {
         return this.preferences.absolutePath();
     }
 
@@ -67,7 +55,7 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
 
         try {
 
-            // Loop through the children names.
+            // Loop through the children.
             for (String childName : this.preferences.childrenNames()) {
 
                 // Declare.
@@ -80,7 +68,7 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
                 children.add(child);
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
             // Already handled.
         }
 
@@ -110,7 +98,7 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
                 preferences.put(key, this.preferences.get(key, ""));
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
             // Already handled.
         }
 
@@ -123,7 +111,7 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
      * @return  true if this is the root group, otherwise false.
      */
     private boolean isRootGroup() {
-        return this.getAbsolutePath().equals(ROOT_PATH);
+        return this.getPath().equals(ROOT_PATH);
     }
 
     /**

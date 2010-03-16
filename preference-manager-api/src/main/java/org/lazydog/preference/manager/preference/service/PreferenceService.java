@@ -2,6 +2,7 @@ package org.lazydog.preference.manager.preference.service;
 
 import org.lazydog.preference.manager.model.PreferenceGroup;
 import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import org.lazydog.preference.manager.service.ServiceException;
 
 
 /**
@@ -11,26 +12,25 @@ import org.lazydog.preference.manager.model.PreferenceGroupTree;
  */
 public interface PreferenceService {
 
-    public void copyPreferenceGroup(
-            String sourceAbsolutePath, String targetAbsolutePath)
-            throws PreferenceServiceException;
+    public void copyPreferences(
+            String sourcePath, String targetPath)
+            throws ServiceException;
     public Object exportDocument()
-            throws PreferenceServiceException;
-    public Object exportDocument(String absolutePath)
-            throws PreferenceServiceException;
-    public PreferenceGroup findPreferenceGroup(String absolutePath)
-            throws PreferenceServiceException;
-    public PreferenceGroupTree findPreferenceGroupTree()
-            throws  PreferenceServiceException;
+            throws ServiceException;
+    public Object exportDocument(String path)
+            throws ServiceException;
+    public PreferenceGroup findPreferenceGroup(String path)
+            throws ServiceException;
+    public PreferenceGroupTree findPreferenceGroupTree();
     public void importDocument(Object document)
-            throws PreferenceServiceException;
-    public void importDocument(String absolutePath, Object document)
-            throws PreferenceServiceException;
-    public void movePreferenceGroup(
-            String sourceAbsolutePath, String targetAbsolutePath)
-            throws PreferenceServiceException;
+            throws ServiceException;
+    public void importDocument(String path, Object document)
+            throws ServiceException;
+    public void movePreferences(
+            String sourcePath, String targetPath)
+            throws ServiceException;
     public void persistPreferenceGroup(PreferenceGroup preferenceGroup)
-            throws PreferenceServiceException;
-    public void removePreferenceGroup(String absolutePath)
-            throws PreferenceServiceException;
+            throws ServiceException;
+    public void removePreferences(String path)
+            throws ServiceException;
 }

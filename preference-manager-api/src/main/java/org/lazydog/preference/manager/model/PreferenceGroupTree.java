@@ -12,7 +12,7 @@ import java.util.Map;
 public interface PreferenceGroupTree {
 
     public List<PreferenceGroupTree> getChildren();
-    public String getAbsolutePath();
+    public String getPath();
     public Map<String,String> getPreferences();
     @Override
     public String toString();

@@ -1,16 +1,18 @@
 package org.lazydog.preference.manager.synchronize.service.internal;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import javax.management.JMX;
+import javax.management.MalformedObjectNameException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
+import org.lazydog.preference.manager.service.ServiceException;
 import org.lazydog.preference.manager.synchronize.service.AgentSynchronizeServiceMBean;
 import org.lazydog.preference.manager.synchronize.service.RemoteSynchronizeService;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceException;
 
 
 /**
@@ -27,7 +29,7 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
      *
      * @param  connector  the JMX connector.
      */
-    private void close(JMXConnector connector) {
+    private static void close(JMXConnector connector) {
 
         try {
 
@@ -38,7 +40,7 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
                 connector.close();
             }
         }
-        catch(Exception e) {
+        catch(IOException e) {
             // Ignore.
         }
     }
@@ -46,64 +48,69 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
     /**
      * Connect to the JMX service.
      *
+     * @param  environment  the environment.
+     *
      * @return  the JMX connector.
      *
-     * @throws  GroupServiceException  if unable to connect to the JMX service.
+     * @throws  ServiceException          if unable to connect to the JMX
+     *                                    service.
+     * @throws  NullPointerException      if the environment is null.
+     * @throws  IllegalArgumentException  if the environment does not contain
+     *                                    the jmxPort, login, password, and
+     *                                    serverName.
      */
-    private JMXConnector connect()
-            throws SynchronizeServiceException {
+    private static JMXConnector connect(Hashtable<String,String> environment)
+            throws ServiceException {
 
         // Declare.
         JMXConnector connector;
-        JMXServiceURL serviceUrl;
+        String jmxPort;
+        String serverName;
 
         // Initialize.
         connector = null;
-        serviceUrl = null;
+        jmxPort = null;
+        serverName = null;
 
         try {
 
             // Check if the environment exists.
-            if (this.environment != null) {
+            if (environment != null) {
 
                 // Declare.
                 HashMap serviceEnv;
-                String jmxPort;
+                JMXServiceURL serviceUrl;
                 String login;
                 String password;
-                String serverName;
 
-                jmxPort = this.environment.get(JMX_PORT);
-                login = this.environment.get(LOGIN);
-                password = this.environment.get(PASSWORD);
-                serverName = this.environment.get(SERVER_NAME);
+                // Get the environment properties.
+                jmxPort = environment.get(JMX_PORT);
+                login = environment.get(LOGIN);
+                password = environment.get(PASSWORD);
+                serverName = environment.get(SERVER_NAME);
 
                 // Check if the JMX port exists.
                 if (jmxPort == null) {
-                    throw new SynchronizeServiceException(
-                            "Unable to connect to the JMX service: "
-                            + "jmxPort not supplied.");
+                    throw new IllegalArgumentException(
+                            "The jmxPort is not supplied.");
                 }
 
                 // Check if the login exists.
                 if (login == null) {
-                    throw new SynchronizeServiceException(
-                            "Unable to connect to the JMX service: "
-                            + "login not supplied.");
+                    throw new IllegalArgumentException(
+                            "The login is not supplied.");
                 }
 
                 // Check if the password exists.
                 if (password == null) {
-                    throw new SynchronizeServiceException(
-                            "Unable to connect to the JMX service: "
-                            + "password not supplied.");
+                    throw new IllegalArgumentException(
+                            "The password is not supplied.");
                 }
 
                 // Check if the server name exists.
                 if (serverName == null) {
-                    throw new SynchronizeServiceException(
-                            "Unable to connect to the JMX service: "
-                            + "serverName not supplied.");
+                    throw new IllegalArgumentException(
+                            "The serverName is not supplied.");
                 }
 
                 // Set the service environment.
@@ -122,30 +129,29 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
                         serviceUrl, serviceEnv);
             }
             else {
-                throw new SynchronizeServiceException(
-                        "Unable to connect to the JMX service: "
-                        + "environment not supplied.");
+                throw new NullPointerException(
+                        "The environment is null");
             }
         }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to connect to the JMX service "
-                    + serviceUrl + ".", e);
+        catch(IOException e) {
+            throw new ServiceException(
+                    "Unable to connect to the JMX service on "
+                    + serverName + "/"  + jmxPort + ".", e);
         }
 
         return connector;
     }
 
     /**
-     * Export the preference groups to a document.
+     * Export the preferences to a document.
      *
      * @return  the document.
      *
-     * @throws  GroupServiceException  if unable to export the preference groups.
+     * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
     public Object exportDocument()
-            throws SynchronizeServiceException {
+            throws ServiceException {
 
         // Declare.
         JMXConnector connector;
@@ -158,42 +164,38 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
         try {
 
             // Declare.
-            AgentSynchronizeServiceMBean groupService;
+            AgentSynchronizeServiceMBean synchronizeService;
 
             // Connect to the JMX service.
-            connector = this.connect();
+            connector = connect(this.environment);
 
             // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
+            synchronizeService = getAgentSynchronizeServiceMBean(connector);
 
-            // Export the preference groups.
-            document = groupService.exportDocument();
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to export the preference groups.", e);
+            // Export the preferences.
+            document = synchronizeService.exportDocument();
         }
         finally {
 
             // Close the JMX service.
-            this.close(connector);
+            close(connector);
         }
 
         return document;
     }
 
     /**
-     * Export the preference group to a document.
+     * Export the preferences to a document.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      *
      * @return  the document.
      *
-     * @throws  GroupServiceException  if unable to export the preference group.
+     * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument(String absolutePath)
-            throws SynchronizeServiceException {
+    public Object exportDocument(String path)
+            throws ServiceException {
 
         // Declare.
         JMXConnector connector;
@@ -206,48 +208,43 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
         try {
 
             // Declare.
-            AgentSynchronizeServiceMBean groupService;
+            AgentSynchronizeServiceMBean synchronizeService;
 
             // Connect to the JMX service.
-            connector = this.connect();
+            connector = connect(this.environment);
 
             // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
+            synchronizeService = getAgentSynchronizeServiceMBean(connector);
 
-            // Export the preference group.
-            document = groupService.exportDocument(absolutePath);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to export the preference group " 
-                    + absolutePath + ".", e);
+            // Export the preferences.
+            document = synchronizeService.exportDocument(path);
         }
         finally {
 
             // Close the JMX service.
-            this.close(connector);
+            close(connector);
         }
 
         return document;
     }
 
     /**
-     * Get the agent group service MBean.
+     * Get the agent synchronize service MBean.
      *
-     * @return  the agent group service MBean.
+     * @return  the agent synchronize service MBean.
      *
-     * @throws  GroupServiceException  if unable to get the agent
-     *                                 group service MBean.
+     * @throws  ServiceException  if unable to get the agent synchronize
+     *                            service MBean.
      */
-    private AgentSynchronizeServiceMBean getAgentGroupServiceMBean(
-            JMXConnector connector)
-            throws SynchronizeServiceException {
+    private static AgentSynchronizeServiceMBean
+            getAgentSynchronizeServiceMBean(JMXConnector connector)
+            throws ServiceException {
 
         // Declare.
-        AgentSynchronizeServiceMBean groupService;
+        AgentSynchronizeServiceMBean synchronizeService;
 
         // Initialize.
-        groupService = null;
+        synchronizeService = null;
 
         try {
 
@@ -261,16 +258,20 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
             // Get the MBean object name.
             name = new ObjectName(AgentSynchronizeServiceMBean.OBJECT_NAME);
 
-            // Get the agent group service MBean.
-            groupService = JMX.newMXBeanProxy(
+            // Get the agent synchronize service MBean.
+            synchronizeService = JMX.newMXBeanProxy(
                     connection, name, AgentSynchronizeServiceMBean.class);
         }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to get the agent group service MBean.", e);
+        catch(IOException e) {
+            throw new ServiceException(
+                    "Unable to get the agent synchronize service MBean.", e);
+        }
+        catch(MalformedObjectNameException e) {
+            throw new ServiceException(
+                    "Unable to get the agent synchronize service MBean.", e);
         }
 
-        return groupService;
+        return synchronizeService;
     }
 
     /**
@@ -284,15 +285,15 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
     }
 
     /**
-     * Import the preference groups from a document.
+     * Import the preferences from a document.
      *
      * @param  document  the document.
      *
-     * @throws  GroupServiceException  if unable to import the preference groups.
+     * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
     public void importDocument(Object document)
-            throws SynchronizeServiceException {
+            throws ServiceException {
 
         // Declare.
         JMXConnector connector;
@@ -303,39 +304,35 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
         try {
 
             // Declare.
-            AgentSynchronizeServiceMBean groupService;
+            AgentSynchronizeServiceMBean synchronizeService;
 
             // Connect to the JMX service.
-            connector = this.connect();
+            connector = connect(this.environment);
 
-            // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
+            // Get the agent synchronize service MBean.
+            synchronizeService = getAgentSynchronizeServiceMBean(connector);
 
-            // Import the preference groups.
-            groupService.importDocument(document);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to import the preference groups.", e);
+            // Import the preferences.
+            synchronizeService.importDocument(document);
         }
         finally {
 
             // Close the JMX service.
-            this.close(connector);
+            close(connector);
         }
     }
 
     /**
-     * Import the preference group from a document.
+     * Import the preferences from a document.
      *
-     * @param  absolutePath  the absolutePath.
-     * @param  document      the document.
+     * @param  path      the path.
+     * @param  document  the document.
      *
-     * @throws  GroupServiceException  if unable to import the preference group.
+     * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(String absolutePath, Object document)
-            throws SynchronizeServiceException {
+    public void importDocument(String path, Object document)
+            throws ServiceException {
 
         // Declare.
         JMXConnector connector;
@@ -346,26 +343,21 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
         try {
 
             // Declare.
-            AgentSynchronizeServiceMBean groupService;
+            AgentSynchronizeServiceMBean synchronizeService;
 
             // Connect to the JMX service.
-            connector = this.connect();
+            connector = connect(this.environment);
 
-            // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
+            // Get the agent synchronize service MBean.
+            synchronizeService = getAgentSynchronizeServiceMBean(connector);
 
-            // Import the preference group.
-            groupService.importDocument(absolutePath, document);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to import the preference group " 
-                    + absolutePath + ".", e);
+            // Import the preferences.
+            synchronizeService.importDocument(path, document);
         }
         finally {
 
             // Close the JMX service.
-            this.close(connector);
+            close(connector);
         }
     }
 

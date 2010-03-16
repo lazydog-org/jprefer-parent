@@ -11,16 +11,16 @@ import java.util.Map;
  */
 public class PreferenceGroup {
 
-    private String absolutePath;
+    private String path;
     private Map<String,String> preferences = new LinkedHashMap<String,String>();
     
     /**
-     * Get the absolute path.
+     * Get the path.
      * 
-     * @return  the absolute path.
+     * @return  the path.
      */
-    public String getAbsolutePath() {
-        return this.absolutePath;
+    public String getPath() {
+        return this.path;
     }
 
     /**
@@ -33,12 +33,12 @@ public class PreferenceGroup {
     }
 
     /**
-     * Set the absolute path.
+     * Set the path.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      */
-    public void setAbsolutePath(String absolutePath) {
-        this.absolutePath = absolutePath;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /**
@@ -74,7 +74,7 @@ public class PreferenceGroup {
         toString = new StringBuffer();
 
         toString.append("PreferenceGroup [");
-        toString.append("absolutePath = ").append(this.getAbsolutePath());
+        toString.append("path = ").append(this.getPath());
         toString.append(", preferences = ").append(this.getPreferences());
         toString.append("]");
 

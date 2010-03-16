@@ -2,8 +2,9 @@ package org.lazydog.preference.manager.synchronize.service.internal;
 
 import org.lazydog.preference.manager.preference.service.PreferenceService;
 import org.lazydog.preference.manager.preference.service.PreferenceServiceFactory;
+import org.lazydog.preference.manager.service.ServiceException;
 import org.lazydog.preference.manager.synchronize.service.LocalSynchronizeService;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceException;
+
 
 
 /**
@@ -17,111 +18,57 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
             = PreferenceServiceFactory.create();
 
     /**
-     * Export the preference groups to a document.
+     * Export the preferences to a document.
      *
      * @return  the document.
      *
-     * @throws  GroupServiceException  if unable to export the preference groups.
+     * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
     public Object exportDocument()
-            throws SynchronizeServiceException {
-
-        // Declare.
-        Object document;
-
-        // Initialize.
-        document = null;
-
-        try {
-
-            // Export the preference groups to a document.
-            document = preferenceService.exportDocument();
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to export the preference groups.", e);
-        }
-
-        return document;
+            throws ServiceException {
+        return preferenceService.exportDocument();
     }
 
     /**
-     * Export the preference group to a document.
+     * Export the preferences to a document.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      *
      * @return  the document.
      *
-     * @throws  GroupServiceException  if unable to export the preference group.
+     * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument(String absolutePath)
-            throws SynchronizeServiceException {
-
-        // Declare.
-        Object document;
-
-        // Initialize.
-        document = null;
-
-        try {
-
-            // Export the preference group to a document.
-            document = preferenceService.exportDocument(absolutePath);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to export the preference group "
-                    + absolutePath + ".", e);
-        }
-
-        return document;
+    public Object exportDocument(String path)
+            throws ServiceException {
+        return preferenceService.exportDocument(path);
     }
 
     /**
-     * Import the preference groups from a document.
+     * Import the preferences from a document.
      *
      * @param  document  the document.
      *
-     * @throws  GroupServiceException  if unable to import the preference groups.
+     * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
     public void importDocument(Object document)
-            throws SynchronizeServiceException {
-
-        try {
-
-            // Import the preference groups from a document.
-            preferenceService.importDocument(document);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to import the preference groups.", e);
-        }
+            throws ServiceException {
+        preferenceService.importDocument(document);
     }
 
     /**
-     * Import the preference group from a document.
+     * Import the preferences from a document.
      *
-     * @param  absolutePath  the absolute path.
-     * @param  document      the preference group.
+     * @param  path      the path.
+     * @param  document  the document.
      *
-     * @throws  GroupServiceException  if unable to import the preference group.
+     * @throws  GroupServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(String absolutePath, Object document)
-            throws SynchronizeServiceException {
-
-        try {
-
-            // Import the preference group from a document.
-            preferenceService.importDocument(absolutePath, document);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to import the preference group "
-                    + absolutePath + ".", e);
-        }
+    public void importDocument(String path, Object document)
+            throws ServiceException {
+        preferenceService.importDocument(path, document);
     }
 }

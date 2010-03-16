@@ -2,11 +2,14 @@ package org.lazydog.preference.manager.preference.service.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 import org.lazydog.preference.manager.model.PreferenceGroup;
 import org.lazydog.preference.manager.model.PreferenceGroupTree;
 import org.lazydog.preference.manager.preference.service.PreferenceService;
-import org.lazydog.preference.manager.preference.service.PreferenceServiceException;
+import org.lazydog.preference.manager.service.ServiceException;
 
 
 /**
@@ -18,107 +21,133 @@ public class PreferenceServiceImpl implements PreferenceService {
 
     private static final String ROOT_PATH = "/";
     private static final String STRING_ENCODING = "UTF-8";
+    private static Preferences system = Preferences.systemRoot();
+
 
     /**
-     * Copy the preference group.
+     * Copy the preferences.
      * 
-     * @param  sourceAbsolutePath  the source absolute path.
-     * @param  targetAbsolutePath  the target absolute path.
+     * @param  sourcePath  the source path.
+     * @param  targetPath  the target path.
      * 
-     * @throws  PreferenceServiceException  if unable to copy the
-     *                                      preference group.
+     * @throws  ServiceException          if unable to copy the preferences.
+     * @throws  NullPointerException      if the source or target path are null.
+     * @throws  IllegalArgumentException  if the source path does not exist or
+     *                                    the target path already exists.
      */
     @Override
-    public void copyPreferenceGroup(
-            String sourceAbsolutePath, String targetAbsolutePath)
-            throws PreferenceServiceException {
+    public void copyPreferences(String sourcePath, String targetPath)
+            throws ServiceException {
         
         try {
 
-            // Check if the source preference group exists.
-            if (Preferences.systemRoot().nodeExists(sourceAbsolutePath)) {
+            // Check if the source path is null.
+            if (sourcePath == null) {
+                throw new NullPointerException("The source path is null.");
+            }
 
-                // Declare.
-                Preferences sourcePreferences;
-                Preferences targetPreferences;
+            // Check if the target path is null.
+            if (targetPath == null) {
+                throw new NullPointerException("The target path is null.");
+            }
 
-                // Check if the target preference group exists.
-                if (Preferences.systemRoot().nodeExists(targetAbsolutePath)) {
+            // Check if the source path exist.
+            if (system.nodeExists(sourcePath)) {
 
-                    // Throw an exception.
-                    throw new PreferenceServiceException(
-                            "Unable to copy the preference group "
-                            + sourceAbsolutePath
-                            + " to existing preference group "
-                            + targetAbsolutePath + ".");
+                // Check if the target path does not exist.
+                if (!system.nodeExists(targetPath)) {
+
+                    // Copy the source path to the target path.
+                    copyTree(system, sourcePath, system, targetPath);
                 }
-
-                // Get the source preference group.
-                sourcePreferences = Preferences.systemRoot()
-                        .node(sourceAbsolutePath);
-
-                // Create the target preference group.
-                targetPreferences = Preferences.systemRoot()
-                        .node(targetAbsolutePath);
-
-                // Loop through the keys.
-                for (String key : sourcePreferences.keys()) {
-
-                    // Add the source preference to the target preferences.
-                    targetPreferences
-                            .put(key, sourcePreferences.get(key, null));
-                }
-
-                // Flush the preference group.
-                Preferences.systemRoot().flush();
-
-                // Loop through the source children names.
-                for (String childName : sourcePreferences.childrenNames()) {
-
-                    // Generate the new source and target absolute paths.
-                    sourceAbsolutePath = generatePath(sourceAbsolutePath, childName);
-                    targetAbsolutePath = generatePath(targetAbsolutePath, childName);
-
-                    // Copy the preference group.
-                    this.copyPreferenceGroup(sourceAbsolutePath, targetAbsolutePath);
+                else {
+                    throw new IllegalArgumentException(
+                            "The target path, " + targetPath + ", already exists.");
                 }
             }
+            else {
+                throw new IllegalArgumentException(
+                        "The source path, " + sourcePath + ", does not exist.");
+            }
         }
-        catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to copy the preference group "
-                    + sourceAbsolutePath + " to " + targetAbsolutePath
-                    + ".", e);
+        catch(BackingStoreException e) {
+            throw new ServiceException(
+                    "Unable to copy the preferences from "
+                    + sourcePath + " to " + targetPath + ".", e);
         }
     }
 
     /**
-     * Export the preference groups to a document.
+     * Copy the preferences tree.
+     *
+     * @param  sourceSystem  the source system.
+     * @param  sourcePath    the source path.
+     * @param  targetSystem  the target system.
+     * @param  targetPath    the target path.
+     *
+     * @throws  BackingStoreException  if unable to copy the preferences tree.
+     */
+    private static void copyTree(Preferences sourceSystem, String sourcePath,
+            Preferences targetSystem, String targetPath)
+            throws BackingStoreException {
+
+        // Declare.
+        Preferences sourcePreferences;
+        Preferences targetPreferences;
+
+        // Get the source preferences.
+        sourcePreferences = sourceSystem.node(sourcePath);
+
+        // Create the target preferences.
+        targetPreferences = targetSystem.node(targetPath);
+
+        // Loop through the keys.
+        for (String key : sourcePreferences.keys()) {
+
+            // Add the source preference to the target preferences.
+            targetPreferences.put(key, sourcePreferences.get(key, null));
+        }
+
+        // Flush the target preferences.
+        targetSystem.flush();
+
+        // Loop through the source children.
+        for (String childName : sourcePreferences.childrenNames()) {
+
+            // Generate the source and target paths.
+            sourcePath = generatePath(sourcePath, childName);
+            targetPath = generatePath(targetPath, childName);
+
+            // Copy the child preference tree.
+            copyTree(sourceSystem, sourcePath, targetSystem, targetPath);
+        }
+    }
+
+    /**
+     * Export the preferences to a document.
      *
      * @return  the document.
      *
-     * @throws  PreferenceServiceException  if unable to export the
-     *                                      preference groups.
+     * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
     public Object exportDocument()
-            throws PreferenceServiceException {
-        return this.exportDocument(Preferences.systemRoot().absolutePath());
+            throws ServiceException {
+        return this.exportDocument(system.absolutePath());
     }
 
     /**
-     * Export the preference group to a document.
+     * Export the preferences to a document.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      *
      * @return  the document.
      *
-     * @throws  PreferenceServiceException  if unable to export the
-     *                                      preference group.
+     * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument(String absolutePath)
-            throws PreferenceServiceException {
+    public Object exportDocument(String path)
+            throws ServiceException {
 
         // Declare.
         String document;
@@ -128,8 +157,13 @@ public class PreferenceServiceImpl implements PreferenceService {
 
         try {
 
-            // Check if the preference group exists.
-            if (Preferences.systemRoot().nodeExists(absolutePath)) {
+            // Check if the path is null.
+            if (path == null) {
+                throw new NullPointerException("The path is null.");
+            }
+
+            // Check if the preferences exists.
+            if (system.nodeExists(path)) {
 
                 // Declare.
                 ByteArrayOutputStream outputStream;
@@ -137,18 +171,20 @@ public class PreferenceServiceImpl implements PreferenceService {
                 // Get the output stream.
                 outputStream = new ByteArrayOutputStream();
 
-                // Export the preference group to a output stream.
-                Preferences.systemRoot().node(absolutePath)
-                        .exportSubtree(outputStream);
+                // Export the preferences to a output stream.
+                system.node(path).exportSubtree(outputStream);
 
                 // Convert the output stream to a document.
                 document = outputStream.toString(STRING_ENCODING);
             }
         }
-        catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to export the preference group "
-                    + absolutePath + ".", e);
+        catch(BackingStoreException e) {
+            throw new ServiceException(
+                    "Unable to export the preferences, " + path + ".", e);
+        }
+        catch(IOException e) {
+            throw new ServiceException(
+                    "Unable to export the preferences, " + path + ".", e);
         }
 
         return document;
@@ -157,16 +193,18 @@ public class PreferenceServiceImpl implements PreferenceService {
     /**
      * Find the preference group.
      * 
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      * 
      * @return  the preference group.
      * 
-     * @throws  PreferenceServiceException  if unable to find the 
-     *                                      preference group.
+     * @throws  ServiceException          if unable to find the
+     *                                    preference group.
+     * @throws  NullPointerException      if the path are null.
+     * @throws  IllegalArgumentException  if the path does not exist.
      */
     @Override
-    public PreferenceGroup findPreferenceGroup(String absolutePath)
-            throws PreferenceServiceException {
+    public PreferenceGroup findPreferenceGroup(String path)
+            throws ServiceException {
 
         // Declare.
         PreferenceGroup preferenceGroup;
@@ -176,28 +214,36 @@ public class PreferenceServiceImpl implements PreferenceService {
 
         try {
 
-            // Check if the preference group exists.
-            if (Preferences.systemRoot().nodeExists(absolutePath)) {
+            // Check if the path is null.
+            if (path == null) {
+                throw new NullPointerException("The path is null.");
+            }
+
+            // Check if the preferences exists.
+            if (system.nodeExists(path)) {
 
                 // Set the preference group.
                 preferenceGroup = new PreferenceGroup();
-                preferenceGroup.setAbsolutePath(absolutePath);
+                preferenceGroup.setPath(path);
 
                 // Loop through the keys.
                 for (String key : Preferences.systemRoot()
-                        .node(absolutePath).keys()) {
+                        .node(path).keys()) {
 
                     // Add the preference to the preference group.
                     preferenceGroup.getPreferences().put(key, 
-                            Preferences.systemRoot().node(absolutePath)
+                            system.node(path)
                             .get(key, null));
                 }
             }
+            else {
+                throw new IllegalArgumentException(
+                        "The path, " + path + ", does not exist.");
+            }
         }
-        catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to find the preference group "
-                    + absolutePath + ".", e);
+        catch(BackingStoreException e) {
+            throw new ServiceException(
+                    "Unable to find the preferences group, " + path + ".", e);
         }
 
         return preferenceGroup;
@@ -207,16 +253,11 @@ public class PreferenceServiceImpl implements PreferenceService {
      * Find the preference group tree.
      *
      * @return  the preference group tree.
-     *
-     * @throws  PreferenceServiceException  if unable to find the
-     *                                      preference group tree.
      */
     @Override
-    public PreferenceGroupTree findPreferenceGroupTree()
-            throws  PreferenceServiceException {
+    public PreferenceGroupTree findPreferenceGroupTree() {
         return new PreferenceGroupTreeImpl(ROOT_PATH);
     }
-
 
     /**
      * Generate a path.
@@ -225,47 +266,58 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @param  name  the name.
      *
      * @return  the new absolute path.
+     *
+     * @throws  NullPointerException  if either the path or name is null.
      */
     private static String generatePath(String path, String name) {
+
+        // Check if the path is null.
+        if (path == null) {
+            throw new NullPointerException("The path is null.");
+        }
+
+        // Check if the name is null.
+        if (name == null) {
+            throw new NullPointerException("The name is null.");
+        }
+
         return (path.equals(ROOT_PATH)) ?
                 path + name :
                 path + "/" + name;
     }
 
     /**
-     * Import the preference group from a document.
+     * Import the preferences from a document.
      *
      * @param  document  the document.
      *
-     * @throws  PreferenceServiceException  if unable to import the
-     *                                      preference group.
+     * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
     public void importDocument(Object document)
-            throws PreferenceServiceException {
-        this.importDocument(Preferences.systemRoot().absolutePath(), document);
+            throws ServiceException {
+        this.importDocument(system.absolutePath(), document);
     }
 
     /**
      * Import the preferences as a document.
      *
-     * @param  absolutePath  the absolute path.
-     * @param  document      the document.
+     * @param  path      the path.
+     * @param  document  the document.
      *
-     * @throws  PreferenceServiceException  if unable to import the
-     *                                      preferences.
+     * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(String absolutePath, Object document)
-            throws PreferenceServiceException {
+    public void importDocument(String path, Object document)
+            throws ServiceException {
 
         try {
 
             // Declare.
             ByteArrayInputStream inputStream;
 
-            // Remove the preference group.
-            this.removePreferenceGroup(absolutePath);
+            // Remove the preferences.
+            this.removePreferences(path);
 
             // Convert the document to a input stream.
             inputStream = new ByteArrayInputStream(
@@ -274,40 +326,44 @@ public class PreferenceServiceImpl implements PreferenceService {
             // Import the input stream.
             Preferences.importPreferences(inputStream);
         }
-        catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to import the preference group " 
-                    + absolutePath + ".", e);
+        catch(InvalidPreferencesFormatException e) {
+            throw new ServiceException(
+                    "Unable to import the preferences, " + path + ".", e);
+        }
+        catch(IOException e) {
+            throw new ServiceException(
+                    "Unable to import the preferences, " + path + ".", e);
+        }
+        catch(ServiceException e) {
+            throw new ServiceException(
+                    "Unable to import the preferences, " + path + ".", e);
         }
     }
 
     /**
-     * Move the preference group.
+     * Move the preferences.
      * 
-     * @param  sourceAbsolutePath  the source absolute path.
-     * @param  targetAbsolutePath  the target absolute path.
+     * @param  sourcePath  the source path.
+     * @param  targetPath  the target path.
      * 
-     * @throws  PreferenceServiceException  if unable to move the
-     *                                      preference group.
+     * @throws  ServiceException  if unable to move the preferences.
      */
     @Override
-    public void movePreferenceGroup(
-            String sourceAbsolutePath, String targetAbsolutePath)
-            throws PreferenceServiceException {
+    public void movePreferences(String sourcePath, String targetPath)
+            throws ServiceException {
 
         try {
 
-            // Copy the preference group.
-            this.copyPreferenceGroup(sourceAbsolutePath, targetAbsolutePath);
+            // Copy the preferences.
+            this.copyPreferences(sourcePath, targetPath);
 
-            // Remove the preference group.
-            this.removePreferenceGroup(sourceAbsolutePath);
+            // Remove the preferences.
+            this.removePreferences(sourcePath);
         }
-        catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to move the preference group "
-                    + sourceAbsolutePath + " to " + targetAbsolutePath
-                    + ".", e);
+        catch(ServiceException e) {
+            throw new ServiceException(
+                    "Unable to move the preferences from "
+                    + sourcePath + " to " + targetPath + ".", e);
         }
     }
 
@@ -316,70 +372,94 @@ public class PreferenceServiceImpl implements PreferenceService {
      *
      * @param  preferenceGroup  the preference group.
      *
-     * @throws  PreferenceServiceException  if unable to persist the
-     *                                      preference group.
+     * @throws  ServiceException          if unable to persist the
+     *                                    preference group.
+     * @throws  NullPointerException      if the preference group is null.
+     * @throws  IllegalArgumentException  if the preference group is invalid.
      */
     @Override
     public void persistPreferenceGroup(PreferenceGroup preferenceGroup)
-            throws PreferenceServiceException {
+            throws ServiceException {
 
         try {
 
-            // Declare.
-            Preferences preferences;
-
-            // Create/get the preference group.
-            preferences = Preferences.systemRoot()
-                    .node(preferenceGroup.getAbsolutePath());
-
-            // Clear the preferences for the preference group.
-            preferences.clear();
-
-            // Loop through the keys.
-            for (String key : preferenceGroup.getPreferences().keySet()) {
-
-                // Add the preference to the preference group.
-                preferences.put(key, preferenceGroup.getPreferences().get(key));
+            // Check if the preference group is null.
+            if (preferenceGroup == null) {
+                throw new NullPointerException("The preference group is null.");
             }
 
-            // Flush the preference group.
-            preferences.flush();
+            // Check if the preference group path is valid.
+            if (preferenceGroup.getPath() != null) {
+
+                // Declare.
+                Preferences preferences;
+
+                // Create/get the preferences.
+                preferences = system.node(preferenceGroup.getPath());
+
+                // Clear the preferences.
+                preferences.clear();
+
+                // Loop through the keys.
+                for (String key : preferenceGroup.getPreferences().keySet()) {
+
+                    // Add the preference to the preferences.
+                    preferences.put(key,
+                            preferenceGroup.getPreferences().get(key));
+                }
+
+                // Flush the preferences.
+                preferences.flush();
+            }
+            else {
+                throw new IllegalArgumentException(
+                        "The preference group is invalid.");
+            }
         }
-        catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to persist the preference group "
+        catch(BackingStoreException e) {
+            throw new ServiceException(
+                    "Unable to persist the preference group, "
                     + preferenceGroup + ".", e);
         }
     }
 
     /**
-     * Remove the preference group.
+     * Remove the preferences.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      *
-     * @throws  PreferenceServiceException  if unable to remove the
-     *                                      preference group.
+     * @throws  ServiceException          if unable to remove the preferences.
+     * @throws  NullPointerException      if the path is null.
+     * @throws  IllegalArgumentException  if the path does not exist.
      */
     @Override
-    public void removePreferenceGroup(String absolutePath)
-            throws PreferenceServiceException {
+    public void removePreferences(String path)
+            throws ServiceException {
 
         try {
 
-            // Check if the preference group exists.
-            if (Preferences.systemRoot().nodeExists(absolutePath)) {
+            // Check if the path is null.
+            if (path == null) {
+                throw new NullPointerException("The path is null.");
+            }
 
-                // Remove the preference group.
-                Preferences.systemRoot().node(absolutePath).removeNode();
+            // Check if the preferences exists.
+            if (system.nodeExists(path)) {
 
-                // Flush the preference group.
-                Preferences.systemRoot().flush();
+                // Remove the preferences.
+                system.node(path).removeNode();
+
+                // Flush the preferences.
+                system.flush();
+            }
+            else {
+                throw new IllegalArgumentException(
+                        "The path, " + path + ", does not exist.");
             }
         }
         catch(Exception e) {
-            throw new PreferenceServiceException(
-                    "Unable to remove the preference group "
-                    + absolutePath + ".", e);
+            throw new ServiceException(
+                    "Unable to remove the preferences, " + path + ".", e);
         }
     }
 }

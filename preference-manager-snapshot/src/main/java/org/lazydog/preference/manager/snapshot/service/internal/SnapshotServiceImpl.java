@@ -70,8 +70,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             targetPath = generatePath(targetPath, childName);
 
             // Copy the child preference tree.
-            copyTree(sourceSystem, sourcePath,
-                    targetSystem, targetPath);
+            copyTree(sourceSystem, sourcePath, targetSystem, targetPath);
         }
     }
 
@@ -179,12 +178,12 @@ public class SnapshotServiceImpl implements SnapshotService {
 
         // Check if the path is null.
         if (path == null) {
-            throw new NullPointerException("Path is null.");
+            throw new NullPointerException("The path is null.");
         }
 
         // Check if the name is null.
         if (name == null) {
-            throw new NullPointerException("Name is null.");
+            throw new NullPointerException("The name is null.");
         }
         
         return (path.equals(ROOT_PATH)) ?
@@ -205,7 +204,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
         // Check if the name is null.
         if (name == null) {
-            throw new NullPointerException("Name is null.");
+            throw new NullPointerException("The name is null.");
         }
         
         return ROOT_PATH + SNAPSHOT_NAME_PREFIX + name;

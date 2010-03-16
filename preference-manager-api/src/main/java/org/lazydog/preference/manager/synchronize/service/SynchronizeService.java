@@ -1,5 +1,7 @@
 package org.lazydog.preference.manager.synchronize.service;
 
+import org.lazydog.preference.manager.service.ServiceException;
+
 
 /**
  * Synchronize service.
@@ -14,11 +16,11 @@ public interface SynchronizeService {
     public static final String SERVER_NAME = "serverName";
 
     public Object exportDocument()
-            throws SynchronizeServiceException;
-    public Object exportDocument(String absolutePath)
-            throws SynchronizeServiceException;
+            throws ServiceException;
+    public Object exportDocument(String path)
+            throws ServiceException;
     public void importDocument(Object document)
-            throws SynchronizeServiceException;
-    public void importDocument(String absolutePath, Object document)
-            throws SynchronizeServiceException;
+            throws ServiceException;
+    public void importDocument(String path, Object document)
+            throws ServiceException;
 }
