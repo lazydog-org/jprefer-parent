@@ -11,6 +11,9 @@ import org.lazydog.preference.manager.model.PreferenceGroupTree;
  */
 public interface PreferenceService {
 
+    public void copyPreferenceGroup(
+            String sourceAbsolutePath, String targetAbsolutePath)
+            throws PreferenceServiceException;
     public Object exportDocument()
             throws PreferenceServiceException;
     public Object exportDocument(String absolutePath)
@@ -22,6 +25,9 @@ public interface PreferenceService {
     public void importDocument(Object document)
             throws PreferenceServiceException;
     public void importDocument(String absolutePath, Object document)
+            throws PreferenceServiceException;
+    public void movePreferenceGroup(
+            String sourceAbsolutePath, String targetAbsolutePath)
             throws PreferenceServiceException;
     public void persistPreferenceGroup(PreferenceGroup preferenceGroup)
             throws PreferenceServiceException;

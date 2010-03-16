@@ -19,6 +19,89 @@ public class PreferenceServiceImpl implements PreferenceService {
     private static final String STRING_ENCODING = "UTF-8";
 
     /**
+     * Copy the preference group.
+     * 
+     * @param  sourceAbsolutePath  the source absolute path.
+     * @param  targetAbsolutePath  the target absolute path.
+     * 
+     * @throws PreferenceServiceException  if unable to copy the 
+     *                                     preference group.
+     */
+    @Override
+    public void copyPreferenceGroup(
+            String sourceAbsolutePath, String targetAbsolutePath)
+            throws PreferenceServiceException {
+        
+        try {
+
+            // Check if the source preference group exists.
+            if (Preferences.systemRoot().nodeExists(sourceAbsolutePath)) {
+
+                // Declare.
+                Preferences sourcePreferences;
+                Preferences targetPreferences;
+
+                // Check if the target preference group exists.
+                if (Preferences.systemRoot().nodeExists(targetAbsolutePath)) {
+
+                    // Throw an exception.
+                    throw new PreferenceServiceException(
+                            "Unable to copy the preference group "
+                            + sourceAbsolutePath
+                            + " to existing preference group "
+                            + targetAbsolutePath + ".");
+                }
+
+                // Get the source preference group.
+                sourcePreferences = Preferences.systemRoot()
+                        .node(sourceAbsolutePath);
+
+                // Create the target preference group.
+                targetPreferences = Preferences.systemRoot()
+                        .node(targetAbsolutePath);
+
+                // Loop through the keys.
+                for (String key : sourcePreferences.keys()) {
+
+                    // Add the source prefence to the target preferences.
+                    targetPreferences
+                            .put(key, sourcePreferences.get(key, null));
+                }
+
+                // Flush the preference group.
+                Preferences.systemRoot().flush();
+
+                // Loop through the source children names.
+                for (String childName : sourcePreferences.childrenNames()) {
+
+                    // Declare.
+                    String sourceChildAbsolutePath;
+                    String targetChildAbsolutePath;
+
+                    // Get the source child absolute path.
+                    sourceChildAbsolutePath = sourcePreferences
+                            .node(childName).absolutePath();
+
+                    // Calculate the target child absolute path.
+                    targetChildAbsolutePath = targetAbsolutePath
+                            + "/" + childName;
+
+                    // Copy the source child preference group to
+                    // the target child preference group.
+                    this.copyPreferenceGroup(
+                            sourceChildAbsolutePath, targetChildAbsolutePath);
+                }
+            }
+        }
+        catch(Exception e) {
+            throw new PreferenceServiceException(
+                    "Unable to copy the preference group "
+                    + sourceAbsolutePath + " to " + targetAbsolutePath
+                    + ".", e);
+        }
+    }
+
+    /**
      * Export the preference groups to a document.
      *
      * @return  the document.
@@ -64,7 +147,8 @@ public class PreferenceServiceImpl implements PreferenceService {
                 outputStream = new ByteArrayOutputStream();
 
                 // Export the preference group to a output stream.
-                Preferences.systemRoot().node(absolutePath).exportSubtree(outputStream);
+                Preferences.systemRoot().node(absolutePath)
+                        .exportSubtree(outputStream);
 
                 // Convert the output stream to a document.
                 document = outputStream.toString(STRING_ENCODING);
@@ -109,11 +193,13 @@ public class PreferenceServiceImpl implements PreferenceService {
                 preferenceGroup.setAbsolutePath(absolutePath);
 
                 // Loop through the keys.
-                for (String key : Preferences.systemRoot().node(absolutePath).keys()) {
+                for (String key : Preferences.systemRoot()
+                        .node(absolutePath).keys()) {
 
                     // Add the preference to the preference group.
-                    preferenceGroup.getPreferences().put(key,
-                            Preferences.systemRoot().node(absolutePath).get(key, null));
+                    preferenceGroup.getPreferences().put(key, 
+                            Preferences.systemRoot().node(absolutePath)
+                            .get(key, null));
                 }
             }
         }
@@ -137,7 +223,8 @@ public class PreferenceServiceImpl implements PreferenceService {
     @Override
     public PreferenceGroupTree findPreferenceGroupTree()
             throws  PreferenceServiceException {
-        return new PreferenceGroupTreeImpl(PreferenceGroupTreeImpl.ROOT_ABSOLUTE_PATH);
+        return new PreferenceGroupTreeImpl(
+                PreferenceGroupTreeImpl.ROOT_ABSOLUTE_PATH);
     }
 
     /**
@@ -190,6 +277,36 @@ public class PreferenceServiceImpl implements PreferenceService {
     }
 
     /**
+     * Move the preference group.
+     * 
+     * @param  sourceAbsolutePath  the source absolute path.
+     * @param  targetAbsolutePath  the target absolute path.
+     * 
+     * @throws PreferenceServiceException  if unable to move the 
+     *                                     preference group.
+     */
+    @Override
+    public void movePreferenceGroup(
+            String sourceAbsolutePath, String targetAbsolutePath)
+            throws PreferenceServiceException {
+
+        try {
+
+            // Copy the preference group.
+            this.copyPreferenceGroup(sourceAbsolutePath, targetAbsolutePath);
+
+            // Remove the preference group.
+            this.removePreferenceGroup(sourceAbsolutePath);
+        }
+        catch(Exception e) {
+            throw new PreferenceServiceException(
+                    "Unable to move the preference group "
+                    + sourceAbsolutePath + " to " + targetAbsolutePath
+                    + ".", e);
+        }
+    }
+
+    /**
      * Persist the preference group.
      *
      * @param  preferenceGroup  the preference group.
@@ -207,7 +324,8 @@ public class PreferenceServiceImpl implements PreferenceService {
             Preferences preferences;
 
             // Create/get the preference group.
-            preferences = Preferences.systemRoot().node(preferenceGroup.getAbsolutePath());
+            preferences = Preferences.systemRoot()
+                    .node(preferenceGroup.getAbsolutePath());
 
             // Clear the preferences for the preference group.
             preferences.clear();
