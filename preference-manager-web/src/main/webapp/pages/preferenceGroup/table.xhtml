@@ -12,6 +12,13 @@
     <body>
         <ui:composition>
             <h:form id="pm-preference-group-table">
+                <div class="pm-form-buttons">
+                    <a4j:commandButton
+                        value="Add"
+                        actionListener="#{preferenceGroupMB.processAddButton}"
+                        oncomplete="Richfaces.showModalPanel('pm-preference-group-modal-panel');"
+                        reRender="pm-preference-group-modal-panel-content"/>
+                </div>
                 <rich:tree
                     switchType="ajax">
                     <rich:recursiveTreeNodesAdaptor
@@ -38,8 +45,8 @@
                                     value="Delete"
                                     reRender="pm-preference-group-table">
                                     <a4j:actionparam
-                                        name="id"
-                                        assignTo="#{preferenceGroupMB.id}"
+                                        name="absolutePath"
+                                        assignTo="#{preferenceGroupMB.absolutePath}"
                                         value="#{preferenceGroup.absolutePath}"
                                         actionListener="#{preferenceGroupMB.processDeleteButton}"/>
                                 </rich:menuItem>
@@ -48,8 +55,8 @@
                                     oncomplete="Richfaces.showModalPanel('pm-preference-group-modal-panel');"
                                     reRender="pm-preference-group-modal-panel-content">
                                     <a4j:actionparam
-                                        name="id"
-                                        assignTo="#{preferenceGroupMB.id}"
+                                        name="absolutePath"
+                                        assignTo="#{preferenceGroupMB.absolutePath}"
                                         value="#{preferenceGroup.absolutePath}"
                                         actionListener="#{preferenceGroupMB.processModifyButton}"/>
                                 </rich:menuItem>
