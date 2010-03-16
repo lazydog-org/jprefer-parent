@@ -24,8 +24,8 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @param  sourceAbsolutePath  the source absolute path.
      * @param  targetAbsolutePath  the target absolute path.
      * 
-     * @throws PreferenceServiceException  if unable to copy the 
-     *                                     preference group.
+     * @throws  PreferenceServiceException  if unable to copy the
+     *                                      preference group.
      */
     @Override
     public void copyPreferenceGroup(
@@ -282,8 +282,8 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @param  sourceAbsolutePath  the source absolute path.
      * @param  targetAbsolutePath  the target absolute path.
      * 
-     * @throws PreferenceServiceException  if unable to move the 
-     *                                     preference group.
+     * @throws  PreferenceServiceException  if unable to move the
+     *                                      preference group.
      */
     @Override
     public void movePreferenceGroup(
