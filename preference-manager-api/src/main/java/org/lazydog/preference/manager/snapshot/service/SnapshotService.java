@@ -1,6 +1,7 @@
 package org.lazydog.preference.manager.snapshot.service;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -9,10 +10,14 @@ import java.util.List;
  * @author  Ron Rickard
  */
 public interface SnapshotService {
-
-    public List<String> findSnapshotNames()
-            throws SnapshotServiceException;
+ 
     public void createSnapshot(String name)
+            throws SnapshotServiceException;
+    public Map<String,Date> findSnapshots()
+            throws SnapshotServiceException;
+    public void removeSnapshot(String name)
+            throws SnapshotServiceException;
+    public void renameSnapshot(String name, String newName)
             throws SnapshotServiceException;
     public void restoreSnapshot(String name)
             throws SnapshotServiceException;

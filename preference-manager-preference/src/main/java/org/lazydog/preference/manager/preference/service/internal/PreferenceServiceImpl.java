@@ -16,6 +16,7 @@ import org.lazydog.preference.manager.preference.service.PreferenceServiceExcept
  */
 public class PreferenceServiceImpl implements PreferenceService {
 
+    private static final String ROOT_PATH = "/";
     private static final String STRING_ENCODING = "UTF-8";
 
     /**
@@ -63,7 +64,7 @@ public class PreferenceServiceImpl implements PreferenceService {
                 // Loop through the keys.
                 for (String key : sourcePreferences.keys()) {
 
-                    // Add the source prefence to the target preferences.
+                    // Add the source preference to the target preferences.
                     targetPreferences
                             .put(key, sourcePreferences.get(key, null));
                 }
@@ -74,22 +75,12 @@ public class PreferenceServiceImpl implements PreferenceService {
                 // Loop through the source children names.
                 for (String childName : sourcePreferences.childrenNames()) {
 
-                    // Declare.
-                    String sourceChildAbsolutePath;
-                    String targetChildAbsolutePath;
+                    // Generate the new source and target absolute paths.
+                    sourceAbsolutePath = generatePath(sourceAbsolutePath, childName);
+                    targetAbsolutePath = generatePath(targetAbsolutePath, childName);
 
-                    // Get the source child absolute path.
-                    sourceChildAbsolutePath = sourcePreferences
-                            .node(childName).absolutePath();
-
-                    // Calculate the target child absolute path.
-                    targetChildAbsolutePath = targetAbsolutePath
-                            + "/" + childName;
-
-                    // Copy the source child preference group to
-                    // the target child preference group.
-                    this.copyPreferenceGroup(
-                            sourceChildAbsolutePath, targetChildAbsolutePath);
+                    // Copy the preference group.
+                    this.copyPreferenceGroup(sourceAbsolutePath, targetAbsolutePath);
                 }
             }
         }
@@ -223,8 +214,22 @@ public class PreferenceServiceImpl implements PreferenceService {
     @Override
     public PreferenceGroupTree findPreferenceGroupTree()
             throws  PreferenceServiceException {
-        return new PreferenceGroupTreeImpl(
-                PreferenceGroupTreeImpl.ROOT_ABSOLUTE_PATH);
+        return new PreferenceGroupTreeImpl(ROOT_PATH);
+    }
+
+
+    /**
+     * Generate a path.
+     *
+     * @param  path  the path.
+     * @param  name  the name.
+     *
+     * @return  the new absolute path.
+     */
+    private static String generatePath(String path, String name) {
+        return (path.equals(ROOT_PATH)) ?
+                path + name :
+                path + "/" + name;
     }
 
     /**

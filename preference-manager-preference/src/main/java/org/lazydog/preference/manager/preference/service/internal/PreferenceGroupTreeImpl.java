@@ -16,7 +16,7 @@ import org.lazydog.preference.manager.preference.service.PreferenceServiceExcept
  */
 public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
 
-    public static final String ROOT_ABSOLUTE_PATH = "/";
+    private static final String ROOT_PATH = "/";
     private Preferences preferences;
 
     /**
@@ -24,22 +24,19 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
      *
      * @param  absolutePath  the absolute path.
      *
-     * @throws  PreferenceServiceException  if unable to create.
+     * @throws  PreferenceServiceException  if unable to instantiate.
      */
     public PreferenceGroupTreeImpl(String absolutePath)
             throws PreferenceServiceException {
 
         try {
 
-            // Create the preference group.
+            // Get the preferences for the absolute path.
             this.preferences = Preferences.systemRoot().node(absolutePath);
-
-            // Flush the preference group.
-            this.preferences.flush();
         }
         catch(Exception e) {
             throw new PreferenceServiceException(
-                    "Unable to create preference group tree "
+                    "Unable to instantiate the preference group tree "
                     + absolutePath + ".", e);
         }
     }
@@ -109,14 +106,8 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
             // Loop through the preference keys.
             for (String key : this.preferences.keys()) {
 
-                // Declare.
-                String value;
-
-                // Get the value for the key.
-                value = this.preferences.get(key, "");
-
                 // Add the preference to the preferences.
-                preferences.put(key, value);
+                preferences.put(key, this.preferences.get(key, ""));
             }
         }
         catch(Exception e) {
@@ -132,7 +123,7 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
      * @return  true if this is the root group, otherwise false.
      */
     private boolean isRootGroup() {
-        return this.getAbsolutePath().equals(ROOT_ABSOLUTE_PATH);
+        return this.getAbsolutePath().equals(ROOT_PATH);
     }
 
     /**
@@ -142,8 +133,6 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
      */
     @Override
     public String toString() {
-        return (this.isRootGroup() ? 
-                ROOT_ABSOLUTE_PATH :
-                this.preferences.name());
+        return this.isRootGroup() ? ROOT_PATH : this.preferences.name();
     }
 }
