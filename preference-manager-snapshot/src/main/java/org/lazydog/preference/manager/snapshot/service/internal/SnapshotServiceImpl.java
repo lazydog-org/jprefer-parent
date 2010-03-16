@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import org.lazydog.preference.manager.snapshot.service.SnapshotService;
-import org.lazydog.preference.manager.snapshot.service.SnapshotServiceException;
+import org.lazydog.preference.manager.service.ServiceException;
 
 
 /**
@@ -80,14 +80,14 @@ public class SnapshotServiceImpl implements SnapshotService {
      *
      * @param  name  the name.
      *
-     * @throws  SnapshotServiceException  if unable to create the snapshot.
+     * @throws  ServiceException          if unable to create the snapshot.
      * @throws  NullPointerException      if the name is null.
      * @throws  IllegalArgumentException  if the name refers to an existing
      *                                    snapshot.
      */
     @Override
     public void createSnapshot(String name)
-            throws SnapshotServiceException {
+            throws ServiceException {
 
         try {
 
@@ -109,7 +109,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
         }
         catch(BackingStoreException e) {
-            throw new SnapshotServiceException(
+            throw new ServiceException(
                     "Unable to create the snapshot, " + name + ".", e);
         }
     }
@@ -119,11 +119,11 @@ public class SnapshotServiceImpl implements SnapshotService {
      *
      * @return  the snapshots.
      *
-     * @throws  SnapshotServiceException  if unable to find the snapshots.
+     * @throws  ServiceException  if unable to find the snapshots.
      */
     @Override
     public Map<String, Date> findSnapshots()
-            throws SnapshotServiceException {
+            throws ServiceException {
 
         // Declare.
         Map<String,Date> snapshots;
@@ -154,11 +154,11 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
         }
         catch(BackingStoreException e) {
-            throw new SnapshotServiceException(
+            throw new ServiceException(
                     "Unable to find the snapshot names.", e);
         }
         catch(ParseException e) {
-            throw new SnapshotServiceException(
+            throw new ServiceException(
                     "Unable to find the snapshot names.", e);
         }
 
@@ -216,14 +216,14 @@ public class SnapshotServiceImpl implements SnapshotService {
      *
      * @param  name  the name.
      *
-     * @throws  SnapshotServiceException  if unable to remove the snapshot.
+     * @throws  ServiceException          if unable to remove the snapshot.
      * @throws  NullPointerException      if the name is null.
      * @throws  IllegalArgumentException  if the name does not refers to an
      *                                    existing snapshot.
      */
     @Override
     public void removeSnapshot(String name)
-            throws SnapshotServiceException {
+            throws ServiceException {
 
         try {
 
@@ -243,7 +243,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
         }
         catch(BackingStoreException e) {
-            throw new SnapshotServiceException(
+            throw new ServiceException(
                     "Unable to remove the snapshot, " + name + ".", e);
         }
     }
@@ -254,7 +254,7 @@ public class SnapshotServiceImpl implements SnapshotService {
      * @param  name     the name.
      * @param  newName  the new name.
      *
-     * @throws  SnapshotServiceException  if unable to rename the snapshot.
+     * @throws  ServiceException          if unable to rename the snapshot.
      * @throws  NullPointerException      if the name or new name are null.
      * @throws  IllegalArgumentException  if the name does not refers to an 
      *                                    existing snapshot or the new name
@@ -262,7 +262,7 @@ public class SnapshotServiceImpl implements SnapshotService {
      */
     @Override
     public void renameSnapshot(String name, String newName)
-            throws SnapshotServiceException {
+            throws ServiceException {
 
         try {
 
@@ -292,7 +292,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
         }
         catch(BackingStoreException e) {
-            throw new SnapshotServiceException(
+            throw new ServiceException(
                     "Unable to rename the snapshot, " + name + ".", e);
         }
     }
@@ -302,14 +302,14 @@ public class SnapshotServiceImpl implements SnapshotService {
      *
      * @param  name  the name.
      *
-     * @throws  SnapshotServiceException  if unable to restore the snapshot.
+     * @throws  ServiceException          if unable to restore the snapshot.
      * @throws  NullPointerException      if the name is null.
      * @throws  IllegalArgumentException  if the name does not refers to an
      *                                    existing snapshot.
      */
     @Override
     public void restoreSnapshot(String name)
-            throws SnapshotServiceException {
+            throws ServiceException {
 
         try {
 
@@ -341,7 +341,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
         }
         catch(BackingStoreException e) {
-            throw new SnapshotServiceException(
+            throw new ServiceException(
                     "Unable to restore the snapshot, " + name + ".", e);
         }
     }

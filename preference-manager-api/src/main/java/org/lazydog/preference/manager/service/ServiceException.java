@@ -1,21 +1,21 @@
-package org.lazydog.preference.manager.snapshot.service;
+package org.lazydog.preference.manager.service;
 
 import java.io.Serializable;
 
 
 /**
- * Thrown to indicate that an error occurred in the SnapshotService class.
+ * Thrown to indicate that an error occurred in a service class.
  *
  * @author  Ronald Rickard
  */
-public class SnapshotServiceException
+public class ServiceException
         extends Exception
         implements Serializable {
 
     /**
      * Constructs a new exception.
      */
-    public SnapshotServiceException() {
+    public ServiceException() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class SnapshotServiceException
      *
      * @param  message  the message.
      */
-    public SnapshotServiceException(String message) {
+    public ServiceException(String message) {
         super(message);
     }
 
@@ -34,7 +34,7 @@ public class SnapshotServiceException
      * @param  message  the message.
      * @param  cause    the cause.
      */
-    public SnapshotServiceException(String message, Throwable cause) {
+    public ServiceException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -43,7 +43,7 @@ public class SnapshotServiceException
      *
      * @param  cause  the cause.
      */
-    public SnapshotServiceException(Throwable cause) {
+    public ServiceException(Throwable cause) {
         super(cause);
     }
 }

@@ -2,6 +2,7 @@ package org.lazydog.preference.manager.snapshot.service;
 
 import java.util.Date;
 import java.util.Map;
+import org.lazydog.preference.manager.service.ServiceException;
 
 
 /**
@@ -12,13 +13,13 @@ import java.util.Map;
 public interface SnapshotService {
  
     public void createSnapshot(String name)
-            throws SnapshotServiceException;
+            throws ServiceException;
     public Map<String,Date> findSnapshots()
-            throws SnapshotServiceException;
+            throws ServiceException;
     public void removeSnapshot(String name)
-            throws SnapshotServiceException;
+            throws ServiceException;
     public void renameSnapshot(String name, String newName)
-            throws SnapshotServiceException;
+            throws ServiceException;
     public void restoreSnapshot(String name)
-            throws SnapshotServiceException;
+            throws ServiceException;
 }
