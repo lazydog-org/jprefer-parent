@@ -18,26 +18,26 @@ import org.lazydog.preference.manager.web.utility.SessionUtility;
  */
 public class PreferenceGroupMB implements Serializable {
 
-    private String absolutePath;
-    private String oldAbsolutePath;
+    private String path;
+    private String oldPath;
     private List<PreferenceGroupTree> preferenceGroupTrees;
 
     /**
-     * Get the absolute path.
+     * Get the path.
      *
-     * @return  the absolute path.
+     * @return  the path.
      */
-    public String getAbsolutePath() {
-        return this.absolutePath;
+    public String getPath() {
+        return this.path;
     }
 
     /**
-     * Get the old absolute path.
+     * Get the old path.
      *
-     * @return  the old absolute path.
+     * @return  the old path.
      */
-    public String getOldAbsolutePath() {
-        return this.oldAbsolutePath;
+    public String getOldPath() {
+        return this.oldPath;
     }
 
     /**
@@ -90,7 +90,7 @@ System.err.println("processCancelButton invoked");
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to cancel the add/modify of the preference group " + this.oldAbsolutePath + ".\n" + e);
+System.err.println("Unable to cancel the add/modify of the preference group " + this.oldPath + ".\n" + e);
         }
     }
 
@@ -104,11 +104,11 @@ System.err.println("processDeleteButton invoked");
         try {
 
             // Remove the preference group.
-            Preference.removePreferenceGroup(this.absolutePath);
+            Preference.removePreferenceGroup(this.path);
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to delete the preference group " + this.oldAbsolutePath + ".\n" + e);
+System.err.println("Unable to delete the preference group " + this.oldPath + ".\n" + e);
         }
     }
 
@@ -122,14 +122,14 @@ System.err.println("processModifyButton invoked");
         try {
 
             // Put the preference group on the session.
-            SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.absolutePath));
+            SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.path));
 
-            // Set the old absolute path.
-            this.oldAbsolutePath = this.absolutePath;
+            // Set the old path.
+            this.oldPath = this.path;
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to modify the preference group " + this.absolutePath + ".\n" + e);
+System.err.println("Unable to modify the preference group " + this.path + ".\n" + e);
         }
     }
 
@@ -145,23 +145,23 @@ System.err.println("processOkButton invoked");
             // Declare.
             PreferenceGroup preferenceGroup;
 
-            // Check if the old absolute path exists.
-            if (this.oldAbsolutePath != null) {
+            // Check if the old path exists.
+            if (this.oldPath != null) {
 
                 // Remove the old preference group.
-                Preference.removePreferenceGroup(this.oldAbsolutePath);
+                Preference.removePreferenceGroup(this.oldPath);
             }
 
             // Get the preference group from the session.
             preferenceGroup = SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class);
-            preferenceGroup.setAbsolutePath(absolutePath);
+            preferenceGroup.setPath(path);
 
             // Add the new preference.
             Preference.savePreferenceGroup(preferenceGroup);
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to add/modify the preference group " + this.absolutePath + ".\n" + e);
+System.err.println("Unable to add/modify the preference group " + this.path + ".\n" + e);
         }
     }
 
@@ -174,14 +174,14 @@ System.err.println("Unable to add/modify the preference group " + this.absoluteP
 System.err.println("processResetButton invoked");
         try {
 
-            // Check if the old absolute path exists.
-            if (this.oldAbsolutePath != null && !this.oldAbsolutePath.equals("")) {
+            // Check if the old path exists.
+            if (this.oldPath != null && !this.oldPath.equals("")) {
 
                 // Put the old preference group on the session.
-                SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.oldAbsolutePath));
+                SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.oldPath));
 
                 // Reset the absolute path.
-                this.absolutePath = this.oldAbsolutePath;
+                this.path = this.oldPath;
             }
             else {
 
@@ -191,29 +191,29 @@ System.err.println("processResetButton invoked");
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to reset the preference group " + this.oldAbsolutePath + ".\n" + e);
+System.err.println("Unable to reset the preference group " + this.oldPath + ".\n" + e);
         }
     }
 
     /**
-     * Set the absolute path.
+     * Set the path.
      *
-     * @param  absolutePath  the absolute path.
+     * @param  path  the path.
      */
-    public void setAbsolutePath(String absolutePath) {
+    public void setPath(String path) {
 
-        // Set the absolute path.
-        this.absolutePath = absolutePath;
+        // Set the path.
+        this.path = path;
     }
 
     /**
-     * Set the old absolute path.
+     * Set the old path.
      *
-     * @param  oldAbsolutePath  the old absolute path.
+     * @param  oldPath  the old path.
      */
-    public void setOldAbsolutePath(String oldAbsolutePath) {
+    public void setOldPath(String oldPath) {
 
         // Set the old absolute path.
-        this.oldAbsolutePath = oldAbsolutePath;
+        this.oldPath = oldPath;
     }
 }

@@ -17,8 +17,7 @@ public class Preference {
     private static PreferenceService preferenceService
             = PreferenceServiceFactory.create();
 
-    public static PreferenceGroupTree getPreferenceGroupTree() 
-            throws ServiceException {
+    public static PreferenceGroupTree getPreferenceGroupTree() {
         return preferenceService.findPreferenceGroupTree();
     }
 

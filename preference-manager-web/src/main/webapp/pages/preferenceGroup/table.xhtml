@@ -49,9 +49,9 @@
                                     value="Delete"
                                     reRender="pm-preference-group-table">
                                     <a4j:actionparam
-                                        name="absolutePath"
-                                        assignTo="#{preferenceGroupMB.absolutePath}"
-                                        value="#{preferenceGroup.absolutePath}"
+                                        name="path"
+                                        assignTo="#{preferenceGroupMB.path}"
+                                        value="#{preferenceGroup.path}"
                                         actionListener="#{preferenceGroupMB.processDeleteButton}"/>
                                 </rich:menuItem>
                                 <rich:menuItem
@@ -59,9 +59,9 @@
                                     oncomplete="Richfaces.showModalPanel('pm-preference-group-modal-panel');"
                                     reRender="pm-preference-group-modal-panel-content">
                                     <a4j:actionparam
-                                        name="absolutePath"
-                                        assignTo="#{preferenceGroupMB.absolutePath}"
-                                        value="#{preferenceGroup.absolutePath}"
+                                        name="path"
+                                        assignTo="#{preferenceGroupMB.path}"
+                                        value="#{preferenceGroup.path}"
                                         actionListener="#{preferenceGroupMB.processModifyButton}"/>
                                 </rich:menuItem>
                             </rich:contextMenu>
