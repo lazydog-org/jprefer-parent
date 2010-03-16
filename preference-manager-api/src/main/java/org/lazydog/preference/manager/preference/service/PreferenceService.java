@@ -1,7 +1,6 @@
 package org.lazydog.preference.manager.preference.service;
 
-import java.util.List;
-import java.util.Map;
+import org.lazydog.preference.manager.model.PreferenceGroup;
 import org.lazydog.preference.manager.model.PreferenceGroupTree;
 
 
@@ -10,21 +9,22 @@ import org.lazydog.preference.manager.model.PreferenceGroupTree;
  *
  * @author  Ron Rickard
  */
-public interface PreferenceService extends PreferenceGroupTree {
+public interface PreferenceService {
 
     public Object exportDocument()
             throws PreferenceServiceException;
-    public List<PreferenceGroupTree> getChildren();
-    public String getId();
-    public Map<String,String> getPreferences();
+    public Object exportDocument(String absolutePath)
+            throws PreferenceServiceException;
+    public PreferenceGroup findPreferenceGroup(String absolutePath)
+            throws PreferenceServiceException;
+    public PreferenceGroupTree findPreferenceGroupTree()
+            throws  PreferenceServiceException;
     public void importDocument(Object document)
             throws PreferenceServiceException;
-    public void remove()
+    public void importDocument(String absolutePath, Object document)
             throws PreferenceServiceException;
-    public void setId(String id)
+    public void persistPreferenceGroup(PreferenceGroup preferenceGroup)
             throws PreferenceServiceException;
-    public void setPreferences(Map<String,String> preferences)
+    public void removePreferenceGroup(String absolutePath)
             throws PreferenceServiceException;
-    @Override
-    public String toString();
 }

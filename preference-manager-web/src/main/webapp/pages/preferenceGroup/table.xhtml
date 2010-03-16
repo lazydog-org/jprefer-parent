@@ -40,7 +40,7 @@
                                     <a4j:actionparam
                                         name="id"
                                         assignTo="#{preferenceGroupMB.id}"
-                                        value="#{preferenceGroup.id}"
+                                        value="#{preferenceGroup.absolutePath}"
                                         actionListener="#{preferenceGroupMB.processDeleteButton}"/>
                                 </rich:menuItem>
                                 <rich:menuItem
@@ -50,7 +50,7 @@
                                     <a4j:actionparam
                                         name="id"
                                         assignTo="#{preferenceGroupMB.id}"
-                                        value="#{preferenceGroup.id}"
+                                        value="#{preferenceGroup.absolutePath}"
                                         actionListener="#{preferenceGroupMB.processModifyButton}"/>
                                 </rich:menuItem>
                             </rich:contextMenu>

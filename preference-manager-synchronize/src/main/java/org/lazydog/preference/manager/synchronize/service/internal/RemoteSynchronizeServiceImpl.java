@@ -137,55 +137,7 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
     }
 
     /**
-     * Export the preference group as a document.
-     *
-     * @param  id  the ID.
-     *
-     * @return  the document.
-     *
-     * @throws  GroupServiceException  if unable to export the preference group.
-     */
-    @Override
-    public Object exportDocument(String id)
-            throws SynchronizeServiceException {
-
-        // Declare.
-        JMXConnector connector;
-        Object document;
-
-        // Initialize.
-        connector = null;
-        document = null;
-
-        try {
-
-            // Declare.
-            AgentSynchronizeServiceMBean groupService;
-
-            // Connect to the JMX service.
-            connector = this.connect();
-
-            // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
-
-            // Export the preference group.
-            document = groupService.exportDocument(id);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to export the preference group " + id + ".", e);
-        }
-        finally {
-
-            // Close the JMX service.
-            this.close(connector);
-        }
-
-        return document;
-    }
-
-    /**
-     * Export the preference groups as a document.
+     * Export the preference groups to a document.
      *
      * @return  the document.
      *
@@ -220,6 +172,55 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
         catch(Exception e) {
             throw new SynchronizeServiceException(
                     "Unable to export the preference groups.", e);
+        }
+        finally {
+
+            // Close the JMX service.
+            this.close(connector);
+        }
+
+        return document;
+    }
+
+    /**
+     * Export the preference group to a document.
+     *
+     * @param  absolutePath  the absolute path.
+     *
+     * @return  the document.
+     *
+     * @throws  GroupServiceException  if unable to export the preference group.
+     */
+    @Override
+    public Object exportDocument(String absolutePath)
+            throws SynchronizeServiceException {
+
+        // Declare.
+        JMXConnector connector;
+        Object document;
+
+        // Initialize.
+        connector = null;
+        document = null;
+
+        try {
+
+            // Declare.
+            AgentSynchronizeServiceMBean groupService;
+
+            // Connect to the JMX service.
+            connector = this.connect();
+
+            // Get the agent group service MBean.
+            groupService = this.getAgentGroupServiceMBean(connector);
+
+            // Export the preference group.
+            document = groupService.exportDocument(absolutePath);
+        }
+        catch(Exception e) {
+            throw new SynchronizeServiceException(
+                    "Unable to export the preference group " 
+                    + absolutePath + ".", e);
         }
         finally {
 
@@ -283,50 +284,7 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
     }
 
     /**
-     * Import the preference group as a document.
-     *
-     * @param  id        the ID.
-     * @param  document  the document.
-     *
-     * @throws  GroupServiceException  if unable to import the preference group.
-     */
-    @Override
-    public void importDocument(String id, Object document)
-            throws SynchronizeServiceException {
-
-        // Declare.
-        JMXConnector connector;
-
-        // Initialize.
-        connector = null;
-
-        try {
-
-            // Declare.
-            AgentSynchronizeServiceMBean groupService;
-
-            // Connect to the JMX service.
-            connector = this.connect();
-
-            // Get the agent group service MBean.
-            groupService = this.getAgentGroupServiceMBean(connector);
-
-            // Import the preference group.
-            groupService.importDocument(id, document);
-        }
-        catch(Exception e) {
-            throw new SynchronizeServiceException(
-                    "Unable to import the preference group " + id + ".", e);
-        }
-        finally {
-
-            // Close the JMX service.
-            this.close(connector);
-        }
-    }
-
-    /**
-     * Import the preference groups as a document.
+     * Import the preference groups from a document.
      *
      * @param  document  the document.
      *
@@ -359,6 +317,50 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
         catch(Exception e) {
             throw new SynchronizeServiceException(
                     "Unable to import the preference groups.", e);
+        }
+        finally {
+
+            // Close the JMX service.
+            this.close(connector);
+        }
+    }
+
+    /**
+     * Import the preference group from a document.
+     *
+     * @param  absolutePath  the absolutePath.
+     * @param  document      the document.
+     *
+     * @throws  GroupServiceException  if unable to import the preference group.
+     */
+    @Override
+    public void importDocument(String absolutePath, Object document)
+            throws SynchronizeServiceException {
+
+        // Declare.
+        JMXConnector connector;
+
+        // Initialize.
+        connector = null;
+
+        try {
+
+            // Declare.
+            AgentSynchronizeServiceMBean groupService;
+
+            // Connect to the JMX service.
+            connector = this.connect();
+
+            // Get the agent group service MBean.
+            groupService = this.getAgentGroupServiceMBean(connector);
+
+            // Import the preference group.
+            groupService.importDocument(absolutePath, document);
+        }
+        catch(Exception e) {
+            throw new SynchronizeServiceException(
+                    "Unable to import the preference group " 
+                    + absolutePath + ".", e);
         }
         finally {
 

@@ -13,6 +13,9 @@ import org.lazydog.preference.manager.preference.service.PreferenceServiceFactor
  */
 public class Preference {
 
+    private static PreferenceService preferenceService
+            = PreferenceServiceFactory.create();
+
     /**
      * Get the preference group tree.
      *
@@ -28,8 +31,8 @@ public class Preference {
 
         try {
 
-            // Get the preference group tree.
-            prefrenceGroupTree = PreferenceServiceFactory.create();
+            // Find the preference group tree.
+            prefrenceGroupTree = preferenceService.findPreferenceGroupTree();
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -39,11 +42,13 @@ public class Preference {
     }
 
     /**
-     * Get the preferences.
+     * Get the preference group.
      *
-     * @return  the preferences.
+     * @param  absolutePath  the absolute path.
+     *
+     * @return  the preference group.
      */
-    public static PreferenceGroup getPreferenceGroup(String id) {
+    public static PreferenceGroup getPreferenceGroup(String absolutePath) {
 
         // Declare.
         PreferenceGroup preferenceGroup;
@@ -53,16 +58,8 @@ public class Preference {
 
         try {
 
-            // Declare.
-            PreferenceService preferenceService;
-
-            // Get the preference service.
-            preferenceService = PreferenceServiceFactory.create(id);
-
-            // Get the preference group.
-            preferenceGroup = new PreferenceGroup();
-            preferenceGroup.setId(id);
-            preferenceGroup.setPreferences(preferenceService.getPreferences());
+            // Find the preference group.
+            preferenceGroup = preferenceService.findPreferenceGroup(absolutePath);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -74,20 +71,31 @@ public class Preference {
     /**
      * Remove the preference group.
      *
-     * @param  id  the ID.
+     * @param  absolutePath  the absolute path.
      */
-    public static void removePreferenceGroup(String id) {
+    public static void removePreferenceGroup(String absolutePath) {
 
         try {
 
-            // Declare.
-            PreferenceService preferenceService;
-
-            // Get the preference service.
-            preferenceService = PreferenceServiceFactory.create(id);
-
             // Remove the preference group.
-            preferenceService.remove();
+            preferenceService.removePreferenceGroup(absolutePath);
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+        }
+    }
+
+    /**
+     * Save the preference group.
+     *
+     * @param  preferenceGroup  the preference group.
+     */
+    public static void savePreferenceGroup(PreferenceGroup preferenceGroup) {
+
+        try {
+
+            // Save the preference group.
+            preferenceService.persistPreferenceGroup(preferenceGroup);
         }
         catch(Exception e) {
             // TO DO: handle exception.

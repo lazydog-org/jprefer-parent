@@ -154,10 +154,10 @@ System.err.println("processOkButton invoked");
 
             // Get the preference group from the session.
             preferenceGroup = SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class);
-            preferenceGroup.setId(id);
+            preferenceGroup.setAbsolutePath(id);
 
             // Add the new preference.
-            //Preference.addPreferenceGroup(preferenceGroup);
+            Preference.savePreferenceGroup(preferenceGroup);
         }
         catch(Exception e) {
             // TODO: handle exception.

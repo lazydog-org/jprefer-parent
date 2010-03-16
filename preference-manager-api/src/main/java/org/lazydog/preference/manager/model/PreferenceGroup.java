@@ -1,5 +1,6 @@
 package org.lazydog.preference.manager.model;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -10,16 +11,16 @@ import java.util.Map;
  */
 public class PreferenceGroup {
 
-    private String id;
-    private Map<String,String> preferences;
+    private String absolutePath;
+    private Map<String,String> preferences = new LinkedHashMap<String,String>();
     
     /**
-     * Get the ID.
+     * Get the absolute path.
      * 
-     * @return  the ID.
+     * @return  the absolute path.
      */
-    public String getId() {
-        return this.id;
+    public String getAbsolutePath() {
+        return this.absolutePath;
     }
 
     /**
@@ -32,12 +33,12 @@ public class PreferenceGroup {
     }
 
     /**
-     * Set the ID.
+     * Set the absolute path.
      *
-     * @param  id  the ID.
+     * @param  absolutePath  the absolute path.
      */
-    public void setId(String id) {
-        this.id = id;
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
     }
 
     /**
@@ -46,6 +47,37 @@ public class PreferenceGroup {
      * @param  preferences  the preferences.
      */
     public void setPreferences(Map<String,String> preferences) {
+
+        // Check if the preferences exist.
+        if (preferences == null) {
+
+            // Create an empty map for preferences.
+            preferences = new LinkedHashMap<String, String>();
+        }
+
+        // Set the preferences.
         this.preferences = preferences;
+    }
+
+    /**
+     * Get this object as a String.
+     *
+     * @return  this object as a String.
+     */
+    @Override
+    public String toString() {
+
+        // Declare.
+        StringBuffer toString;
+
+        // Initialize.
+        toString = new StringBuffer();
+
+        toString.append("PreferenceGroup [");
+        toString.append("absolutePath = ").append(this.getAbsolutePath());
+        toString.append(", preferences = ").append(this.getPreferences());
+        toString.append("]");
+
+        return toString.toString();
     }
 }

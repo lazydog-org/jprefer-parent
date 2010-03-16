@@ -57,32 +57,4 @@ public class PreferenceServiceFactory {
     public static PreferenceService create() {
         return PreferenceServiceFactory.create(PreferenceService.class);
     }
-
-    /**
-     * Create the preference service.
-     *
-     * @param  id  the ID.
-     *
-     * @return  the preference service.
-     */
-    public static PreferenceService create(String id) {
-
-        // Declare.
-        PreferenceService preferenceService;
-
-        // Create the preference service.
-        preferenceService = PreferenceServiceFactory.create(PreferenceService.class);
-
-        try {
-
-            // Set the ID.
-            preferenceService.setId(id);
-        }
-        catch(PreferenceServiceException e) {
-            throw new IllegalArgumentException(
-                    "Unable to create preference service " + id + ".", e);
-        }
-
-        return preferenceService;
-    }
 }
