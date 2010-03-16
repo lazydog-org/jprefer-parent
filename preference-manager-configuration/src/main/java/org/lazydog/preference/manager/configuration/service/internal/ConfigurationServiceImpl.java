@@ -7,9 +7,9 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.lazydog.preference.manager.configuration.service.ConfigurationService;
-import org.lazydog.preference.manager.configuration.service.ConfigurationServiceException;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.model.SetupType;
+import org.lazydog.preference.manager.service.ServiceException;
 
 
 /**
@@ -48,33 +48,20 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      *
      * @return  the agent.
      *
-     * @throws  ConfigurationDAOException  if unable to find the agent.
+     * @throws  IllegalArgumentException  if the ID is invalid.
      */
     @Override
-    public Agent findAgent(int id)
-            throws ConfigurationServiceException {
+    public Agent findAgent(int id) {
 
         // Declare.
         Agent agent;
+        String agentValue;
 
-        // Initialize.
-        agent = null;
+        // Get the agent value.
+        agentValue = this.preferences.get(getAgentKey(id), null);
 
-        try {
-
-            // Declare.
-            String agentValue;
-
-            // Get the agent value.
-            agentValue = this.preferences.get(this.getAgentKey(id), null);
-
-            // Interpret the agent value as an agent.
-            agent = this.interpret(agentValue, id);
-        }
-        catch(Exception e) {
-            throw new ConfigurationServiceException(
-                    "Unable to find the agent, " + id + ".", e);
-        }
+        // Interpret the agent value as an agent.
+        agent = interpret(agentValue, id);
 
         return agent;
     }
@@ -84,11 +71,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      *
      * @return  the agents.
      *
-     * @throws  ConfigurationDAOException  if unable to find the agents.
+     * @throws  ServiceException  if unable to find the agents.
      */
     @Override
     public List<Agent> findAgents()
-            throws ConfigurationServiceException {
+            throws ServiceException {
 
         // Declare.
         List<Agent> agents;
@@ -131,8 +118,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 }
             }
         }
-        catch(Exception e) {
-            throw new ConfigurationServiceException(
+        catch(BackingStoreException e) {
+            throw new ServiceException(
                     "Unable to find the agents.", e);
         }
 
@@ -143,29 +130,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * Find the setup type.
      *
      * @return  the setup type.
-     *
-     * @throws  ConfigurationDAOException  if unable to find the setup type.
      */
     @Override
-    public SetupType findSetupType()
-            throws ConfigurationServiceException {
-
-        // Declare.
-        SetupType setupType;
-
-        // Initialize.
-        setupType = null;
-
-        try {
-
-            // Get the setup type.
-            setupType = SetupType.valueOf(this.preferences.get(SETUP_TYPE_KEY, null));
-        }
-        catch(Exception e) {
-            throw new ConfigurationServiceException(
-                    "Unable to find the setup type.", e);
-        }
-        return setupType;
+    public SetupType findSetupType() {
+        return SetupType.valueOf(this.preferences.get(SETUP_TYPE_KEY, null));
     }
 
     /**
@@ -174,17 +142,25 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @param  id  the ID.
      * 
      * @return  the agent key.
+     *
+     * @throws  IllegalArgumentException  if the ID is invalid.
      */
-    private String getAgentKey(int id) {
+    private static String getAgentKey(int id) {
+
+        // Check if the ID is invalid.
+        if (id < START_SEQUENCE) {
+            throw new IllegalArgumentException("The ID is invalid.");
+        }
+
         return AGENT_KEY_PREFIX + id;
     }
 
     /**
-     * Get the sequence and prime for the next sequence.
+     * Get the sequence.
      * 
      * @return  the sequence.
      * 
-     * @throws  BackingStoreException  if unable to prime for the next sequence.
+     * @throws  BackingStoreException  if unable to get the sequence.
      */
     private int getSequence()
             throws BackingStoreException {
@@ -209,9 +185,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * 
      * @param  agent  the agent.
      * 
-     * @return  the agent value or null if the agent is null.
+     * @return  the agent value.
+     *
+     * @throws  NullPointerException  if the agent is null.
      */
-    private String interpret(Agent agent) {
+    private static String interpret(Agent agent) {
 
         // Declare.
         StringBuffer agentValue;
@@ -234,6 +212,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             agentValue.append(AGENT_VALUE_SEPARATOR);
             agentValue.append(agent.getEnabled());
         }
+        else {
+            throw new NullPointerException("The agent is null.");
+        }
 
         return (agentValue != null) ? agentValue.toString() : null;
     }
@@ -244,9 +225,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @param  agentValue  the comma-separate agent value.
      * @param  id          the ID.
      * 
-     * @return  the agent or null if the agent value is null or is not valid.
+     * @return  the agent.
+     *
+     * @throws  IllegalArgumentException   if the agent value or ID is invalid.
      */
-    private Agent interpret(String agentValue, int id) {
+    private static Agent interpret(String agentValue, int id) {
 
         // Declare.
         Agent agent;
@@ -259,6 +242,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         // Create a matcher to parse.
         matcher = Pattern.compile(AGENT_VALUE_REGEX).matcher(agentValue);
+
+        // Check if the ID is invalid.
+        if (id < START_SEQUENCE) {
+            throw new IllegalArgumentException("The ID is invalid.");
+        }
 
         // Check if there is an agent value
         // and it matches the agent value regular expression.
@@ -286,6 +274,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             agent.setPassword(matcher.group(PASSWORD_GROUP));
             agent.setServerName(matcher.group(SERVER_NAME_GROUP));
         }
+        else {
+            throw new IllegalArgumentException("The agent value is invalid.");
+        }
 
         return agent;
     }
@@ -297,35 +288,43 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      *
      * @return  the agent.
      *
-     * @throws  ConfigurationDAOException  if unable to persist the agent.
+     * @throws  ServiceException      if unable to persist the agent.
+     * @throws  NullPointerException  if the agent is null.
      */
     @Override
     public Agent persistAgent(Agent agent)
-            throws ConfigurationServiceException {
+            throws ServiceException {
 
         try {
 
-            // Declare.
-            String agentKey;
-            String agentValue;
-            int id;
+            // Check if the agent is not null.
+            if (agent != null) {
 
-            // The ID is the agent ID, otherwise it is the sequence.
-            id = (agent.getId() != null) ? agent.getId() : this.getSequence();
+                // Declare.
+                String agentKey;
+                String agentValue;
+                int id;
 
-            // Get the agent key and value.
-            agentKey = this.getAgentKey(id);
-            agentValue = this.interpret(agent);
+                // The ID is the agent ID, otherwise it is the sequence.
+                id = (agent.getId() != null) ? agent.getId() : this.getSequence();
 
-            // Store the agent.
-            this.preferences.put(agentKey, agentValue);
-            this.preferences.flush();
+                // Get the agent key and value.
+                agentKey = getAgentKey(id);
+                agentValue = interpret(agent);
 
-            // Get the agent.
-            agent = this.findAgent(id);
+                // Store the agent.
+                this.preferences.put(agentKey, agentValue);
+                this.preferences.flush();
+
+                // Get the agent.
+                agent = this.findAgent(id);
+            }
+            else {
+                throw new NullPointerException("The agent is null");
+            }
         }
-        catch(Exception e) {
-            throw new ConfigurationServiceException(
+        catch(BackingStoreException e) {
+            throw new ServiceException(
                     "Unable to persist the agent, " + agent + ".", e);
         }
 
@@ -339,23 +338,31 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * 
      * @return  the setup type.
      * 
-     * @throws  ConfigurationDAOException  if unable to persist the setup type.
+     * @throws  ServiceException      if unable to persist the setup type.
+     * @throws  NullPointerException  if the setup type is null.
      */
     @Override
     public SetupType persistSetupType(SetupType setupType)
-            throws ConfigurationServiceException {
+            throws ServiceException {
 
         try {
 
-            // Store the setup type.
-            this.preferences.put(SETUP_TYPE_KEY, setupType.toString());
-            this.preferences.flush();
+            // Check if the setup type is not null.
+            if (setupType != null) {
 
-            // Get the setup type.
-            setupType = this.findSetupType();
+                // Store the setup type.
+                this.preferences.put(SETUP_TYPE_KEY, setupType.toString());
+                this.preferences.flush();
+
+                // Get the setup type.
+                setupType = this.findSetupType();
+            }
+            else {
+                throw new NullPointerException("The setup type is null.");
+            }
         }
-        catch(Exception e) {
-            throw new ConfigurationServiceException(
+        catch(BackingStoreException e) {
+            throw new ServiceException(
                     "Unable to persist the setup type, "
                     + setupType.toString() + ".", e);
         }
@@ -368,88 +375,43 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      *
      * @param  id  the ID.
      *
-     * @throws  ConfigurationDAOException  if unable to remove the agent.
+     * @throws  ServiceException          if unable to remove the agent.
+     * @throws  IllegalArgumentException  if the ID is invalid.
      */
     @Override
     public void removeAgent(int id)
-            throws ConfigurationServiceException {
+            throws ServiceException {
 
         try {
 
             // Remove the agent.
-            this.preferences.remove(this.getAgentKey(id));
+            this.preferences.remove(getAgentKey(id));
+            this.preferences.flush();
         }
-        catch(Exception e) {
-            throw new ConfigurationServiceException(
+        catch(BackingStoreException e) {
+            throw new ServiceException(
                     "Unable to remove the agent, " + id + ".", e);
         }
     }
 
     /**
-     * Remove the agent specified by the ID.
+     * Remove the setup type.
      *
-     * @param  id  the ID.
-     *
-     * @throws  ConfigurationDAOException  if unable to remove the agent.
+     * @throws  ServiceException  if unable to remove the setup type.
      */
     @Override
     public void removeSetupType()
-            throws ConfigurationServiceException {
+            throws ServiceException {
 
         try {
 
             // Remove the setup type.
             this.preferences.remove(SETUP_TYPE_KEY);
+            this.preferences.flush();
         }
-        catch(Exception e) {
-            throw new ConfigurationServiceException(
+        catch(BackingStoreException e) {
+            throw new ServiceException(
                     "Unable to remove the setup type.", e);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-
-        ConfigurationServiceImpl dao = new ConfigurationServiceImpl();
-
-        Agent agent1 = new Agent();
-        agent1.setEnabled(Boolean.FALSE);
-        agent1.setJmxPort(8686);
-        agent1.setLogin("admin");
-        agent1.setPassword("adminadmin");
-        agent1.setServerName("SIC36565.sic.nwie.net");
-        System.out.println("Before store: " + agent1);
-
-        agent1 = dao.persistAgent(agent1);
-        System.out.println("After store: " + agent1);
-
-        agent1.setEnabled(Boolean.TRUE);
-        agent1 = dao.persistAgent(agent1);
-        System.out.println("After change: " + agent1);
-
-        Agent agent2 = dao.findAgent(agent1.getId());
-        System.out.println("Find: " + agent2);
-
-        agent2.setServerName("another.sic.nwie.net");
-        agent2.setId(null);
-        agent2 = dao.persistAgent(agent2);
-        System.out.println("After store: " + agent2);
-
-        List<Agent> agents = dao.findAgents();
-        for (Agent agent : agents) {
-            System.out.println("Find agents (both): " + agent);
-        }
-/*
-        dao.remove(agent2.getId());
-        agents = dao.findAgents();
-        for (Agent agent : agents) {
-            System.out.println("Find agents (one): " + agent);
-        }
-
-        dao.remove(agent1.getId());
-        agents = dao.findAgents();
-        for (Agent agent : agents) {
-            System.out.println("Find agents (none): " + agent);
-        }
- */
     }
 }

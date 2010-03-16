@@ -3,6 +3,7 @@ package org.lazydog.preference.manager.configuration.service;
 import java.util.List;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.model.SetupType;
+import org.lazydog.preference.manager.service.ServiceException;
 
 
 /**
@@ -12,18 +13,16 @@ import org.lazydog.preference.manager.model.SetupType;
  */
 public interface ConfigurationService {
 
-    public Agent findAgent(int id)
-            throws ConfigurationServiceException;
+    public Agent findAgent(int id);
     public List<Agent> findAgents()
-            throws ConfigurationServiceException;
-    public SetupType findSetupType()
-            throws ConfigurationServiceException;
+            throws ServiceException;
+    public SetupType findSetupType();
     public Agent persistAgent(Agent agent)
-            throws ConfigurationServiceException;
+            throws ServiceException;
     public SetupType persistSetupType(SetupType setupType)
-            throws ConfigurationServiceException;
+            throws ServiceException;
     public void removeAgent(int id)
-            throws ConfigurationServiceException;
+            throws ServiceException;
     public void removeSetupType()
-            throws ConfigurationServiceException;
+            throws ServiceException;
 }

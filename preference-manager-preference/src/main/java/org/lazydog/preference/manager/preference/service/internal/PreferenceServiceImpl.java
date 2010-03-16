@@ -62,7 +62,8 @@ public class PreferenceServiceImpl implements PreferenceService {
                 }
                 else {
                     throw new IllegalArgumentException(
-                            "The target path, " + targetPath + ", already exists.");
+                            "The target path, " + targetPath
+                            + ", already exists.");
                 }
             }
             else {
@@ -227,13 +228,11 @@ public class PreferenceServiceImpl implements PreferenceService {
                 preferenceGroup.setPath(path);
 
                 // Loop through the keys.
-                for (String key : Preferences.systemRoot()
-                        .node(path).keys()) {
+                for (String key : system.node(path).keys()) {
 
                     // Add the preference to the preference group.
                     preferenceGroup.getPreferences().put(key, 
-                            system.node(path)
-                            .get(key, null));
+                            system.node(path).get(key, null));
                 }
             }
             else {
@@ -372,13 +371,16 @@ public class PreferenceServiceImpl implements PreferenceService {
      *
      * @param  preferenceGroup  the preference group.
      *
+     * @return  the preference group.
+     *
      * @throws  ServiceException          if unable to persist the
      *                                    preference group.
      * @throws  NullPointerException      if the preference group is null.
      * @throws  IllegalArgumentException  if the preference group is invalid.
      */
     @Override
-    public void persistPreferenceGroup(PreferenceGroup preferenceGroup)
+    public PreferenceGroup persistPreferenceGroup(
+            PreferenceGroup preferenceGroup)
             throws ServiceException {
 
         try {
@@ -410,6 +412,10 @@ public class PreferenceServiceImpl implements PreferenceService {
 
                 // Flush the preferences.
                 preferences.flush();
+
+                // Find the preference group.
+                preferenceGroup = this.findPreferenceGroup(
+                        preferenceGroup.getPath());
             }
             else {
                 throw new IllegalArgumentException(
@@ -421,6 +427,8 @@ public class PreferenceServiceImpl implements PreferenceService {
                     "Unable to persist the preference group, "
                     + preferenceGroup + ".", e);
         }
+
+        return preferenceGroup;
     }
 
     /**
@@ -457,7 +465,7 @@ public class PreferenceServiceImpl implements PreferenceService {
                         "The path, " + path + ", does not exist.");
             }
         }
-        catch(Exception e) {
+        catch(BackingStoreException e) {
             throw new ServiceException(
                     "Unable to remove the preferences, " + path + ".", e);
         }

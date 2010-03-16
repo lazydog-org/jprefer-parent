@@ -29,7 +29,8 @@ public interface PreferenceService {
     public void movePreferences(
             String sourcePath, String targetPath)
             throws ServiceException;
-    public void persistPreferenceGroup(PreferenceGroup preferenceGroup)
+    public PreferenceGroup persistPreferenceGroup(
+            PreferenceGroup preferenceGroup)
             throws ServiceException;
     public void removePreferences(String path)
             throws ServiceException;

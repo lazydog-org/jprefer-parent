@@ -4,11 +4,12 @@ import java.util.Hashtable;
 import java.util.List;
 import org.lazydog.preference.manager.configuration.service.ConfigurationService;
 import org.lazydog.preference.manager.configuration.service.ConfigurationServiceFactory;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceFactory;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.model.AgentStatus;
 import org.lazydog.preference.manager.model.SetupType;
+import org.lazydog.preference.manager.service.ServiceException;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceFactory;
 
 
 /**
