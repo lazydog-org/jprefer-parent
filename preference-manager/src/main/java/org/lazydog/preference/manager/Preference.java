@@ -17,6 +17,11 @@ public class Preference {
     private static PreferenceService preferenceService
             = PreferenceServiceFactory.create();
 
+    public static String exportDocument()
+            throws ServiceException {
+        return (String)preferenceService.exportDocument();
+    }
+    
     public static PreferenceGroupTree getPreferenceGroupTree() {
         return preferenceService.findPreferenceGroupTree();
     }
@@ -26,6 +31,11 @@ public class Preference {
         return preferenceService.findPreferenceGroup(path);
     }
 
+    public static void importDocument(String document)
+            throws ServiceException {
+        preferenceService.importDocument(document);
+    }
+    
     public static void removePreferenceGroup(String path)
             throws ServiceException {
         preferenceService.removePreferences(path);

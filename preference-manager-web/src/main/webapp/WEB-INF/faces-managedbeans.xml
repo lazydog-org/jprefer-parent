@@ -12,6 +12,11 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
+        <managed-bean-name>importExportMB</managed-bean-name>
+        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.ImportExportMB</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>preferenceMB</managed-bean-name>
         <managed-bean-class>org.lazydog.preference.manager.web.managedbean.PreferenceMB</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>

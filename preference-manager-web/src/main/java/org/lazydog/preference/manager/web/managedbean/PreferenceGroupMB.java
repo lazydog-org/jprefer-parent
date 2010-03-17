@@ -57,7 +57,7 @@ public class PreferenceGroupMB implements Serializable {
 
         try {
 
-            // Put a new preference the session.
+            // Put a new preference group on the session.
             SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, new PreferenceGroup());
         }
         catch(Exception e) {
