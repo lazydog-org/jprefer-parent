@@ -5,6 +5,7 @@ import java.util.List;
 import org.lazydog.preference.manager.configuration.service.ConfigurationService;
 import org.lazydog.preference.manager.configuration.service.ConfigurationServiceFactory;
 import org.lazydog.preference.manager.model.Agent;
+import org.lazydog.preference.manager.model.AgentState;
 import org.lazydog.preference.manager.model.AgentStatus;
 import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.service.ServiceException;
@@ -21,6 +22,26 @@ public class Configuration {
 
     private static ConfigurationService configurationService
             = ConfigurationServiceFactory.create();
+
+    /**
+     * Clear the configuration.
+     * 
+     * @throws  ServiceException  if unable to clear the configuration.
+     */
+    public static void clear()
+            throws ServiceException {
+
+        // Remove the agent state and setup type.
+        configurationService.removeAgentState();
+        configurationService.removeSetupType();
+
+        // Loop through the agents.
+        for (Agent agent : configurationService.findAgents()) {
+
+            // Remove the agent.
+            configurationService.removeAgent(agent.getId());
+        }
+    }
 
     /**
      * Determine the status of the specified agent.
@@ -62,7 +83,7 @@ public class Configuration {
 
             // Export the local document.
             localDocument = localSynchronizeService.exportDocument();
- 
+
             // Check if the remote document is equal to the local document.
             if (((String)remoteDocument).equals((String)localDocument)) {
 
@@ -85,57 +106,47 @@ public class Configuration {
     }
 
     /**
-     * Disable the agent specified by the ID.
+     * Disable the agent.
      * 
      * @param  id  the ID.
      * 
      * @return  the agent.
+     *
+     * @throws  ServiceException  if unable to disable the agent.
      */
-    public static Agent disableAgent(int id) {
+    public static Agent disableAgent(int id) 
+            throws ServiceException {
 
         // Declare.
         Agent agent;
 
-        agent = null;
-
-        try {
-
-            // Disable the agent.
-            agent = configurationService.findAgent(id);
-            agent.setEnabled(Boolean.FALSE);
-            agent = configurationService.persistAgent(agent);
-        }
-        catch(Exception e) {
-            // TO DO: handle exception.
-        }
+        // Disable the agent.
+        agent = configurationService.findAgent(id);
+        agent.setEnabled(Boolean.FALSE);
+        agent = configurationService.persistAgent(agent);
 
         return agent;
     }
 
     /**
-     * Enable the agent specified by the ID.
+     * Enable the agent.
      *
      * @param  id  the ID.
      *
      * @return  the agent.
+     *
+     * @throws  ServiceException  if unable to enable the agent.
      */
-    public static Agent enableAgent(int id) {
+    public static Agent enableAgent(int id) 
+            throws ServiceException {
 
         // Declare.
         Agent agent;
 
-        agent = null;
-
-        try {
-
-            // Enable the agent.
-            agent = configurationService.findAgent(id);
-            agent.setEnabled(Boolean.TRUE);
-            agent = configurationService.persistAgent(agent);
-        }
-        catch(Exception e) {
-            // TO DO: handle exception.
-        }
+        // Enable the agent.
+        agent = configurationService.findAgent(id);
+        agent.setEnabled(Boolean.TRUE);
+        agent = configurationService.persistAgent(agent);
 
         return agent;
     }
@@ -152,20 +163,11 @@ public class Configuration {
         // Declare.
         Agent agent;
 
-        // Initialize.
-        agent = null;
+        // Get the agent.
+        agent = configurationService.findAgent(id);
 
-        try {
-
-            // Get the agent.
-            agent = configurationService.findAgent(id);
-
-            // Set the status for the agent.
-            agent.setStatus(determineStatus(agent));
-        }
-        catch(Exception e) {
-            // TO DO: handle exception.
-        }
+        // Set the status for the agent.
+        agent.setStatus(determineStatus(agent));
 
         return agent;
     }
@@ -174,32 +176,46 @@ public class Configuration {
      * Get the agents.
      *
      * @return  the agents.
+     *
+     * @throws  ServiceException  if unable to get the agents.
      */
-    public static List<Agent> getAgents() {
+    public static List<Agent> getAgents() 
+            throws ServiceException {
 
         // Declare.
         List<Agent> agents;
 
-        // Initialize.
-        agents = null;
+        // Get the agents.
+        agents = configurationService.findAgents();
 
-        try {
+        // Loop through the agents.
+        for (Agent agent : agents) {
 
-            // Get the agents.
-            agents = configurationService.findAgents();
-
-            // Loop through the agents.
-            for (Agent agent : agents) {
-
-                // Set the status for the agent.
-                agent.setStatus(determineStatus(agent));
-            }
-        }
-        catch(Exception e) {
-            // TO DO: handle exception.
+            // Set the status for the agent.
+            agent.setStatus(determineStatus(agent));
         }
 
         return agents;
+    }
+
+    /**
+     * Is the agent state disabled.
+     *
+     * @return  true if the agent state is disabled, otherwise false.
+     */
+    public static boolean isAgentStateDisabled() {
+        return (configurationService.findAgentState() == AgentState.DISABLED) ?
+                true : false;
+    }
+
+    /**
+     * Is the agent state enabled.
+     *
+     * @return  true if the agent state is enabled, otherwise false.
+     */
+    public static boolean isAgentStateEnabled() {
+        return (configurationService.findAgentState() == AgentState.ENABLED) ?
+                true : false;
     }
 
     /**
@@ -208,25 +224,8 @@ public class Configuration {
      * @return  true if this is an agent setup, otherwise false.
      */
     public static boolean isAgentSetup() {
-
-        // Declare.
-        boolean isAgentSetup;
-
-        // Initialize.
-        isAgentSetup = false;
-
-        try {
-
-            // Check if this is an agent setup.
-            if (configurationService.findSetupType() == SetupType.AGENT) {
-                isAgentSetup = true;
-            }
-        }
-        catch(Exception e) {
-            // Ignore.
-        }
-
-        return isAgentSetup;
+        return (configurationService.findSetupType() == SetupType.AGENT) ?
+                true : false;
     }
 
     /**
@@ -235,25 +234,8 @@ public class Configuration {
      * @return  true if this is a manager setup, otherwise false.
      */
     public static boolean isManagerSetup() {
-
-        // Declare.
-        boolean isManagerSetup;
-
-        // Initialize.
-        isManagerSetup = false;
-
-        try {
-
-            // Check if this is a manager setup.
-            if (configurationService.findSetupType() == SetupType.MANAGER) {
-                isManagerSetup = true;
-            }
-        }
-        catch(Exception e) {
-            // Ignore.
-        }
-
-        return isManagerSetup;
+        return (configurationService.findSetupType() == SetupType.MANAGER) ?
+                true : false;
     }
 
     /**
@@ -262,25 +244,8 @@ public class Configuration {
      * @return  true if this is setup, otherwise false.
      */
     public static boolean isSetup() {
-
-        // Declare.
-        boolean isSetup;
-
-        // Initialize.
-        isSetup = false;
-
-        try {
-
-            // Check if this is setup.
-            if (configurationService.findSetupType() != null) {
-                isSetup = true;
-            }
-        }
-        catch(Exception e) {
-            // Ignore.
-        }
-
-        return isSetup;
+        return (configurationService.findSetupType() != SetupType.UNKNOWN) ?
+                true : false;
     }
 
     /**
@@ -289,25 +254,20 @@ public class Configuration {
      * @return  true if this is a standalone setup, otherwise false.
      */
     public static boolean isStandaloneSetup() {
+        return (configurationService.findSetupType() == SetupType.STANDALONE) ?
+                true : false;
+    }
 
-        // Declare.
-        boolean isStandaloneSetup;
-
-        // Initialize.
-        isStandaloneSetup = false;
-
-        try {
-
-            // Check if this is a standalone setup.
-            if (configurationService.findSetupType() == SetupType.STANDALONE) {
-                isStandaloneSetup = true;
-            }
-        }
-        catch(Exception e) {
-            // Ignore.
-        }
-
-        return isStandaloneSetup;
+    /**
+     * Remove the agent.
+     *
+     * @param  id  the ID.
+     *
+     * @throws  ServiceException  if unable to remove the agent.
+     */
+    public static void removeAgent(int id)
+            throws ServiceException {
+        configurationService.removeAgent(id);
     }
 
     /**
@@ -316,39 +276,45 @@ public class Configuration {
      * @param  agent  the agent.
      *
      * @return  the agent.
+     *
+     * @throws  ServiceException  if unable to save the agent.
      */
-    public static Agent saveAgent(Agent agent) {
-
-        try {
-
-            // Save the agent.
-            agent = configurationService.persistAgent(agent);
-        }
-        catch(Exception e) {
-            // TO DO: handle exception.
-        }
-
-        return agent;
+    public static Agent saveAgent(Agent agent) 
+            throws ServiceException {
+        return configurationService.persistAgent(agent);
     }
 
+    /**
+     * Save the agent state.
+     *
+     * @param  agentState  the agent state.
+     *
+     * @return  the agent state.
+     *
+     * @throws  ServiceException  if unable to save the agent state.
+     */
+    public static AgentState saveAgentState(AgentState agentState)
+            throws ServiceException {
+        return configurationService.persistAgentState(agentState);
+    }
     /**
      * Save the setup type.
      *
      * @param  setupType  the setup type.
      *
      * @return  the setup type.
+     *
+     * @throws  ServiceException  if unable to save the setup type.
      */
-    public static SetupType saveSetupType(SetupType setupType) {
+    public static SetupType saveSetupType(SetupType setupType) 
+            throws ServiceException {
+        return configurationService.persistSetupType(setupType);
+    }
 
-        try {
+    public static void main(String[] args) throws Exception {
 
-            // Save the setup type.
-            setupType = configurationService.persistSetupType(setupType);
+        for (Agent agent : getAgents()) {
+            System.out.println(agent);
         }
-        catch(Exception e) {
-            // TO DO: handle exception.
-        }
-
-        return setupType;
     }
 }

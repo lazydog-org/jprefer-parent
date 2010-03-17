@@ -36,7 +36,8 @@
                             attachTo="pm-snapshots-name,pm-snapshots-date"
                             submitMode="ajax">
                             <rich:menuItem
-                                value="Restore">
+                                value="Restore"
+                                reRender="pm-preference-group-table">
                                 <a4j:actionparam
                                     name="name"
                                     assignTo="#{snapshotMB.name}"

@@ -16,6 +16,7 @@ public class SetupMB implements Serializable {
     private static final String FAILURE = "failure";
     private static final String MANAGER_SETUP = "manager";
     private static final String STANDALONE_SETUP = "standalone";
+    private static final String SUCCESS = "success";
 
     private Boolean delete;
     private String type;
@@ -76,6 +77,34 @@ public class SetupMB implements Serializable {
      */
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Reconfigure.
+     *
+     * @return  success or failure outcome.
+     */
+    public String reconfigure() {
+
+        // Declare.
+        String outcome;
+
+        // Set the outcome to failure.
+        outcome = FAILURE;
+
+        try {
+
+            // Clear the configuration.
+            Configuration.clear();
+
+            // Set the outcome to success.
+            outcome = SUCCESS;
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+        }
+
+        return outcome;
     }
 
     /**

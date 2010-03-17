@@ -16,7 +16,7 @@ import org.lazydog.preference.manager.model.Agent;
 public class AgentMB implements Serializable {
 
     private Agent agent;
-    private Integer agentId;
+    private Integer id;
     
     /**
      * Get the agent.
@@ -47,6 +47,7 @@ public class AgentMB implements Serializable {
         }
         catch(Exception e) {
             // TO DO: handle exception.
+System.err.println("Unable to get the agents.\n" + e);
         }
 
         return agents;
@@ -63,31 +64,21 @@ public class AgentMB implements Serializable {
     }
 
     /**
-     * Process the add button.
-     *
-     * @param  actionEvent  the action event.
-     */
-    public void processAddButton(ActionEvent actionEvent) {
-System.err.println("processAddButton invoked");
-        this.agent = new Agent();
-    }
-
-    /**
-     * Process the cancel button.
-     *
-     * @param  actionEvent  the action event.
-     */
-    public void processCancelButton(ActionEvent actionEvent) {
-System.err.println("processCancelButton invoked");
-    }
-
-    /**
      * Process the delete button.
      *
      * @param  actionEvent  the action event.
      */
     public void processDeleteButton(ActionEvent actionEvent) {
-System.err.println("processDeleteButton invoked");
+
+        try {
+
+            // Remove the agent.
+            Configuration.removeAgent(this.id);
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to delete the agent, " + this.id + ".\n" + e);
+        };
     }
 
     /**
@@ -96,12 +87,16 @@ System.err.println("processDeleteButton invoked");
      * @param  actionEvent  the action event.
      */
     public void processDisableButton(ActionEvent actionEvent) {
-System.err.println("processDisableButton invoked");
 
         try {
-            this.agent = Configuration.disableAgent(this.agentId);
+
+            // Disable the agent.
+            this.agent = Configuration.disableAgent(this.id);
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to disable the agent, " + this.id + ".\n" + e);
+        }
     }
 
     /**
@@ -110,11 +105,16 @@ System.err.println("processDisableButton invoked");
      * @param  actionEvent  the action event.
      */
     public void processEnableButton(ActionEvent actionEvent) {
-System.err.println("processEnableButton invoked");
+
         try {
-            this.agent = Configuration.enableAgent(this.agentId);
+
+            // Enable the agent.
+            this.agent = Configuration.enableAgent(this.id);
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to enable the agent, " + this.id + ".\n" + e);
+        }
     }
 
     /**
@@ -125,9 +125,14 @@ System.err.println("processEnableButton invoked");
     public void processModifyButton(ActionEvent actionEvent) {
 System.err.println("processModifyButton invoked");
         try {
-            this.agent = Configuration.getAgent(this.agentId);
+
+            // Get the agent.
+            this.agent = Configuration.getAgent(this.id);
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to modify the agent, " + this.id + ".\n" + e);
+        }
     }
 
     /**
@@ -138,10 +143,14 @@ System.err.println("processModifyButton invoked");
     public void processOkButton(ActionEvent actionEvent) {
 System.err.println("processOkButton invoked");
         try {
+
             // Save the agent.
             this.agent = Configuration.saveAgent(this.agent);
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to add/modify the agent.\n" + e);
+        }
     }
 
     /**
@@ -165,7 +174,7 @@ System.err.println("processResetButton invoked");
             // Check if the agent is not new.
             if (this.agent.getId() != null) {
 
-                // Restore the agent to the saved agent.
+                // Reset the agent.
                 this.agent = Configuration.getAgent(this.agent.getId());
             }
             else {
@@ -174,7 +183,10 @@ System.err.println("processResetButton invoked");
                 this.agent = new Agent();
             }
         }
-        catch(Exception e) {}
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to reset the agent, " + this.agent.getId() + ".\n" + e);
+        }
     }
 
     /**
@@ -205,12 +217,11 @@ System.err.println("processSynchronizeAllButton invoked");
     }
 
     /**
-     * Set the agent ID.
+     * Set the ID.
      *
-     * @param  agentId  the agent ID.
+     * @param  id  the ID.
      */
-    public void setAgentId(Integer agentId) {
-System.err.println("setting to " + agentId);
-        this.agentId = agentId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

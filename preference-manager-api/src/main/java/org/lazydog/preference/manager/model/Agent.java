@@ -14,7 +14,7 @@ public class Agent {
     private String login;
     private String password;
     private String serverName;
-    private AgentStatus status;
+    private AgentStatus status = AgentStatus.UNKNOWN;
 
     /**
      * Is the agent enabled?
@@ -139,6 +139,13 @@ public class Agent {
      * @param  status  the status.
      */
     public void setStatus(AgentStatus status) {
+
+        // Check if the status exists.
+        if (status == null) {
+
+            // Set the status to unknown.
+            status = AgentStatus.UNKNOWN;
+        }
         this.status = status;
     }
 

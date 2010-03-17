@@ -1,14 +1,13 @@
 package org.lazydog.preference.manager.model;
 
 /**
- * Setup type.
+ * Agent state.
  *
  * @author  Ron Rickard
  */
-public enum SetupType {
-    AGENT,
-    MANAGER,
-    STANDALONE,
+public enum AgentState {
+    DISABLED,
+    ENABLED,
     UNKNOWN;
 };
 

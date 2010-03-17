@@ -19,7 +19,6 @@
                         reRender="pm-agent-table"/>
                     <a4j:commandButton
                         value="Add"
-                        actionListener="#{agentMB.processAddButton}"
                         oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
                         reRender="pm-agent-modal-panel-content"/>
                     <a4j:commandButton
@@ -55,22 +54,27 @@
                                 oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
                                 reRender="pm-agent-modal-panel-content">
                                 <a4j:actionparam
-                                    name="agentId"
-                                    assignTo="#{agentMB.agentId}"
+                                    name="id"
+                                    assignTo="#{agentMB.id}"
                                     value="#{agent.id}"
                                     actionListener="#{agentMB.processModifyButton}"/>
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Delete"
-                                actionListener="#{agentMB.processDeleteButton}"
-                                reRender="pm-agent-table"/>
+                                reRender="pm-agent-table">
+                                <a4j:actionparam
+                                    name="id"
+                                    assignTo="#{agentMB.id}"
+                                    value="#{agent.id}"
+                                    actionListener="#{agentMB.processDeleteButton}"/>
+                            </rich:menuItem>
                             <rich:menuItem
                                 style="display: #{agent.enabled ? 'none' : 'block'};"
                                 value="Enable"
                                 reRender="pm-agent-table">
                                 <a4j:actionparam
-                                    name="agentId"
-                                    assignTo="#{agentMB.agentId}"
+                                    name="id"
+                                    assignTo="#{agentMB.id}"
                                     value="#{agent.id}"
                                     actionListener="#{agentMB.processEnableButton}"/>
                             </rich:menuItem>
@@ -79,8 +83,8 @@
                                 value="Disable"
                                 reRender="pm-agent-table">
                                 <a4j:actionparam
-                                    name="agentId"
-                                    assignTo="#{agentMB.agentId}"
+                                    name="id"
+                                    assignTo="#{agentMB.id}"
                                     value="#{agent.id}"
                                     actionListener="#{agentMB.processDisableButton}"/>
                             </rich:menuItem>
