@@ -144,7 +144,7 @@ System.err.println("Unable to modify the preference " + this.key + ".\n" + e);
         try {
 
             // Check if the old key exists.
-            if (this.oldKey != null) {
+            if (this.oldKey != null && !this.oldKey.equals("")) {
 
                 // Remove the old preference.
                 this.getPreferences().remove(this.oldKey);

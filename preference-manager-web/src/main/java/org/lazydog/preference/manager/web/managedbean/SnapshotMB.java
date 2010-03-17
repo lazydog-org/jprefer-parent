@@ -57,7 +57,8 @@ public class SnapshotMB implements Serializable {
             snapshots = Snapshot.getSnapshots();
         }
         catch(Exception e) {
-            // Ignore.
+            // TODO: handle exception.
+System.err.println("Unable to get the snapshots.\n" + e);
         }
 
         return snapshots;

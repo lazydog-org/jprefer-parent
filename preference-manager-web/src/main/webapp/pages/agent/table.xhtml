@@ -14,10 +14,6 @@
             <h:form id="pm-agent-table">
                 <div class="pm-form-buttons">
                     <a4j:commandButton
-                        value="Refresh"
-                        actionListener="#{agentMB.processRefreshButton}"
-                        reRender="pm-agent-table"/>
-                    <a4j:commandButton
                         value="Add"
                         oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
                         reRender="pm-agent-modal-panel-content"/>

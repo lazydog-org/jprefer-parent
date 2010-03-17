@@ -64,7 +64,7 @@ public class PreferenceGroupMB implements Serializable {
      * @param  actionEvent  the action event.
      */
     public void processAddButton(ActionEvent actionEvent) {
-System.err.println("processAddButton invoked");
+
         try {
 
             // Put a new preference the session.
@@ -82,7 +82,7 @@ System.err.println("Unable to add the preference group.\n" + e);
      * @param  actionEvent  the action event.
      */
     public void processCancelButton(ActionEvent actionEvent) {
-System.err.println("processCancelButton invoked");
+
         try {
 
             // Reove the preference group from the session.
@@ -100,7 +100,7 @@ System.err.println("Unable to cancel the add/modify of the preference group " + 
      * @param  actionEvent  the action event.
      */
     public void processDeleteButton(ActionEvent actionEvent) {
-System.err.println("processDeleteButton invoked");
+
         try {
 
             // Remove the preference group.
@@ -118,7 +118,7 @@ System.err.println("Unable to delete the preference group " + this.oldPath + ".\
      * @param  actionEvent  the action event.
      */
     public void processModifyButton(ActionEvent actionEvent) {
-System.err.println("processModifyButton invoked");
+
         try {
 
             // Put the preference group on the session.
@@ -139,14 +139,14 @@ System.err.println("Unable to modify the preference group " + this.path + ".\n" 
      * @param  actionEvent  the action event.
      */
     public void processOkButton(ActionEvent actionEvent) {
-System.err.println("processOkButton invoked");
+
         try {
 
             // Declare.
             PreferenceGroup preferenceGroup;
 
             // Check if the old path exists.
-            if (this.oldPath != null) {
+            if (this.oldPath != null && !this.oldPath.equals("")) {
 
                 // Remove the old preference group.
                 Preference.removePreferenceGroup(this.oldPath);
@@ -171,7 +171,7 @@ System.err.println("Unable to add/modify the preference group " + this.path + ".
      * @param  actionEvent  the action event.
      */
     public void processResetButton(ActionEvent actionEvent) {
-System.err.println("processResetButton invoked");
+
         try {
 
             // Check if the old path exists.

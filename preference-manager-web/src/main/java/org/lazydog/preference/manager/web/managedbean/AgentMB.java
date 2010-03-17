@@ -154,24 +154,15 @@ System.err.println("Unable to add/modify the agent.\n" + e);
     }
 
     /**
-     * Process the refresh button.
-     *
-     * @param  actionEvent  the action event.
-     */
-    public void processRefreshButton(ActionEvent actionEvent) {
-System.err.println("processRefreshButton invoked");
-    }
-
-    /**
      * Process the reset button.
      *
      * @param  actionEvent  the action event.
      */
     public void processResetButton(ActionEvent actionEvent) {
-System.err.println("processResetButton invoked");
+
         try {
             
-            // Check if the agent is not new.
+            // Check if the agent exists already.
             if (this.agent.getId() != null) {
 
                 // Reset the agent.
