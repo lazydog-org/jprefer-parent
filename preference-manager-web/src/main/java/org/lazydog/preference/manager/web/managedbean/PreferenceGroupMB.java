@@ -20,7 +20,6 @@ public class PreferenceGroupMB implements Serializable {
 
     private String path;
     private String oldPath;
-    private List<PreferenceGroupTree> preferenceGroupTrees;
 
     /**
      * Get the path.
@@ -46,16 +45,7 @@ public class PreferenceGroupMB implements Serializable {
      * @return  the preference group trees.
      */
     public List<PreferenceGroupTree> getPreferenceGroupTrees() {
-
-        // Check if there is a preference group tree.
-        if (this.preferenceGroupTrees == null) {
-
-            // Get the preference group trees.
-            this.preferenceGroupTrees = new ArrayList<PreferenceGroupTree>();
-            this.preferenceGroupTrees.addAll(Preference.getPreferenceGroupTree().getChildren());
-        }
-
-        return this.preferenceGroupTrees;
+        return Preference.getPreferenceGroupTree().getChildren();
     }
 
     /**

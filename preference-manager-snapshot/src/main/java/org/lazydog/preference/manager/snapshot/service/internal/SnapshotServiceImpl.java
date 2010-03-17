@@ -211,6 +211,40 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     /**
+     * Remove the preference tree.
+     * 
+     * @param  system  the system.
+     * @param  path    the path.
+     * 
+     * @throws  BackingStoreException  if unable to remove the preference tree.
+     */
+    private static void removeTree(Preferences system, String path)
+            throws BackingStoreException {
+
+        // Check if the path is the root path.
+        if (system.node(path).absolutePath().equals(ROOT_PATH)) {
+
+            // Loop through the root children.
+            for (String childName : system.childrenNames()) {
+
+                // Remove the child tree.
+                system.node(childName).removeNode();
+            }
+
+            // Clear the root preferences.
+            system.node(path).clear();
+        }
+        else {
+
+            // Remove the preference tree.
+            system.node(path).removeNode();
+        }
+
+        // Flush the system.
+        system.flush();
+    }
+
+    /**
      * Remove the snapshot.
      *
      * @param  name  the name.
@@ -230,10 +264,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             if (snapshotSystem.nodeExists(getSnapshotPath(name))) {
 
                 // Remove the snapshot.
-                snapshotSystem.node(getSnapshotPath(name)).removeNode();
-
-                // Flush the snapshot system.
-                snapshotSystem.flush();
+                this.removeTree(snapshotSystem, getSnapshotPath(name));
             }
             else {
                 throw new IllegalArgumentException(
@@ -276,7 +307,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                             snapshotSystem, getSnapshotPath(newName));
 
                     // Remove the snapshot.
-                    this.removeSnapshot(name);
+                    this.removeTree(snapshotSystem, getSnapshotPath(name));
                 }
                 else {
                     throw new IllegalArgumentException(
@@ -315,15 +346,8 @@ public class SnapshotServiceImpl implements SnapshotService {
             // Check if the snapshot exist.
             if (snapshotSystem.nodeExists(getSnapshotPath(name))) {
 
-                // Loop through the root children.
-                for (String childName : sourceSystem.childrenNames()) {
-
-                    // Remove the child.
-                    sourceSystem.node(childName).removeNode();
-                }
-                
-                // Flush the source system.
-                sourceSystem.flush();
+                // Remove the source tree.
+                this.removeTree(sourceSystem, ROOT_PATH);
 
                 // Restore the snapshot.
                 copyTree(snapshotSystem, getSnapshotPath(name),

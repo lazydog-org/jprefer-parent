@@ -455,10 +455,7 @@ public class PreferenceServiceImpl implements PreferenceService {
             if (system.nodeExists(path)) {
 
                 // Remove the preferences.
-                system.node(path).removeNode();
-
-                // Flush the preferences.
-                system.flush();
+                removeTree(system, path);
             }
             else {
                 throw new IllegalArgumentException(
@@ -469,5 +466,39 @@ public class PreferenceServiceImpl implements PreferenceService {
             throw new ServiceException(
                     "Unable to remove the preferences, " + path + ".", e);
         }
+    }
+
+    /**
+     * Remove the preference tree.
+     *
+     * @param  system  the system.
+     * @param  path    the path.
+     *
+     * @throws  BackingStoreException  if unable to remove the preference tree.
+     */
+    private static void removeTree(Preferences system, String path)
+            throws BackingStoreException {
+
+        // Check if the path is the root path.
+        if (system.node(path).absolutePath().equals(ROOT_PATH)) {
+
+            // Loop through the root children.
+            for (String childName : system.childrenNames()) {
+
+                // Remove the child tree.
+                system.node(childName).removeNode();
+            }
+
+            // Clear the root preferences.
+            system.node(path).clear();
+        }
+        else {
+
+            // Remove the preference tree.
+            system.node(path).removeNode();
+        }
+
+        // Flush the system.
+        system.flush();
     }
 }
