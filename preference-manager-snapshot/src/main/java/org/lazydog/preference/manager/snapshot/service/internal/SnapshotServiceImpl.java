@@ -41,7 +41,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static void copyTree(Preferences sourceSystem, String sourcePath,
             Preferences targetSystem, String targetPath)
             throws BackingStoreException {
-System.out.println(sourcePath + ", " + targetPath);
+
         // Declare.
         Preferences sourcePreferences;
         Preferences targetPreferences;
@@ -371,12 +371,5 @@ System.out.println(sourcePath + ", " + targetPath);
             throw new ServiceException(
                     "Unable to restore the snapshot, " + name + ".", e);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-
-        SnapshotServiceImpl service = new SnapshotServiceImpl();
-
-        service.createSnapshot("test1");
     }
 }
