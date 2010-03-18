@@ -5,6 +5,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:a4j="http://richfaces.org/a4j"
     xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <head/>
     <body>
@@ -12,15 +13,16 @@
             <h:form id="pm-common-form">
                 <div class="pm-form-buttons">
                     <h:commandButton
-                        value="Reconfigure"
-                        action="#{setupMB.reconfigure}"/>
-                    <h:commandButton
                         value="Export"
                         actionListener="#{importExportMB.exportDocument}"/>
                     <a4j:commandButton
                         value="Import"
                         oncomplete="Richfaces.showModalPanel('pm-import-export-modal-panel');"
                         reRender="pm-import-export-modal-panel-content"/>
+                    <rich:spacer width="20"/>
+                    <h:commandButton
+                        value="Reconfigure"
+                        action="#{setupMB.reconfigure}"/>
                 </div>
             </h:form>
         </ui:composition>

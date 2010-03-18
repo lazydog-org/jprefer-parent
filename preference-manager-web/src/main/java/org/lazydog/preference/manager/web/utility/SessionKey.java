@@ -7,6 +7,6 @@ package org.lazydog.preference.manager.web.utility;
  * @author  Ron Rickard
  */
 public enum SessionKey {
-    PREFERENCE_GROUP;
+
 };
 

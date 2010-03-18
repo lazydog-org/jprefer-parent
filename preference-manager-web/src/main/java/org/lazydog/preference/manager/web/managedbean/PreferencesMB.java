@@ -6,19 +6,32 @@ import java.util.List;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.Preference;
-import org.lazydog.preference.manager.web.utility.SessionKey;
-import org.lazydog.preference.manager.web.utility.SessionUtility;
 
 
 /**
- * Preference group managed bean.
+ * Preferences managed bean.
  * 
  * @author  Ron Rickard
  */
-public class PreferenceGroupMB implements Serializable {
+public class PreferencesMB implements Serializable {
 
+    private enum ActionType {
+        ADD,
+        COPY,
+        MOVE;
+    }
+    private String actionType;
     private String path;
     private String oldPath;
+
+    /**
+     * Get the action type.
+     *
+     * @return  the action type.
+     */
+    public String getActionType() {
+        return this.actionType;
+    }
 
     /**
      * Get the path.
@@ -45,8 +58,10 @@ public class PreferenceGroupMB implements Serializable {
      */
     public List<PreferencesTree> getPreferencesTrees() {
 
+        // Declare.
         List<PreferencesTree> preferencesTrees;
 
+        // Initialize.
         preferencesTrees = new ArrayList<PreferencesTree>();
 
         try {
@@ -71,26 +86,12 @@ System.err.println("Unable to get the preferences trees.\n" + e);
 
         try {
 
+            // Set the action type.
+            this.actionType = ActionType.ADD.toString();
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to add the preferences.\n" + e);
-        }
-    }
-
-    /**
-     * Process the cancel button.
-     *
-     * @param  actionEvent  the action event.
-     */
-    public void processCancelButton(ActionEvent actionEvent) {
-
-        try {
-
-        }
-        catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to cancel the add/copy/move of the preferences.\n" + e);
+System.err.println("Unable to add the preferences " + this.path + ".\n" + e);
         }
     }
 
@@ -105,6 +106,9 @@ System.err.println("Unable to cancel the add/copy/move of the preferences.\n" + 
 
             // Set the old path.
             this.oldPath = this.path;
+
+            // Set the action type.
+            this.actionType = ActionType.COPY.toString();
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -141,6 +145,9 @@ System.err.println("Unable to delete the preferences " + this.path + ".\n" + e);
 
             // Set the old path.
             this.oldPath = this.path;
+
+            // Set the action type.
+            this.actionType = ActionType.MOVE.toString();
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -157,16 +164,24 @@ System.err.println("Unable to move the preferences " + this.path + ".\n" + e);
 
         try {
 
-            // Check if the old path exists.
-            if (this.oldPath != null && !this.oldPath.equals("")) {
-
-                // Move the preferences.
-                Preference.movePreferences(this.oldPath, this.path);
-            }
-            else {
+            // Check if the action type is add.
+            if (ActionType.valueOf(this.actionType) == ActionType.ADD) {
 
                 // Add the new preference.
                 Preference.savePreferences(this.path);
+            }
+            // Check if the action type is copy.
+            else if (ActionType.valueOf(this.actionType) == ActionType.COPY) {
+
+                // Copy the preferences.
+                Preference.copyPreferences(this.oldPath, this.path);
+            }
+
+            // Check if the action type is move.
+            else if (ActionType.valueOf(this.actionType) == ActionType.MOVE) {
+
+                // Move the preferences.
+                Preference.movePreferences(this.oldPath, this.path);
             }
         }
         catch(Exception e) {
@@ -191,6 +206,17 @@ System.err.println("Unable to add/copy/move the preferences " + this.path + ".\n
             // TODO: handle exception.
 System.err.println("Unable to reset the preferences " + this.oldPath + ".\n" + e);
         }
+    }
+
+    /**
+     * Set the action type.
+     *
+     * @param  actionType  the action type.
+     */
+    public void setActionType(String actionType) {
+
+        // Set the action type.
+        this.actionType = actionType;
     }
 
     /**
