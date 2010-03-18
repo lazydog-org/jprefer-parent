@@ -25,6 +25,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private static final String AGENT_STATE_KEY = "agent.state";
     private static final String AGENT_VALUE_REGEX = "(.*),(\\d*),(.*),(.*),(.*)";
     private static final String AGENT_VALUE_SEPARATOR = ",";
+    private static final String CONFIGURATION_PATH = "org/lazydog/preference/manager/configuration";
     private static final String SEQUENCE_KEY = "sequence";
     private static final int START_SEQUENCE = 1;
     private static final String SETUP_TYPE_KEY = "setup.type";
@@ -34,14 +35,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private static final int PASSWORD_GROUP = 4;
     private static final int ENABLED_GROUP = 5;
 
-    private Preferences preferences;
-
-    /**
-     * Constructor.
-     */
-    public ConfigurationServiceImpl() {
-        preferences = Preferences.userNodeForPackage(this.getClass());
-    }
+    private static Preferences preferences =
+            Preferences.userRoot().node(CONFIGURATION_PATH);
 
     /**
      * Find the agent.
@@ -60,7 +55,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         String agentValue;
 
         // Get the agent value.
-        agentValue = this.preferences.get(getAgentKey(id), null);
+        agentValue = preferences.get(getAgentKey(id), null);
 
         // Interpret the agent value as an agent.
         agent = interpret(agentValue, id);
@@ -91,7 +86,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             String[] keys;
 
             // Get the keys.
-            keys = this.preferences.keys();
+            keys = preferences.keys();
 
             // Loop through the keys.
             for (int x = 0; x < keys.length; x++) {
@@ -135,7 +130,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      */
     @Override
     public AgentState findAgentState() {
-        return AgentState.valueOf(this.preferences.get(
+        return AgentState.valueOf(preferences.get(
                 AGENT_STATE_KEY, AgentState.UNKNOWN.toString()));
     }
 
@@ -146,7 +141,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      */
     @Override
     public SetupType findSetupType() {
-        return SetupType.valueOf(this.preferences.get(
+        return SetupType.valueOf(preferences.get(
                 SETUP_TYPE_KEY, SetupType.UNKNOWN.toString()));
     }
 
@@ -176,7 +171,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * 
      * @throws  BackingStoreException  if unable to get the sequence.
      */
-    private int getSequence()
+    private static int getSequence()
             throws BackingStoreException {
 
         // Declare.
@@ -184,12 +179,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         int sequence;
 
         // Get the current sequence.
-        sequence = this.preferences.getInt(SEQUENCE_KEY, START_SEQUENCE);
+        sequence = preferences.getInt(SEQUENCE_KEY, START_SEQUENCE);
 
         // Store the next sequence.
         nextSequence = sequence + 1;
-        this.preferences.putInt(SEQUENCE_KEY, nextSequence);
-        this.preferences.flush();
+        preferences.putInt(SEQUENCE_KEY, nextSequence);
+        preferences.flush();
 
         return sequence;
     }
@@ -320,15 +315,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 int id;
 
                 // The ID is the agent ID, otherwise it is the sequence.
-                id = (agent.getId() != null) ? agent.getId() : this.getSequence();
+                id = (agent.getId() != null) ? agent.getId() : getSequence();
 
                 // Get the agent key and value.
                 agentKey = getAgentKey(id);
                 agentValue = interpret(agent);
 
                 // Store the agent.
-                this.preferences.put(agentKey, agentValue);
-                this.preferences.flush();
+                preferences.put(agentKey, agentValue);
+                preferences.flush();
 
                 // Get the agent.
                 agent = this.findAgent(id);
@@ -365,8 +360,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             if (agentState != null) {
 
                 // Store the agent state.
-                this.preferences.put(AGENT_STATE_KEY, agentState.toString());
-                this.preferences.flush();
+                preferences.put(AGENT_STATE_KEY, agentState.toString());
+                preferences.flush();
 
                 // Get the agent state.
                 agentState = this.findAgentState();
@@ -404,8 +399,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             if (setupType != null) {
 
                 // Store the setup type.
-                this.preferences.put(SETUP_TYPE_KEY, setupType.toString());
-                this.preferences.flush();
+                preferences.put(SETUP_TYPE_KEY, setupType.toString());
+                preferences.flush();
 
                 // Get the setup type.
                 setupType = this.findSetupType();
@@ -438,8 +433,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         try {
 
             // Remove the agent.
-            this.preferences.remove(getAgentKey(id));
-            this.preferences.flush();
+            preferences.remove(getAgentKey(id));
+            preferences.flush();
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
@@ -459,8 +454,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         try {
 
             // Remove the agent state.
-            this.preferences.remove(AGENT_STATE_KEY);
-            this.preferences.flush();
+            preferences.remove(AGENT_STATE_KEY);
+            preferences.flush();
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
@@ -480,8 +475,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         try {
 
             // Remove the setup type.
-            this.preferences.remove(SETUP_TYPE_KEY);
-            this.preferences.flush();
+            preferences.remove(SETUP_TYPE_KEY);
+            preferences.flush();
         }
         catch(BackingStoreException e) {
             throw new ServiceException(

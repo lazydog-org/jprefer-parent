@@ -24,8 +24,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String RESTORE_DATE_KEY = "restore.date";
     private static final String ROOT_PATH = "/";
     private static final String SNAPSHOT_NAME_PREFIX = "snapshot-";
+    private static final String SNAPSHOTS_PATH = "org/lazydog/preference/manager/snapshots";
     private static DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-    private static Preferences snapshotSystem = Preferences.userRoot();
+    private static Preferences snapshotSystem = Preferences.userRoot().node(SNAPSHOTS_PATH);
     private static Preferences sourceSystem = Preferences.systemRoot();
 
     /**
@@ -211,7 +212,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             throw new NullPointerException("The name is null.");
         }
         
-        return ROOT_PATH + SNAPSHOT_NAME_PREFIX + name;
+        return SNAPSHOT_NAME_PREFIX + name;
     }
 
     /**

@@ -123,7 +123,7 @@ System.err.println("Unable to enable the agent, " + this.id + ".\n" + e);
      * @param  actionEvent  the action event.
      */
     public void processModifyButton(ActionEvent actionEvent) {
-System.err.println("processModifyButton invoked");
+
         try {
 
             // Get the agent.
@@ -141,7 +141,7 @@ System.err.println("Unable to modify the agent, " + this.id + ".\n" + e);
      * @param  actionEvent  the action event.
      */
     public void processOkButton(ActionEvent actionEvent) {
-System.err.println("processOkButton invoked");
+
         try {
 
             // Save the agent.

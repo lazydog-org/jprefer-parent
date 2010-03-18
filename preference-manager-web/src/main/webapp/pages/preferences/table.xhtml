@@ -14,6 +14,9 @@
             <h:form id="pm-preferences-table">
                 <div class="pm-form-buttons">
                     <a4j:commandButton
+                        value="Refresh"
+                        reRender="pm-preferences-table"/>
+                    <a4j:commandButton
                         value="Add"
                         actionListener="#{preferencesMB.processAddButton}"
                         oncomplete="Richfaces.showModalPanel('pm-preferences-modal-panel');"
