@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.model.PreferenceGroup;
+import org.lazydog.preference.manager.Preference;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
 
@@ -21,6 +21,7 @@ public class PreferenceMB implements Serializable {
     private String key;
     private String oldKey;
     private String oldValue;
+    private String path;
     private String value;
 
     /**
@@ -51,49 +52,21 @@ public class PreferenceMB implements Serializable {
     }
 
     /**
+     * Get the path.
+     * 
+     * @return  the path.
+     */
+    public String getPath() {
+        return this.path;
+    }
+
+    /**
      * Get the value.
      *
      * @return  the value.
      */
     public String getValue() {
         return this.value;
-    }
-
-    /**
-     * Get the preferences.
-     *
-     * @return  the preferences.
-     */
-    public Map<String,String> getPreferences() {
-
-        // Declare.
-        Map<String,String> preferences;
-
-        // Get the preferences from the preference group on the session.
-        preferences = (SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class) != null) ?
-                SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class).getPreferences() :
-                new LinkedHashMap<String,String>();
-
-        return preferences;
-    }
-
-    /**
-     * Get the preference keys.
-     *
-     * @return  the preference keys.
-     */
-    public List<String> getPreferenceKeys() {
-
-        // Declare.
-        List<String> preferenceKeys;
-
-        // Initialize.
-        preferenceKeys = new ArrayList();
-
-        // Get the preference keys.
-        preferenceKeys.addAll(this.getPreferences().keySet());
-
-        return preferenceKeys;
     }
 
     /**
@@ -106,7 +79,7 @@ public class PreferenceMB implements Serializable {
         try {
 
             // Remove the preference.
-            this.getPreferences().remove(this.key);
+            Preference.removePreference(this.path, this.key);
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -123,8 +96,7 @@ System.err.println("Unable to delete the preference " + this.key + ".\n" + e);
 
         try {
 
-            // Set the value, old key, and old value from the key.
-            this.value = (String)this.getPreferences().get(this.key);
+            // Set the old key, and old value.
             this.oldKey = this.key;
             this.oldValue = this.value;
         }
@@ -147,11 +119,11 @@ System.err.println("Unable to modify the preference " + this.key + ".\n" + e);
             if (this.oldKey != null && !this.oldKey.equals("")) {
 
                 // Remove the old preference.
-                this.getPreferences().remove(this.oldKey);
+                Preference.removePreference(this.path, this.oldKey);
             }
 
             // Add the new preference.
-            this.getPreferences().put(this.key, this.value);
+            Preference.savePreference(this.path, this.key, this.value);
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -203,6 +175,15 @@ System.err.println("Unable to reset the preference " + this.oldKey + ".\n" + e);
      */
     public void setOldValue(String oldValue) {
         this.oldValue = oldValue;
+    }
+
+    /**
+     * Set the path.
+     *
+     * @param  path  the path.
+     */
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /**

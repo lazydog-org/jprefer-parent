@@ -26,25 +26,82 @@
                 <rich:tree
                     switchType="ajax">
                     <rich:recursiveTreeNodesAdaptor
-                        roots="#{preferenceGroupMB.preferenceGroupTrees}"
+                        roots="#{preferenceGroupMB.preferencesTrees}"
                         var="preferenceGroup"
                         nodes="#{preferenceGroup.children}">
                         <rich:treeNodesAdaptor 
-                            var="preference"
-                            nodes="#{preferenceGroup.preferences}"/>
+                            var="key"
+                            nodes="#{preferenceGroup.preferenceKeys}">
+                            <rich:treeNode
+                                id="pm-preference-node"
+                                icon="/images/iconLeaf.gif"
+                                iconLeaf="/images/iconLeaf.gif">
+                                <h:outputText value="#{key}"/>=
+                                <h:outputText value="#{preferenceGroup.preferences[key]}"/>
+                                <rich:contextMenu
+                                    attachTo="pm-preference-node"
+                                    submitMode="ajax">
+                                    <rich:menuItem
+                                        value="Modify"
+                                        oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
+                                        reRender="pm-preference-modal-panel-content">
+                                        <a4j:actionparam
+                                            name="path"
+                                            assignTo="#{preferenceMB.path}"
+                                            value="#{preferenceGroup.path}"/>
+                                        <a4j:actionparam
+                                            name="key"
+                                            assignTo="#{preferenceMB.key}"
+                                            value="#{key}"/>
+                                        <a4j:actionparam
+                                            name="value"
+                                            assignTo="#{preferenceMB.value}"
+                                            value="#{preferenceGroup.preferences[key]}"
+                                            actionListener="#{preferenceMB.processModifyButton}"/>
+                                    </rich:menuItem>
+                                    <rich:menuItem
+                                        value="Delete"
+                                        reRender="pm-preference-group-table">
+                                        <a4j:actionparam
+                                            name="path"
+                                            assignTo="#{preferenceMB.path}"
+                                            value="#{preferenceGroup.path}"/>
+                                        <a4j:actionparam
+                                            name="key"
+                                            assignTo="#{preferenceMB.key}"
+                                            value="#{key}"
+                                            actionListener="#{preferenceMB.processDeleteButton}"/>
+                                    </rich:menuItem>
+                                </rich:contextMenu>
+                            </rich:treeNode>
+                        </rich:treeNodesAdaptor>
                         <rich:treeNode
-                            id="pm-preference-group-tree-node"
+                            id="pm-preference-group-node"
                             icon="/images/iconFolder.gif"
                             iconLeaf="/images/iconFolder.gif">
                             <h:outputText value="#{preferenceGroup}"/>
                             <rich:contextMenu
-                                attachTo="pm-preference-group-tree-node"
+                                attachTo="pm-preference-group-node"
                                 submitMode="ajax">
                                 <rich:menuItem
-                                    value="Add"
-                                    actionListener="#{preferenceGroupMB.processAddButton}"
+                                    value="Add Preference"
+                                    oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
+                                    reRender="pm-preference-modal-panel-content">
+                                    <a4j:actionparam
+                                        name="path"
+                                        assignTo="#{preferenceMB.path}"
+                                        value="#{preferenceGroup.path}"/>
+                                </rich:menuItem>
+                                <rich:menuItem
+                                    value="Move"
                                     oncomplete="Richfaces.showModalPanel('pm-preference-group-modal-panel');"
-                                    reRender="pm-preference-group-modal-panel-content"/>
+                                    reRender="pm-preference-group-modal-panel-content">
+                                    <a4j:actionparam
+                                        name="path"
+                                        assignTo="#{preferenceGroupMB.path}"
+                                        value="#{preferenceGroup.path}"
+                                        actionListener="#{preferenceGroupMB.processMoveButton}"/>
+                                </rich:menuItem>
                                 <rich:menuItem
                                     value="Delete"
                                     reRender="pm-preference-group-table">
@@ -53,16 +110,6 @@
                                         assignTo="#{preferenceGroupMB.path}"
                                         value="#{preferenceGroup.path}"
                                         actionListener="#{preferenceGroupMB.processDeleteButton}"/>
-                                </rich:menuItem>
-                                <rich:menuItem
-                                    value="Modify"
-                                    oncomplete="Richfaces.showModalPanel('pm-preference-group-modal-panel');"
-                                    reRender="pm-preference-group-modal-panel-content">
-                                    <a4j:actionparam
-                                        name="path"
-                                        assignTo="#{preferenceGroupMB.path}"
-                                        value="#{preferenceGroup.path}"
-                                        actionListener="#{preferenceGroupMB.processModifyButton}"/>
                                 </rich:menuItem>
                             </rich:contextMenu>
                         </rich:treeNode>

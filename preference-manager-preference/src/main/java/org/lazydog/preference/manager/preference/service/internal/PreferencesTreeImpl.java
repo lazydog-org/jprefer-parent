@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import org.lazydog.preference.manager.model.PreferencesTree;
 
 
 /**
- * Preference service implementation.
+ * Preferences tree implementation.
  *
  * @author  Ron Rickard
  */
-public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
+public class PreferencesTreeImpl implements PreferencesTree {
 
     private static final String ROOT_PATH = "/";
     private Preferences preferences;
@@ -25,8 +25,44 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
      * @param  path  the path.
      *
      */
-    public PreferenceGroupTreeImpl(String path) {
+    public PreferencesTreeImpl(String path) {
         this.preferences = Preferences.systemRoot().node(path);
+    }
+
+    /**
+     * Get the children.
+     *
+     * @return  the children.
+     */
+    @Override
+    public List<PreferencesTree> getChildren() {
+
+        // Declare.
+        List<PreferencesTree> children;
+
+        // Initialize.
+        children = new ArrayList<PreferencesTree>();
+
+        try {
+
+            // Loop through the children.
+            for (String childName : this.preferences.childrenNames()) {
+
+                // Declare.
+                PreferencesTreeImpl child;
+
+                // Get the child.
+                child = new PreferencesTreeImpl(this.preferences.node(childName).absolutePath());
+
+                // Add the child to the children.
+                children.add(child);
+            }
+        }
+        catch(BackingStoreException e) {
+            // Already handled.
+        }
+
+        return children;
     }
 
     /**
@@ -40,39 +76,23 @@ public class PreferenceGroupTreeImpl implements PreferenceGroupTree {
     }
 
     /**
-     * Get the children.
+     * Get the preference keys.
      *
-     * @return  the children.
+     * @return  the preference keys.
      */
     @Override
-    public List<PreferenceGroupTree> getChildren() {
+    public List<String> getPreferenceKeys() {
 
         // Declare.
-        List<PreferenceGroupTree> children;
+        List<String> preferenceKeys;
 
         // Initialize.
-        children = new ArrayList<PreferenceGroupTree>();
+        preferenceKeys = new ArrayList<String>();
 
-        try {
+        // Get the preference keys.
+        preferenceKeys.addAll(this.getPreferences().keySet());
 
-            // Loop through the children.
-            for (String childName : this.preferences.childrenNames()) {
-
-                // Declare.
-                PreferenceGroupTreeImpl child;
-
-                // Get the child.
-                child = new PreferenceGroupTreeImpl(this.preferences.node(childName).absolutePath());
-
-                // Add the child to the children.
-                children.add(child);
-            }
-        }
-        catch(BackingStoreException e) {
-            // Already handled.
-        }
-
-        return children;
+        return preferenceKeys;
     }
 
     /**

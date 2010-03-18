@@ -5,14 +5,15 @@ import java.util.Map;
 
 
 /**
- * Preference group tree.
+ * Preferences tree.
  *
  * @author  Ron Rickard
  */
-public interface PreferenceGroupTree {
+public interface PreferencesTree {
 
-    public List<PreferenceGroupTree> getChildren();
+    public List<PreferencesTree> getChildren();
     public String getPath();
+    public List<String> getPreferenceKeys();
     public Map<String,String> getPreferences();
     @Override
     public String toString();

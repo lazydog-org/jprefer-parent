@@ -21,6 +21,7 @@
                                 size="25"
                                 maxlength="50"/>
                             <h:inputHidden value="#{preferenceMB.oldKey}"/>
+                            <h:inputHidden value="#{preferenceMB.path}"/>
                         </li>
                         <li>
                             <label for="value">Value: </label>
@@ -41,13 +42,13 @@
                     <a4j:commandButton
                         value="Cancel"
                         oncomplete="Richfaces.hideModalPanel('pm-preference-modal-panel');"
-                        reRender="pm-preference-table"/>
+                        reRender="pm-preference-group-table"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
                         actionListener="#{preferenceMB.processOkButton}"
                         oncomplete="Richfaces.hideModalPanel('pm-preference-modal-panel');"
-                        reRender="pm-preference-table"/>
+                        reRender="pm-preference-group-table"/>
                 </div>
             </h:form>
         </ui:composition>

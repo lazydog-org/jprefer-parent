@@ -1,7 +1,7 @@
 package org.lazydog.preference.manager.preference.service;
 
-import org.lazydog.preference.manager.model.PreferenceGroup;
-import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import java.util.Map;
+import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.service.ServiceException;
 
 
@@ -12,25 +12,27 @@ import org.lazydog.preference.manager.service.ServiceException;
  */
 public interface PreferenceService {
 
-    public void copyPreferences(
-            String sourcePath, String targetPath)
+    public void copyPreferences(String sourcePath, String targetPath)
             throws ServiceException;
     public Object exportDocument()
             throws ServiceException;
     public Object exportDocument(String path)
             throws ServiceException;
-    public PreferenceGroup findPreferenceGroup(String path)
+    public Map<String,String> findPreferences(String path)
             throws ServiceException;
-    public PreferenceGroupTree findPreferenceGroupTree();
+    public PreferencesTree findPreferencesTree()
+            throws ServiceException;
     public void importDocument(Object document)
             throws ServiceException;
     public void importDocument(String path, Object document)
             throws ServiceException;
-    public void movePreferences(
-            String sourcePath, String targetPath)
+    public void movePreferences(String sourcePath, String targetPath)
             throws ServiceException;
-    public PreferenceGroup persistPreferenceGroup(
-            PreferenceGroup preferenceGroup)
+    public String persistPreference(String path, String key, String value)
+            throws ServiceException;
+    public String persistPreferences(String path)
+            throws ServiceException;
+    public void removePreference(String path, String key)
             throws ServiceException;
     public void removePreferences(String path)
             throws ServiceException;

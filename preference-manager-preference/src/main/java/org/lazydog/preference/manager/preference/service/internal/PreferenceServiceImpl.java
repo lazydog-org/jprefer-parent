@@ -3,11 +3,12 @@ package org.lazydog.preference.manager.preference.service.internal;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
-import org.lazydog.preference.manager.model.PreferenceGroup;
-import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.preference.service.PreferenceService;
 import org.lazydog.preference.manager.service.ServiceException;
 
@@ -167,7 +168,7 @@ public class PreferenceServiceImpl implements PreferenceService {
                 throw new NullPointerException("The path is null.");
             }
 
-            // Check if the preferences exists.
+            // Check if the path exists.
             if (system.nodeExists(path)) {
 
                 // Declare.
@@ -196,26 +197,24 @@ public class PreferenceServiceImpl implements PreferenceService {
     }
 
     /**
-     * Find the preference group.
+     * Find the preferences.
      * 
      * @param  path  the path.
      * 
-     * @return  the preference group.
+     * @return  the preferences.
      * 
-     * @throws  ServiceException          if unable to find the
-     *                                    preference group.
-     * @throws  NullPointerException      if the path are null.
+     * @throws  ServiceException          if unable to find the preferences.
+     * @throws  NullPointerException      if the path is null.
      * @throws  IllegalArgumentException  if the path does not exist.
      */
-    @Override
-    public PreferenceGroup findPreferenceGroup(String path)
+    public Map<String,String> findPreferences(String path)
             throws ServiceException {
 
         // Declare.
-        PreferenceGroup preferenceGroup;
+        Map<String,String> preferences;
 
         // Initialize.
-        preferenceGroup = null;
+        preferences = new LinkedHashMap<String,String>();
 
         try {
 
@@ -224,19 +223,14 @@ public class PreferenceServiceImpl implements PreferenceService {
                 throw new NullPointerException("The path is null.");
             }
 
-            // Check if the preferences exists.
+            // Check if the path exists.
             if (system.nodeExists(path)) {
-
-                // Set the preference group.
-                preferenceGroup = new PreferenceGroup();
-                preferenceGroup.setPath(path);
 
                 // Loop through the keys.
                 for (String key : system.node(path).keys()) {
 
-                    // Add the preference to the preference group.
-                    preferenceGroup.getPreferences().put(key, 
-                            system.node(path).get(key, null));
+                    // Add the preference to the preferences.
+                    preferences.put(key, system.node(path).get(key, null));
                 }
             }
             else {
@@ -246,20 +240,23 @@ public class PreferenceServiceImpl implements PreferenceService {
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
-                    "Unable to find the preferences group, " + path + ".", e);
+                    "Unable to find the preferences, " + path + ".", e);
         }
 
-        return preferenceGroup;
+        return preferences;
     }
 
     /**
-     * Find the preference group tree.
+     * Find the preferences tree.
      *
-     * @return  the preference group tree.
+     * @return  the preferences tree.
+     *
+     * @throws  ServiceException  if unable to find the preferences tree.
      */
     @Override
-    public PreferenceGroupTree findPreferenceGroupTree() {
-        return new PreferenceGroupTreeImpl(ROOT_PATH);
+    public PreferencesTree findPreferencesTree() 
+            throws ServiceException {
+        return new PreferencesTreeImpl(ROOT_PATH);
     }
 
     /**
@@ -349,7 +346,10 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @param  sourcePath  the source path.
      * @param  targetPath  the target path.
      * 
-     * @throws  ServiceException  if unable to move the preferences.
+     * @throws  ServiceException          if unable to move the preferences.
+     * @throws  NullPointerException      if the source or target path are null.
+     * @throws  IllegalArgumentException  if the source path does not exist or
+     *                                    the target path already exists.
      */
     @Override
     public void movePreferences(String sourcePath, String targetPath)
@@ -371,70 +371,166 @@ public class PreferenceServiceImpl implements PreferenceService {
     }
 
     /**
-     * Persist the preference group.
+     * Persist the preference.
      *
-     * @param  preferenceGroup  the preference group.
+     * @param  path   the path.
+     * @param  key    the key.
+     * @param  value  the value.
      *
-     * @return  the preference group.
+     * @return  the preference value.
      *
-     * @throws  ServiceException          if unable to persist the
-     *                                    preference group.
-     * @throws  NullPointerException      if the preference group is null.
-     * @throws  IllegalArgumentException  if the preference group is invalid.
+     * @throws  ServiceException          if unable to persist the preference.
+     * @throws  NullPointerException      if the path, key, or value is null.
+     * @throws  IllegalArgumentException  if the path does not exist.
      */
     @Override
-    public PreferenceGroup persistPreferenceGroup(
-            PreferenceGroup preferenceGroup)
+    public String persistPreference(String path, String key, String value)
             throws ServiceException {
 
         try {
 
-            // Check if the preference group is null.
-            if (preferenceGroup == null) {
-                throw new NullPointerException("The preference group is null.");
+            // Check if the path is null.
+            if (path == null) {
+                throw new NullPointerException("The path is null.");
             }
 
-            // Check if the preference group path is valid.
-            if (preferenceGroup.getPath() != null) {
+            // Check if the key is null.
+            if (key == null) {
+                throw new NullPointerException("The key is null.");
+            }
 
-                // Declare.
-                Preferences preferences;
+            // Check if the value is null.
+            if (key == null) {
+                throw new NullPointerException("The value is null.");
+            }
 
-                // Create/get the preferences.
-                preferences = system.node(preferenceGroup.getPath());
+            // Check if the path exists.
+            if (system.nodeExists(path)) {
 
-                // Clear the preferences.
-                preferences.clear();
+                // Persist the preference.
+                system.node(path).put(key, value);
 
-                // Loop through the keys.
-                for (String key : preferenceGroup.getPreferences().keySet()) {
-
-                    // Add the preference to the preferences.
-                    preferences.put(key,
-                            preferenceGroup.getPreferences().get(key));
-                }
-
-                // Flush the preferences.
-                preferences.flush();
-
-                // Find the preference group.
-                preferenceGroup = this.findPreferenceGroup(
-                        preferenceGroup.getPath());
+                // Flush the system.
+                system.flush();
             }
             else {
                 throw new IllegalArgumentException(
-                        "The preference group is invalid.");
+                        "The path, " + path + ", does not exist.");
+            }
+
+            // Get the value.
+            system.node(path).get(key, null);
+        }
+        catch(BackingStoreException e) {
+            throw new ServiceException(
+                    "Unable to persist the preference, "
+                    + key + "=" + value + ", at " + path + ".", e);
+        }
+
+        return value;
+    }
+
+    /**
+     * Persist the preferences.
+     *
+     * @param  path   the path.
+     *
+     * @return  the preferences.
+     *
+     * @throws  ServiceException          if unable to persist the preferences.
+     * @throws  NullPointerException      if the path is null.
+     * @throws  IllegalArgumentException  if the path already exists.
+     */
+    @Override
+    public String persistPreferences(String path)
+            throws ServiceException {
+
+        try {
+
+            // Check if the path is null.
+            if (path == null) {
+                throw new NullPointerException("The path is null.");
+            }
+
+            // Check if the path does not exists.
+            if (!system.nodeExists(path)) {
+
+                // Persist the preferences.
+                system.node(path);
+
+                // Flush the system.
+                system.flush();
+            }
+            else {
+                throw new IllegalArgumentException(
+                        "The path, " + path + ", already exist.");
+            }
+
+            // Get the path.
+            path = system.node(path).absolutePath();
+        }
+        catch(BackingStoreException e) {
+            throw new ServiceException(
+                    "Unable to persist the preference path, " + path + ".", e);
+        }
+
+        return path;
+    }
+
+    /**
+     * Remove the preference.
+     *
+     * @param  path  the path.
+     * @param  key   the key.
+     *
+     * @throws  ServiceException          if unable to remove the preference.
+     * @throws  NullPointerException      if the path or key is null.
+     * @throws  IllegalArgumentException  if the path or key does not exist.
+     */
+    @Override
+    public void removePreference(String path, String key)
+            throws ServiceException {
+
+        try {
+
+            // Check if the path is null.
+            if (path == null) {
+                throw new NullPointerException("The path is null.");
+            }
+
+            // Check if the key is null.
+            if (key == null) {
+                throw new NullPointerException("The key is null.");
+            }
+
+            // Check if the path exists.
+            if (system.nodeExists(path)) {
+
+                // Check if the key exists.
+                if (system.node(path).get(key, null) != null) {
+
+                    // Remove the preference.
+                    system.node(path).remove(key);
+
+                    // Flush the system.
+                    system.flush();
+                }
+                else {
+                    throw new IllegalArgumentException(
+                            "The key, " + key + ", does not exist.");
+                }
+            }
+            else {
+                throw new IllegalArgumentException(
+                        "The path, " + path + ", does not exist.");
             }
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
-                    "Unable to persist the preference group, "
-                    + preferenceGroup + ".", e);
+                    "Unable to remove the preference, "
+                    + key + ", at " + path + ".", e);
         }
-
-        return preferenceGroup;
     }
-
     /**
      * Remove the preferences.
      *
@@ -455,7 +551,7 @@ public class PreferenceServiceImpl implements PreferenceService {
                 throw new NullPointerException("The path is null.");
             }
 
-            // Check if the preferences exists.
+            // Check if the path exists.
             if (system.nodeExists(path)) {
 
                 // Remove the preferences.

@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.model.PreferenceGroup;
-import org.lazydog.preference.manager.model.PreferenceGroupTree;
+import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.Preference;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
@@ -40,12 +39,27 @@ public class PreferenceGroupMB implements Serializable {
     }
 
     /**
-     * Get the preference group trees.
+     * Get the preferences trees.
      *
-     * @return  the preference group trees.
+     * @return  the preferences trees.
      */
-    public List<PreferenceGroupTree> getPreferenceGroupTrees() {
-        return Preference.getPreferenceGroupTree().getChildren();
+    public List<PreferencesTree> getPreferencesTrees() {
+
+        List<PreferencesTree> preferencesTrees;
+
+        preferencesTrees = new ArrayList<PreferencesTree>();
+
+        try {
+
+            // Get the children of the preferences tree.
+            preferencesTrees = Preference.getPreferencesTree().getChildren();
+        }
+        catch(Exception e) {
+              // TODO: handle exception.
+System.err.println("Unable to get the preferences trees.\n" + e);
+        }
+
+        return preferencesTrees;
     }
 
     /**
@@ -57,12 +71,10 @@ public class PreferenceGroupMB implements Serializable {
 
         try {
 
-            // Put a new preference group on the session.
-            SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, new PreferenceGroup());
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to add the preference group.\n" + e);
+System.err.println("Unable to add the preferences.\n" + e);
         }
     }
 
@@ -75,12 +87,28 @@ System.err.println("Unable to add the preference group.\n" + e);
 
         try {
 
-            // Reove the preference group from the session.
-            SessionUtility.removeValue(SessionKey.PREFERENCE_GROUP);
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to cancel the add/modify of the preference group " + this.oldPath + ".\n" + e);
+System.err.println("Unable to cancel the add/copy/move of the preferences.\n" + e);
+        }
+    }
+
+    /**
+     * Process the copy button.
+     *
+     * @param  actionEvent  the action event.
+     */
+    public void processCopyButton(ActionEvent actionEvent) {
+
+        try {
+
+            // Set the old path.
+            this.oldPath = this.path;
+        }
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to copy the preferences " + this.path + ".\n" + e);
         }
     }
 
@@ -93,33 +121,30 @@ System.err.println("Unable to cancel the add/modify of the preference group " + 
 
         try {
 
-            // Remove the preference group.
-            Preference.removePreferenceGroup(this.path);
+            // Remove the preferences.
+            Preference.removePreferences(this.path);
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to delete the preference group " + this.oldPath + ".\n" + e);
+System.err.println("Unable to delete the preferences " + this.path + ".\n" + e);
         }
     }
 
     /**
-     * Process the modify button.
+     * Process the move button.
      *
      * @param  actionEvent  the action event.
      */
-    public void processModifyButton(ActionEvent actionEvent) {
+    public void processMoveButton(ActionEvent actionEvent) {
 
         try {
-
-            // Put the preference group on the session.
-            SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.path));
 
             // Set the old path.
             this.oldPath = this.path;
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to modify the preference group " + this.path + ".\n" + e);
+System.err.println("Unable to move the preferences " + this.path + ".\n" + e);
         }
     }
 
@@ -132,26 +157,21 @@ System.err.println("Unable to modify the preference group " + this.path + ".\n" 
 
         try {
 
-            // Declare.
-            PreferenceGroup preferenceGroup;
-
             // Check if the old path exists.
             if (this.oldPath != null && !this.oldPath.equals("")) {
 
-                // Remove the old preference group.
-                Preference.removePreferenceGroup(this.oldPath);
+                // Move the preferences.
+                Preference.movePreferences(this.oldPath, this.path);
             }
+            else {
 
-            // Get the preference group from the session.
-            preferenceGroup = SessionUtility.getValue(SessionKey.PREFERENCE_GROUP, PreferenceGroup.class);
-            preferenceGroup.setPath(path);
-
-            // Add the new preference.
-            Preference.savePreferenceGroup(preferenceGroup);
+                // Add the new preference.
+                Preference.savePreferences(this.path);
+            }
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to add/modify the preference group " + this.path + ".\n" + e);
+System.err.println("Unable to add/copy/move the preferences " + this.path + ".\n" + e);
         }
     }
 
@@ -164,24 +184,12 @@ System.err.println("Unable to add/modify the preference group " + this.path + ".
 
         try {
 
-            // Check if the old path exists.
-            if (this.oldPath != null && !this.oldPath.equals("")) {
-
-                // Put the old preference group on the session.
-                SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, Preference.getPreferenceGroup(this.oldPath));
-
-                // Reset the absolute path.
-                this.path = this.oldPath;
-            }
-            else {
-
-                // Put a new preference the session.
-                SessionUtility.putValue(SessionKey.PREFERENCE_GROUP, new PreferenceGroup());
-            }
+            // Reset the path.
+            this.path = this.oldPath;
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to reset the preference group " + this.oldPath + ".\n" + e);
+System.err.println("Unable to reset the preferences " + this.oldPath + ".\n" + e);
         }
     }
 
