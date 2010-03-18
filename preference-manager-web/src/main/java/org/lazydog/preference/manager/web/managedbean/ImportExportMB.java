@@ -97,8 +97,7 @@ System.err.println("Unable to export document.\n" + e);
             // Get the upload item.
             uploadItem = uploadEvent.getUploadItem();
             document = readFileAsString(uploadItem.getFile().getAbsolutePath());
-System.err.println("Document");
-System.err.println(document);
+
             // Import the document.
             Preference.importDocument(document);
         }
