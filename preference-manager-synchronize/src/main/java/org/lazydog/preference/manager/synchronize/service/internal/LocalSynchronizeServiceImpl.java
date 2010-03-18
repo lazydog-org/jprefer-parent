@@ -25,7 +25,7 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
      * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument()
+    public String exportDocument()
             throws ServiceException {
         return preferenceService.exportDocument();
     }
@@ -40,7 +40,7 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
      * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument(String path)
+    public String exportDocument(String path)
             throws ServiceException {
         return preferenceService.exportDocument(path);
     }
@@ -53,7 +53,7 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
      * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(Object document)
+    public void importDocument(String document)
             throws ServiceException {
         preferenceService.importDocument(document);
     }
@@ -67,7 +67,7 @@ public class LocalSynchronizeServiceImpl implements LocalSynchronizeService {
      * @throws  GroupServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(String path, Object document)
+    public void importDocument(String path, String document)
             throws ServiceException {
         preferenceService.importDocument(path, document);
     }

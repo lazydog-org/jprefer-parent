@@ -137,7 +137,7 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument()
+    public String exportDocument()
             throws ServiceException {
         return this.exportDocument(system.absolutePath());
     }
@@ -152,7 +152,7 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument(String path)
+    public String exportDocument(String path)
             throws ServiceException {
 
         // Declare.
@@ -294,7 +294,7 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(Object document)
+    public void importDocument(String document)
             throws ServiceException {
         this.importDocument(system.absolutePath(), document);
     }
@@ -308,7 +308,7 @@ public class PreferenceServiceImpl implements PreferenceService {
      * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(String path, Object document)
+    public void importDocument(String path, String document)
             throws ServiceException {
 
         try {
@@ -321,7 +321,7 @@ public class PreferenceServiceImpl implements PreferenceService {
 
             // Convert the document to a input stream.
             inputStream = new ByteArrayInputStream(
-                    ((String)document).getBytes((STRING_ENCODING)));
+                    document.getBytes((STRING_ENCODING)));
 
             // Import the input stream.
             Preferences.importPreferences(inputStream);

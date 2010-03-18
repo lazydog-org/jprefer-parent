@@ -49,7 +49,7 @@ public class Tester {
         AgentSynchronizeServiceMBean agentGroupService = JMX.newMXBeanProxy(connection, name, AgentSynchronizeServiceMBean.class);
 
         //agentGroupService.removeGroup(id);
-        agentGroupService.importDocument(id, document);
+        //agentGroupService.importDocument(id, document);
 
         connector.close();
     }

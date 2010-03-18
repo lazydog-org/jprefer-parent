@@ -15,12 +15,12 @@ public interface SynchronizeService {
     public static final String PASSWORD = "password";
     public static final String SERVER_NAME = "serverName";
 
-    public Object exportDocument()
+    public String exportDocument()
             throws ServiceException;
-    public Object exportDocument(String path)
+    public String exportDocument(String path)
             throws ServiceException;
-    public void importDocument(Object document)
+    public void importDocument(String document)
             throws ServiceException;
-    public void importDocument(String path, Object document)
+    public void importDocument(String path, String document)
             throws ServiceException;
 }

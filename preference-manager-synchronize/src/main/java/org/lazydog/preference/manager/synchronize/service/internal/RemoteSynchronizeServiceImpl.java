@@ -150,12 +150,12 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
      * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument()
+    public String exportDocument()
             throws ServiceException {
 
         // Declare.
         JMXConnector connector;
-        Object document;
+        String document;
 
         // Initialize.
         connector = null;
@@ -194,12 +194,12 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
      * @throws  ServiceException  if unable to export the preferences.
      */
     @Override
-    public Object exportDocument(String path)
+    public String exportDocument(String path)
             throws ServiceException {
 
         // Declare.
         JMXConnector connector;
-        Object document;
+        String document;
 
         // Initialize.
         connector = null;
@@ -292,7 +292,7 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
      * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(Object document)
+    public void importDocument(String document)
             throws ServiceException {
 
         // Declare.
@@ -331,7 +331,7 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
      * @throws  ServiceException  if unable to import the preferences.
      */
     @Override
-    public void importDocument(String path, Object document)
+    public void importDocument(String path, String document)
             throws ServiceException {
 
         // Declare.

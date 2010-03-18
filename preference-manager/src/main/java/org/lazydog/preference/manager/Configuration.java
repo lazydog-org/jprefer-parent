@@ -62,10 +62,10 @@ public class Configuration {
 
             // Declare.
             SynchronizeService remoteSynchronizeService;
-            Object remoteDocument;
+            String remoteDocument;
             Hashtable<String,String> env;
             SynchronizeService localSynchronizeService;
-            Object localDocument;
+            String localDocument;
 
             // Set the environment.
             env = new Hashtable<String,String>();
@@ -85,7 +85,7 @@ public class Configuration {
             localDocument = localSynchronizeService.exportDocument();
 
             // Check if the remote document is equal to the local document.
-            if (((String)remoteDocument).equals((String)localDocument)) {
+            if (remoteDocument.equals(localDocument)) {
 
                 // The agent is synced.
                 status = AgentStatus.UP_SYNCED;
@@ -97,7 +97,7 @@ public class Configuration {
             }
         }
         catch(Exception e) {
-
+e.printStackTrace();
             // Set the status to down.
             status = AgentStatus.DOWN;
         }
