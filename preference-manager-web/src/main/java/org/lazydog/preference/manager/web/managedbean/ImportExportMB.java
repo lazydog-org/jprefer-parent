@@ -1,9 +1,15 @@
 package org.lazydog.preference.manager.web.managedbean;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import javax.faces.event.ActionEvent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
+import org.richfaces.event.UploadEvent;
+import org.richfaces.model.UploadItem;
 import org.lazydog.preference.manager.Preference;
 
 
@@ -15,11 +21,34 @@ import org.lazydog.preference.manager.Preference;
 public class ImportExportMB {
 
     /**
-     * Export the preferences.
+     * Read the file as a string.
+     * 
+     * @param  filePath  the file path.
+     * 
+     * @return  the file as a string.
+     * 
+     * @throws  IOException  if unable to read the file as a string.
+     */
+    private static String readFileAsString(String filePath) throws IOException {
+
+        // Declare.
+        byte[] buffer;
+        BufferedInputStream input;
+
+        buffer = new byte[(int)new File(filePath).length()];
+        input = new BufferedInputStream(new FileInputStream(filePath));
+
+        input.read(buffer);
+
+        return new String(buffer);
+    }
+
+    /**
+     * Export the preferences to a document.
      *
      * @param  actionEvent  the action event.
      */
-    public void export(ActionEvent actionEvent) {
+    public void exportDocument(ActionEvent actionEvent) {
 
         try {
 
@@ -48,7 +77,34 @@ public class ImportExportMB {
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to export preferences.\n" + e);
+System.err.println("Unable to export document.\n" + e);
+        }
+    }
+
+    /**
+     * Import the preferences from a document.
+     *
+     * @param  uploadEvent  the upload event.
+     */
+    public void importDocument(UploadEvent uploadEvent) {
+
+        try {
+
+            // Declare.
+            String document;
+            UploadItem uploadItem;
+
+            // Get the upload item.
+            uploadItem = uploadEvent.getUploadItem();
+            document = readFileAsString(uploadItem.getFile().getAbsolutePath());
+System.err.println("Document");
+System.err.println(document);
+            // Import the document.
+            Preference.importDocument(document);
+        }
+        catch(Exception e) {
+            // TODO: handle exception.
+System.err.println("Unable to import document.\n" + e);
         }
     }
 }

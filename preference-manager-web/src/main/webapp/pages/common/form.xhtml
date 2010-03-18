@@ -3,7 +3,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <head/>
@@ -16,7 +16,11 @@
                         action="#{setupMB.reconfigure}"/>
                     <h:commandButton
                         value="Export"
-                        actionListener="#{importExportMB.export}"/>
+                        actionListener="#{importExportMB.exportDocument}"/>
+                    <a4j:commandButton
+                        value="Import"
+                        oncomplete="Richfaces.showModalPanel('pm-import-export-modal-panel');"
+                        reRender="pm-import-export-modal-panel-content"/>
                 </div>
             </h:form>
         </ui:composition>
