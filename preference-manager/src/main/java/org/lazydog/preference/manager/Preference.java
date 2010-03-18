@@ -19,7 +19,12 @@ public class Preference {
 
     public static void copyPreferences(String sourcePath, String targetPath)
             throws ServiceException {
+
+        // Copy the preferences.
         preferenceService.copyPreferences(sourcePath, targetPath);
+
+        // Synchronize the agents.
+        Configuration.synchronizeAgents();
     }
 
     public static PreferencesTree getPreferencesTree()
@@ -34,26 +39,51 @@ public class Preference {
 
     public static void movePreferences(String sourcePath, String targetPath)
             throws ServiceException {
+
+        // Move the preferences.
         preferenceService.movePreferences(sourcePath, targetPath);
+
+        // Synchronize the agents.
+        Configuration.synchronizeAgents();
     }
     
     public static void removePreference(String path, String key)
             throws ServiceException {
+
+        // Remove the preference.
         preferenceService.removePreference(path, key);
+
+        // Synchronize the agents.
+        Configuration.synchronizeAgents();
     }
 
     public static void removePreferences(String path)
             throws ServiceException {
+
+        // Remove the preferences.
         preferenceService.removePreferences(path);
+
+        // Synchronize the agents.
+        Configuration.synchronizeAgents();
     }
 
     public static void savePreference(String path, String key, String value)
             throws ServiceException {
+
+        // Persist the preference.
         preferenceService.persistPreference(path, key, value);
+
+        // Synchronize the agents.
+        Configuration.synchronizeAgents();
     }
 
     public static void savePreferences(String path)
             throws ServiceException {
+
+        // Persist the preferences.
         preferenceService.persistPreferences(path);
+
+        // Synchronize the agents.
+        Configuration.synchronizeAgents();
     }
 }

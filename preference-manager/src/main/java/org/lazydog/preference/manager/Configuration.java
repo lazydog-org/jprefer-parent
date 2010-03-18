@@ -287,6 +287,9 @@ public class Configuration {
         // Import the document locally.
         synchronizeService = SynchronizeServiceFactory.create();
         synchronizeService.importDocument(document);
+
+        // Synchronize the agents.
+        synchronizeAgents();
     }
 
     /**

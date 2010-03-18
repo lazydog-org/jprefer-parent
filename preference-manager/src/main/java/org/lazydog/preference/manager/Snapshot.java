@@ -5,6 +5,8 @@ import java.util.Map;
 import org.lazydog.preference.manager.service.ServiceException;
 import org.lazydog.preference.manager.snapshot.service.SnapshotService;
 import org.lazydog.preference.manager.snapshot.service.SnapshotServiceFactory;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceFactory;
 
 
 /**
@@ -39,6 +41,11 @@ public class Snapshot {
 
     public static void restoreSnapshot(String name) 
             throws ServiceException {
+
+        // Restore the snapshot.
         snapshotService.restoreSnapshot(name);
+
+        // Synchronize the agents.
+        Configuration.synchronizeAgents();
     }
 }
