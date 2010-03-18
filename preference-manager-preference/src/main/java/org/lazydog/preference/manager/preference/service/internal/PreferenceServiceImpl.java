@@ -10,6 +10,7 @@ import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.preference.service.PreferenceService;
+import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
 import org.lazydog.preference.manager.service.ServiceException;
 
 
@@ -18,12 +19,11 @@ import org.lazydog.preference.manager.service.ServiceException;
  *
  * @author  Ron Rickard
  */
-public class PreferenceServiceImpl implements PreferenceService {
+public class PreferenceServiceImpl implements PreferenceService, SynchronizeService {
 
     private static final String ROOT_PATH = "/";
     private static final String STRING_ENCODING = "UTF-8";
     private static Preferences system = Preferences.systemRoot();
-
 
     /**
      * Copy the preferences.

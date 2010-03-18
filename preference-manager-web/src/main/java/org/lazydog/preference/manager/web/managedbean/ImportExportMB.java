@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
-import org.lazydog.preference.manager.Preference;
+import org.lazydog.preference.manager.Configuration;
 
 
 /**
@@ -59,7 +59,7 @@ public class ImportExportMB {
             ServletOutputStream output;
 
             // Export the document.
-            document = (String)Preference.exportDocument();
+            document = Configuration.exportDocument();
 
             // Set the response headers.
             context = FacesContext.getCurrentInstance();
@@ -99,7 +99,7 @@ System.err.println("Unable to export document.\n" + e);
             document = readFileAsString(uploadItem.getFile().getAbsolutePath());
 
             // Import the document.
-            Preference.importDocument(document);
+            Configuration.importDocument(document);
         }
         catch(Exception e) {
             // TODO: handle exception.

@@ -22,11 +22,6 @@ public class Preference {
         preferenceService.copyPreferences(sourcePath, targetPath);
     }
 
-    public static String exportDocument()
-            throws ServiceException {
-        return (String)preferenceService.exportDocument();
-    }
-    
     public static PreferencesTree getPreferencesTree()
             throws ServiceException {
         return preferenceService.findPreferencesTree();
@@ -35,11 +30,6 @@ public class Preference {
     public static Map<String,String> getPreferences(String path)
             throws ServiceException {
         return preferenceService.findPreferences(path);
-    }
-
-    public static void importDocument(String document)
-            throws ServiceException {
-        preferenceService.importDocument(document);
     }
 
     public static void movePreferences(String sourcePath, String targetPath)

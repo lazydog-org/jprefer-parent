@@ -14,6 +14,9 @@
             <h:form id="pm-agent-table">
                 <div class="pm-form-buttons">
                     <a4j:commandButton
+                        value="Refresh"
+                        reRender="pm-agent-table"/>
+                    <a4j:commandButton
                         value="Add"
                         oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
                         reRender="pm-agent-modal-panel-content"/>
@@ -87,8 +90,13 @@
                             <rich:menuItem
                                 style="display: #{agent.enabled ? 'block' : 'none'};"
                                 value="Synchronize"
-                                actionListener="#{agentMB.processSynchronizeButton}"
-                                reRender="pm-agent-table"/>
+                                reRender="pm-agent-table">
+                                <a4j:actionparam
+                                    name="id"
+                                    assignTo="#{agentMB.id}"
+                                    value="#{agent.id}"
+                                    actionListener="#{agentMB.processSynchronizeButton}"/>
+                            </rich:menuItem>
                         </rich:contextMenu>
                     </rich:column>
                 </rich:dataTable>

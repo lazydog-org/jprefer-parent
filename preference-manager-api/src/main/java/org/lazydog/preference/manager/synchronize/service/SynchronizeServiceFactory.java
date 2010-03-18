@@ -56,7 +56,7 @@ public class SynchronizeServiceFactory {
      * @return  the synchronize service.
      */
     public static SynchronizeService create() {
-        return SynchronizeServiceFactory.create(LocalSynchronizeService.class);
+        return SynchronizeServiceFactory.create(SynchronizeService.class);
     }
 
     /**
@@ -69,12 +69,12 @@ public class SynchronizeServiceFactory {
     public static SynchronizeService create(Hashtable environment) {
 
         // Declare.
-        RemoteSynchronizeService remoteGroupService;
+        RemoteSynchronizeService remoteSynchronizeService;
         
         // Create the remote synchronize service.
-        remoteGroupService = SynchronizeServiceFactory.create(RemoteSynchronizeService.class);
-        remoteGroupService.setEnvironment(environment);
+        remoteSynchronizeService = SynchronizeServiceFactory.create(RemoteSynchronizeService.class);
+        remoteSynchronizeService.setEnvironment(environment);
 
-        return remoteGroupService;
+        return remoteSynchronizeService;
     }
 }

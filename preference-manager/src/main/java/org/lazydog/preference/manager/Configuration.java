@@ -44,6 +44,28 @@ public class Configuration {
     }
 
     /**
+     * Get the environment.
+     *
+     * @param  agent  the agent.
+     *
+     * @return  the environment.
+     */
+    private static Hashtable<String,String> getEnvironment(Agent agent) {
+
+        // Declare.
+        Hashtable<String,String> env;
+
+        // Set the environment.
+        env = new Hashtable<String,String>();
+        env.put(SynchronizeService.JMX_PORT, agent.getJmxPort().toString());
+        env.put(SynchronizeService.LOGIN, agent.getLogin());
+        env.put(SynchronizeService.PASSWORD, agent.getPassword());
+        env.put(SynchronizeService.SERVER_NAME, agent.getServerName());
+
+        return env;
+    }
+
+    /**
      * Determine the status of the specified agent.
      *
      * @param  agent  the agent.
@@ -61,28 +83,14 @@ public class Configuration {
         try {
 
             // Declare.
-            SynchronizeService remoteSynchronizeService;
-            String remoteDocument;
-            Hashtable<String,String> env;
-            SynchronizeService localSynchronizeService;
             String localDocument;
-
-            // Set the environment.
-            env = new Hashtable<String,String>();
-            env.put(SynchronizeService.JMX_PORT, agent.getJmxPort().toString());
-            env.put(SynchronizeService.LOGIN, agent.getLogin());
-            env.put(SynchronizeService.PASSWORD, agent.getPassword());
-            env.put(SynchronizeService.SERVER_NAME, agent.getServerName());
-
-            // Get the synchronize services.
-            remoteSynchronizeService = SynchronizeServiceFactory.create(env);
-            localSynchronizeService = SynchronizeServiceFactory.create();
-
-            // Export the remote document.
-            remoteDocument = remoteSynchronizeService.exportDocument();
+            String remoteDocument;
 
             // Export the local document.
-            localDocument = localSynchronizeService.exportDocument();
+            localDocument = exportDocument();
+
+            // Export the remote document.
+            remoteDocument = exportDocument(agent);
 
             // Check if the remote document is equal to the local document.
             if (remoteDocument.equals(localDocument)) {
@@ -97,7 +105,7 @@ public class Configuration {
             }
         }
         catch(Exception e) {
-e.printStackTrace();
+
             // Set the status to down.
             status = AgentStatus.DOWN;
         }
@@ -152,6 +160,71 @@ e.printStackTrace();
     }
 
     /**
+     * Export the document locally.
+     *
+     * @return  the document.
+     *
+     * @throws  ServiceException  if unable to export the document locally.
+     */
+    public static String exportDocument()
+            throws ServiceException {
+
+        // Declare.
+        String document;
+        SynchronizeService synchronizeService;
+
+        // Export the document locally.
+        synchronizeService = SynchronizeServiceFactory.create();
+        document = synchronizeService.exportDocument();
+
+        return document;
+    }
+
+    /**
+     * Export the document locally.
+     *
+     * @param  path  the path.
+     *
+     * @return  the document.
+     *
+     * @throws  ServiceException  if unable to export the document locally.
+     */
+    private static String exportDocument(String path)
+            throws ServiceException {
+
+        // Declare.
+        String document;
+        SynchronizeService synchronizeService;
+
+        // Export the document locally.
+        synchronizeService = SynchronizeServiceFactory.create();
+        document = synchronizeService.exportDocument(path);
+
+        return document;
+    }
+
+    /**
+     * Export the document remotely.
+     *
+     * @return  the document.
+     *
+     * @throws  ServiceException  if unable to export the document locally.
+     */
+    private static String exportDocument(Agent agent)
+            throws ServiceException {
+
+        // Declare.
+        String document;
+        SynchronizeService synchronizeService;
+
+        // Export the document locally.
+        synchronizeService = SynchronizeServiceFactory.create(getEnvironment(agent));
+        document = synchronizeService.exportDocument();
+
+        return document;
+    }
+
+    /**
      * Get the agent specified by the ID.
      * 
      * @param  id  the ID.
@@ -199,6 +272,87 @@ e.printStackTrace();
     }
 
     /**
+     * Import the document locally.
+     *
+     * @param  document  the document.
+     *
+     * @throws  ServiceException  if unable to import the document locally.
+     */
+    public static void importDocument(String document)
+            throws ServiceException {
+
+        // Declare.
+        SynchronizeService synchronizeService;
+
+        // Import the document locally.
+        synchronizeService = SynchronizeServiceFactory.create();
+        synchronizeService.importDocument(document);
+    }
+
+    /**
+     * Import the document remotely.
+     *
+     * @param  agent     the agent.
+     * @param  path      the path.
+     * @param  document  the document.
+     */
+    private static void importDocument(Agent agent, String path, String document) {
+
+        // Check if the agent is enabled.
+        if (agent.getEnabled()) {
+
+            try {
+
+                // Declare.
+                SynchronizeService synchronizeService;
+
+                // Import the document remotely.
+                synchronizeService = SynchronizeServiceFactory.create(getEnvironment(agent));
+                synchronizeService.importDocument(path, document);
+            }
+            catch(Exception e) {
+                // Ignore.
+            }
+        }
+    }
+
+    /**
+     * Import the document remotely.
+     *
+     * @param  agent     the agent.
+     * @param  document  the document.
+     */
+    private static void importDocument(Agent agent, String document) {
+
+        // Check if the agent is enabled.
+        if (agent.getEnabled()) {
+
+            try {
+
+                // Declare.
+                SynchronizeService synchronizeService;
+
+                // Import the document remotely.
+                synchronizeService = SynchronizeServiceFactory.create(getEnvironment(agent));
+                synchronizeService.importDocument(document);
+            }
+            catch(Exception e) {
+                // Ignore.
+            }
+        }
+    }
+
+    /**
+     * Is this an agent setup.
+     *
+     * @return  true if this is an agent setup, otherwise false.
+     */
+    public static boolean isAgentSetup() {
+        return (configurationService.findSetupType() == SetupType.AGENT) ?
+                true : false;
+    }
+
+    /**
      * Is the agent state disabled.
      *
      * @return  true if the agent state is disabled, otherwise false.
@@ -215,16 +369,6 @@ e.printStackTrace();
      */
     public static boolean isAgentStateEnabled() {
         return (configurationService.findAgentState() == AgentState.ENABLED) ?
-                true : false;
-    }
-
-    /**
-     * Is this an agent setup.
-     *
-     * @return  true if this is an agent setup, otherwise false.
-     */
-    public static boolean isAgentSetup() {
-        return (configurationService.findSetupType() == SetupType.AGENT) ?
                 true : false;
     }
 
@@ -271,6 +415,52 @@ e.printStackTrace();
     }
 
     /**
+     * Synchronize the agent.
+     *
+     * @param  agent  the agent.
+     *
+     * @throws  ServiceException  if unable to synchronize the agent.
+     */
+    public static void synchronizeAgent(Agent agent)
+            throws ServiceException {
+
+        // Declare.
+        String document;
+
+        // Export the document locally.
+        document = exportDocument();
+
+        // Import the document remotely.
+        importDocument(agent, document);
+    }
+
+    /**
+     * Synchronize the agents.
+     *
+     * @throws  ServiceException  if unable to synchronize the agents.
+     */
+    public static void synchronizeAgents()
+            throws ServiceException {
+
+        // Declare.
+        List<Agent> agents;
+        String document;
+
+        // Get the agents.
+        agents = configurationService.findAgents();
+
+        // Export the document locally.
+        document = exportDocument();
+
+        // Loop through the agents.
+        for (Agent agent : agents) {
+
+            // Import the document remotely.
+            importDocument(agent, document);
+        }
+    }
+
+    /**
      * Save the agent.
      *
      * @param  agent  the agent.
@@ -297,6 +487,7 @@ e.printStackTrace();
             throws ServiceException {
         return configurationService.persistAgentState(agentState);
     }
+
     /**
      * Save the setup type.
      *
@@ -309,12 +500,5 @@ e.printStackTrace();
     public static SetupType saveSetupType(SetupType setupType) 
             throws ServiceException {
         return configurationService.persistSetupType(setupType);
-    }
-
-    public static void main(String[] args) throws Exception {
-
-        for (Agent agent : getAgents()) {
-            System.out.println(agent);
-        }
     }
 }

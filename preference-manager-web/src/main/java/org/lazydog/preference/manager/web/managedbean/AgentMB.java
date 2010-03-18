@@ -186,7 +186,16 @@ System.err.println("Unable to reset the agent, " + this.agent.getId() + ".\n" + 
      * @param  actionEvent  the action event.
      */
     public void processSynchronizeButton(ActionEvent actionEvent) {
-System.err.println("processSynchronizeButton invoked");
+
+        try {
+
+            // Synchronize the agent.
+            Configuration.synchronizeAgent(Configuration.getAgent(this.id));
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to synchronize the agent.");
+        }
     }
 
     /**
@@ -195,7 +204,16 @@ System.err.println("processSynchronizeButton invoked");
      * @param  actionEvent  the action event.
      */
     public void processSynchronizeAllButton(ActionEvent actionEvent) {
-System.err.println("processSynchronizeAllButton invoked");
+
+        try {
+
+            // Synchronize all agents.
+            Configuration.synchronizeAgents();
+        }
+        catch(Exception e) {
+            // TO DO: handle exception.
+System.err.println("Unable to synchronize all the agents.");
+        }
     }
 
     /**
