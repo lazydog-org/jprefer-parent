@@ -19,14 +19,18 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.0.2</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <modules>
         <module>preference-manager-api</module>
+        <module>preference-manager-preference-spi</module>
+        <module>preference-manager-synchronize-spi</module>
+        <module>preference-manager-configuration-spi</module>
+        <module>preference-manager-snapshot-spi</module>
         <module>preference-manager-preference</module>
         <module>preference-manager-synchronize</module>
         <module>preference-manager-configuration</module>

@@ -5,7 +5,8 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.lazydog.preference.manager.synchronize.service.AgentSynchronizeService;
+import org.lazydog.preference.manager.AgentSynchronizeService;
+import org.lazydog.preference.manager.AgentSynchronizeServiceFactory;
 import org.lazydog.preference.manager.Configuration;
 
 
@@ -21,6 +22,7 @@ public class MBeanContextListener implements ServletContextListener {
      *
      * @param  event  the servlet context event.
      */
+    @Override
     public void contextDestroyed(ServletContextEvent event) {
 
         try {
@@ -47,7 +49,8 @@ public class MBeanContextListener implements ServletContextListener {
             }
         }
         catch(Exception e) {
-            // Ignore.
+            // TODO: handle exception.
+e.printStackTrace();
         }
     }
 
@@ -56,6 +59,7 @@ public class MBeanContextListener implements ServletContextListener {
      *
      * @param  event  the servlet context event.
      */
+    @Override
     public void contextInitialized(ServletContextEvent event) {
 
         try {
@@ -77,12 +81,14 @@ public class MBeanContextListener implements ServletContextListener {
                 if (!mBeanServer.isRegistered(name)) {
 
                     // Register the MBean with the MBean server.
-                    mBeanServer.registerMBean(new AgentSynchronizeService(), name);
+                    mBeanServer.registerMBean(
+                            AgentSynchronizeServiceFactory.create(), name);
                 }
             }
         }
         catch(Exception e) {
-            // Ignore.
+            // TODO: handle exception.
+e.printStackTrace();
         }
     }
 }

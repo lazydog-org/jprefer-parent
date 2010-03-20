@@ -2,9 +2,9 @@ package org.lazydog.preference.manager;
 
 import java.util.Map;
 import org.lazydog.preference.manager.model.PreferencesTree;
-import org.lazydog.preference.manager.preference.service.PreferenceService;
-import org.lazydog.preference.manager.preference.service.PreferenceServiceFactory;
-import org.lazydog.preference.manager.service.ServiceException;
+import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.preference.manager.spi.preference.PreferenceService;
+import org.lazydog.preference.manager.spi.preference.PreferenceServiceFactory;
 
 
 /**

@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-api</artifactId>
+            <artifactId>preference-manager-configuration-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

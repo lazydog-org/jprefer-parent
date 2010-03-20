@@ -2,15 +2,16 @@ package org.lazydog.preference.manager;
 
 import java.util.Hashtable;
 import java.util.List;
-import org.lazydog.preference.manager.configuration.service.ConfigurationService;
-import org.lazydog.preference.manager.configuration.service.ConfigurationServiceFactory;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.model.AgentState;
 import org.lazydog.preference.manager.model.AgentStatus;
 import org.lazydog.preference.manager.model.SetupType;
-import org.lazydog.preference.manager.service.ServiceException;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceFactory;
+import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.preference.manager.spi.configuration.ConfigurationService;
+import org.lazydog.preference.manager.spi.configuration.ConfigurationServiceFactory;
+import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
+import org.lazydog.preference.manager.spi.synchronize.RemoteSynchronizeService;
+import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
 
 
 /**
@@ -57,10 +58,10 @@ public class Configuration {
 
         // Set the environment.
         env = new Hashtable<String,String>();
-        env.put(SynchronizeService.JMX_PORT, agent.getJmxPort().toString());
-        env.put(SynchronizeService.LOGIN, agent.getLogin());
-        env.put(SynchronizeService.PASSWORD, agent.getPassword());
-        env.put(SynchronizeService.SERVER_NAME, agent.getServerName());
+        env.put(RemoteSynchronizeService.JMX_PORT, agent.getJmxPort().toString());
+        env.put(RemoteSynchronizeService.LOGIN, agent.getLogin());
+        env.put(RemoteSynchronizeService.PASSWORD, agent.getPassword());
+        env.put(RemoteSynchronizeService.SERVER_NAME, agent.getServerName());
 
         return env;
     }

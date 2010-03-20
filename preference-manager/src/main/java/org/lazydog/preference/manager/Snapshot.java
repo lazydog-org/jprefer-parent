@@ -2,11 +2,9 @@ package org.lazydog.preference.manager;
 
 import java.util.Date;
 import java.util.Map;
-import org.lazydog.preference.manager.service.ServiceException;
-import org.lazydog.preference.manager.snapshot.service.SnapshotService;
-import org.lazydog.preference.manager.snapshot.service.SnapshotServiceFactory;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeService;
-import org.lazydog.preference.manager.synchronize.service.SynchronizeServiceFactory;
+import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.preference.manager.spi.snapshot.SnapshotService;
+import org.lazydog.preference.manager.spi.snapshot.SnapshotServiceFactory;
 
 
 /**

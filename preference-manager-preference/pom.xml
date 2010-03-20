@@ -14,7 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-api</artifactId>
+            <artifactId>preference-manager-preference-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-synchronize-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

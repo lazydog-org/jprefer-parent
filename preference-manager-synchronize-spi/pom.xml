@@ -8,13 +8,13 @@
         <artifactId>preference-manager-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>preference-manager-snapshot</artifactId>
+    <artifactId>preference-manager-synchronize-spi</artifactId>
     <packaging>jar</packaging>
-    <name>Preference Manager Snapshot</name>
+    <name>Preference Manager Synchronize SPI</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-snapshot-spi</artifactId>
+            <artifactId>preference-manager-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
