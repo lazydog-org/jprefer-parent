@@ -3,7 +3,9 @@ package org.lazydog.preference.manager.internal.preference;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
@@ -209,6 +211,7 @@ public class PreferenceServiceImpl
      * @throws  NullPointerException      if the path is null.
      * @throws  IllegalArgumentException  if the path does not exist.
      */
+    @Override
     public Map<String,String> findPreferences(String path)
             throws ServiceException {
 
@@ -258,7 +261,76 @@ public class PreferenceServiceImpl
     @Override
     public PreferencesTree findPreferencesTree() 
             throws ServiceException {
-        return new PreferencesTreeImpl(ROOT_PATH);
+
+        // Declare.
+        PreferencesTree preferencesTree;
+
+        // Initialize.
+        preferencesTree = null;
+
+        try {
+
+            // Find the preferences tree.
+            preferencesTree = findPreferencesTree(ROOT_PATH);
+        }
+        catch(BackingStoreException e) {
+            throw new ServiceException(
+                    "Unable to find the preferences tree.", e);
+        }
+
+        return preferencesTree;
+    }
+
+    /**
+     * Find the preferences tree.
+     *
+     * @param  path  the path.
+     *
+     * @return  the preferences tree.
+     *
+     * @throws  BackingStoreException  if unable to find the preferences tree.
+     */
+    private static PreferencesTree findPreferencesTree(String path)
+            throws BackingStoreException {
+
+        // Declare.
+        PreferencesTree preferencesTree;
+
+        // Initialize.
+        preferencesTree = new PreferencesTree();
+
+        // Check if the path exists.
+        if (system.nodeExists(path)) {
+
+            // Declare.
+            List<PreferencesTree> children;
+            Map<String,String> preferences;
+
+            // Initialize.
+            children = new ArrayList<PreferencesTree>();
+            preferences = new LinkedHashMap<String,String>();
+
+            // Loop through the keys.
+            for (String key : system.node(path).keys()) {
+
+                // Add the preference.
+                preferences.put(key, system.node(path).get(key, null));
+            }
+
+            // Loop through the children.
+            for (String childName : system.node(path).childrenNames()) {
+
+                // Add the child.
+                children.add(findPreferencesTree(system.node(path).node(childName).absolutePath()));
+            }
+
+            // Set the preferences tree.
+            preferencesTree.setChildren(children);
+            preferencesTree.setPath(path);
+            preferencesTree.setPreferences(preferences);
+        }
+
+        return preferencesTree;
     }
 
     /**
