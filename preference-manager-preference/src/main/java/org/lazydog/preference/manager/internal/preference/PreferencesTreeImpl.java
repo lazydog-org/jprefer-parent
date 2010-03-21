@@ -1,5 +1,6 @@
 package org.lazydog.preference.manager.internal.preference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.lazydog.preference.manager.model.PreferencesTree;
  *
  * @author  Ron Rickard
  */
-public class PreferencesTreeImpl implements PreferencesTree {
+public class PreferencesTreeImpl implements PreferencesTree, Serializable {
 
     private static final String ROOT_PATH = "/";
     private Preferences preferences;

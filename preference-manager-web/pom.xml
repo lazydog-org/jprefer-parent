@@ -13,6 +13,17 @@
     <name>Preference Manager Web</name>
     <dependencies>
         <dependency>
+            <groupId>com.sun.facelets</groupId>
+            <artifactId>jsf-facelets</artifactId>
+            <version>1.1.14</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>ejb-api</artifactId>
+            <version>3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
@@ -37,11 +48,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.sun.facelets</groupId>
-            <artifactId>jsf-facelets</artifactId>
-            <version>1.1.14</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
@@ -54,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager</artifactId>
+            <artifactId>preference-manager-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

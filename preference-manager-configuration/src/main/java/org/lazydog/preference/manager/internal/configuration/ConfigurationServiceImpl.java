@@ -7,7 +7,6 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.manager.model.AgentState;
 import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.ServiceException;
 import org.lazydog.preference.manager.spi.configuration.ConfigurationService;
@@ -22,7 +21,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     private static final String AGENT_KEY_PREFIX = "agent.";
     private static final String AGENT_KEY_REGEX = AGENT_KEY_PREFIX + "\\d+";
-    private static final String AGENT_STATE_KEY = "agent.state";
     private static final String AGENT_VALUE_REGEX = "(.*),(\\d*),(.*),(.*),(.*)";
     private static final String AGENT_VALUE_SEPARATOR = ",";
     private static final String CONFIGURATION_PATH = "org/lazydog/preference/manager/configuration";
@@ -45,10 +43,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      *
      * @return  the agent.
      *
+     * @throws  ServiceException          if unable to find the agent.
      * @throws  IllegalArgumentException  if the ID is invalid.
      */
     @Override
-    public Agent findAgent(int id) {
+    public Agent findAgent(int id) 
+            throws ServiceException {
 
         // Declare.
         Agent agent;
@@ -57,8 +57,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         // Get the agent value.
         agentValue = preferences.get(getAgentKey(id), null);
 
-        // Interpret the agent value as an agent.
-        agent = interpret(agentValue, id);
+        try {
+
+            // Interpret the agent value as an agent.
+            agent = interpret(agentValue, id);
+        }
+        catch(IllegalArgumentException e) {
+            throw new ServiceException(
+                    "Unable to find the agent, " + id + ".", e);
+        }
 
         return agent;
     }
@@ -116,31 +123,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             }
         }
         catch(BackingStoreException e) {
-            throw new ServiceException(
-                    "Unable to find the agents.", e);
+            throw new ServiceException("Unable to find the agents.", e);
         }
 
         return agents;
     }
 
     /**
-     * Find the agent state.
-     *
-     * @return  the agent state.
-     */
-    @Override
-    public AgentState findAgentState() {
-        return AgentState.valueOf(preferences.get(
-                AGENT_STATE_KEY, AgentState.UNKNOWN.toString()));
-    }
-
-    /**
      * Find the setup type.
      *
      * @return  the setup type.
+     *
+     * @throws  ServiceException  if unable to find the setup type.
      */
     @Override
-    public SetupType findSetupType() {
+    public SetupType findSetupType() 
+            throws ServiceException {
         return SetupType.valueOf(preferences.get(
                 SETUP_TYPE_KEY, SetupType.UNKNOWN.toString()));
     }
@@ -341,45 +339,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     /**
-     * Persist the agent state.
-     *
-     * @param  agentState  the agent state.
-     *
-     * @return  the agent state.
-     *
-     * @throws  ServiceException      if unable to persist the agent state.
-     * @throws  NullPointerException  if the agent state is null.
-     */
-    @Override
-    public AgentState persistAgentState(AgentState agentState)
-            throws ServiceException {
-
-        try {
-
-            // Check if the setup type is not null.
-            if (agentState != null) {
-
-                // Store the agent state.
-                preferences.put(AGENT_STATE_KEY, agentState.toString());
-                preferences.flush();
-
-                // Get the agent state.
-                agentState = this.findAgentState();
-            }
-            else {
-                throw new NullPointerException("The agent state is null.");
-            }
-        }
-        catch(BackingStoreException e) {
-            throw new ServiceException(
-                    "Unable to persist the agent state, "
-                    + agentState.toString() + ".", e);
-        }
-
-        return agentState;
-    }
-    
-    /**
      * Persist the setup type.
      * 
      * @param  setupType  the setup type.
@@ -439,27 +398,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         catch(BackingStoreException e) {
             throw new ServiceException(
                     "Unable to remove the agent, " + id + ".", e);
-        }
-    }
-
-    /**
-     * Remove the agent state.
-     *
-     * @throws  ServiceException  if unable to remove the agent state.
-     */
-    @Override
-    public void removeAgentState()
-            throws ServiceException {
-
-        try {
-
-            // Remove the agent state.
-            preferences.remove(AGENT_STATE_KEY);
-            preferences.flush();
-        }
-        catch(BackingStoreException e) {
-            throw new ServiceException(
-                    "Unable to remove the agent state.", e);
         }
     }
 

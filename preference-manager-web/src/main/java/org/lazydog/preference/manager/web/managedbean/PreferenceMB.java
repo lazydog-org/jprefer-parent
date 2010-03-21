@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.Preference;
+import org.lazydog.preference.manager.PreferenceManager;
 import org.lazydog.preference.manager.web.utility.SessionKey;
 import org.lazydog.preference.manager.web.utility.SessionUtility;
 
@@ -22,6 +23,8 @@ public class PreferenceMB implements Serializable {
     private String oldKey;
     private String oldValue;
     private String path;
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
     private String value;
 
     /**
@@ -79,7 +82,7 @@ public class PreferenceMB implements Serializable {
         try {
 
             // Remove the preference.
-            Preference.removePreference(this.path, this.key);
+            preferenceManager.removePreference(this.path, this.key);
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -119,11 +122,11 @@ System.err.println("Unable to modify the preference " + this.key + ".\n" + e);
             if (this.oldKey != null && !this.oldKey.equals("")) {
 
                 // Remove the old preference.
-                Preference.removePreference(this.path, this.oldKey);
+                preferenceManager.removePreference(this.path, this.oldKey);
             }
 
             // Add the new preference.
-            Preference.savePreference(this.path, this.key, this.value);
+            preferenceManager.savePreference(this.path, this.key, this.value);
         }
         catch(Exception e) {
             // TODO: handle exception.

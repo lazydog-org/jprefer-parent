@@ -1,11 +1,14 @@
 package org.lazydog.preference.manager.model;
 
+import java.io.Serializable;
+
+
 /**
  * Agent status.
  *
  * @author  Ron Rickard
  */
-public enum AgentStatus {
+public enum AgentStatus implements Serializable {
     DOWN          ("Down"),
     UNKNOWN       ("Unknown"),
     UP_SYNCED     ("Up, Sync'd"),

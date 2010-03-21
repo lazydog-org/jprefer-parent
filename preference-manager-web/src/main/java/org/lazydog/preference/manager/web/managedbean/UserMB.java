@@ -1,8 +1,9 @@
 package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
+import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.Configuration;
+import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -21,6 +22,8 @@ public class UserMB implements Serializable {
     private boolean authenticated;
     private String name;
     private String password;
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
 
     /**
      * Authenticate.
@@ -68,31 +71,32 @@ public class UserMB implements Serializable {
         // Set the outcome to failure.
         outcome = FAILURE;
 
-        // Check if the user is authenticated.
-        if (this.authenticated) {
+        try {
+            
+            // Check if the user is authenticated.
+            if (this.authenticated) {
 
-            // Check if this is an agent setup.
-            if (Configuration.isAgentSetup()) {
-                outcome = AGENT_SETUP;
-            }
+                // Check if this is an agent setup.
+                if (preferenceManager.isAgentSetup()) {
+                    outcome = AGENT_SETUP;
+                }
 
-            // Check if this is a manager setup.
-            else if (Configuration.isManagerSetup()) {
-                outcome = MANAGER_SETUP;
-            }
+                // Check if this is a manager setup.
+                else if (preferenceManager.isManagerSetup()) {
+                    outcome = MANAGER_SETUP;
+                }
 
-            // Check if this is a standalone setup.
-            else if (Configuration.isStandaloneSetup()) {
-                outcome = STANDALONE_SETUP;
-            }
-            else {
-                outcome = NO_SETUP;
+                // Check if this is a standalone setup.
+                else if (preferenceManager.isStandaloneSetup()) {
+                    outcome = STANDALONE_SETUP;
+                }
+                else {
+                    outcome = NO_SETUP;
+                }
             }
         }
-        else {
-
-            // Set the outcome to failure.
-            outcome = FAILURE;
+        catch(Exception e) {
+            // Ignore.
         }
 
         return outcome;

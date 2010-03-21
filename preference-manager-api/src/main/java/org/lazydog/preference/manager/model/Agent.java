@@ -1,12 +1,14 @@
 package org.lazydog.preference.manager.model;
 
+import java.io.Serializable;
+
 
 /**
  * Agent.
  *
  * @author  Ron Rickard
  */
-public class Agent {
+public class Agent implements Serializable {
 
     private Boolean enabled;
     private Integer id;

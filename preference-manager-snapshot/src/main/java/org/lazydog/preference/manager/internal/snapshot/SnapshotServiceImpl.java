@@ -286,49 +286,49 @@ public class SnapshotServiceImpl implements SnapshotService {
     /**
      * Rename the snapshot.
      *
-     * @param  name     the name.
-     * @param  newName  the new name.
+     * @param  sourceName  the source name.
+     * @param  targetName  the target name.
      *
      * @throws  ServiceException          if unable to rename the snapshot.
-     * @throws  NullPointerException      if the name or new name are null.
-     * @throws  IllegalArgumentException  if the name does not refers to an 
-     *                                    existing snapshot or the new name
-     *                                    refers to an existing snapshot.
+     * @throws  NullPointerException      if the source or target name are null.
+     * @throws  IllegalArgumentException  if the source name does not refers to
+     *                                    an existing snapshot or the target
+     *                                    name refers to an existing snapshot.
      */
     @Override
-    public void renameSnapshot(String name, String newName)
+    public void renameSnapshot(String sourceName, String targetName)
             throws ServiceException {
 
         try {
 
             // Check if the snapshot exist.
-            if (snapshotSystem.nodeExists(getSnapshotPath(name))) {
+            if (snapshotSystem.nodeExists(getSnapshotPath(sourceName))) {
 
                 // Check if the new snapshot does not exist.
-                if (!snapshotSystem.nodeExists(getSnapshotPath(newName))) {
+                if (!snapshotSystem.nodeExists(getSnapshotPath(targetName))) {
 
                     // Copy the snapshot to the new name.
-                    copyTree(snapshotSystem, getSnapshotPath(name),
-                            snapshotSystem, getSnapshotPath(newName));
+                    copyTree(snapshotSystem, getSnapshotPath(sourceName),
+                            snapshotSystem, getSnapshotPath(targetName));
 
                     // Remove the snapshot.
-                    this.removeTree(snapshotSystem, getSnapshotPath(name));
+                    this.removeTree(snapshotSystem, getSnapshotPath(sourceName));
                 }
                 else {
                     throw new IllegalArgumentException(
-                            "The new name, " + name
+                            "The target name, " + targetName
                             + ", refers to an existing snapshot.");
                 }
             }
             else {
                 throw new IllegalArgumentException(
-                        "The name, " + name
+                        "The source name, " + sourceName
                         + ", does not refers to an existing snapshot.");
             }
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
-                    "Unable to rename the snapshot, " + name + ".", e);
+                    "Unable to rename the snapshot, " + sourceName + ".", e);
         }
     }
 

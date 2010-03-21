@@ -3,9 +3,10 @@ package org.lazydog.preference.manager.web.managedbean;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.Configuration;
 import org.lazydog.preference.manager.model.Agent;
+import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -17,6 +18,8 @@ public class AgentMB implements Serializable {
 
     private Agent agent;
     private Integer id;
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
     
     /**
      * Get the agent.
@@ -43,7 +46,7 @@ public class AgentMB implements Serializable {
         try {
 
             // Get the agents.
-            agents = Configuration.getAgents();
+            agents = preferenceManager.getAgents();
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -73,7 +76,7 @@ System.err.println("Unable to get the agents.\n" + e);
         try {
 
             // Remove the agent.
-            Configuration.removeAgent(this.id);
+            preferenceManager.removeAgent(this.id);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -91,7 +94,7 @@ System.err.println("Unable to delete the agent, " + this.id + ".\n" + e);
         try {
 
             // Disable the agent.
-            this.agent = Configuration.disableAgent(this.id);
+            this.agent = preferenceManager.disableAgent(this.id);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -109,7 +112,7 @@ System.err.println("Unable to disable the agent, " + this.id + ".\n" + e);
         try {
 
             // Enable the agent.
-            this.agent = Configuration.enableAgent(this.id);
+            this.agent = preferenceManager.enableAgent(this.id);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -127,7 +130,7 @@ System.err.println("Unable to enable the agent, " + this.id + ".\n" + e);
         try {
 
             // Get the agent.
-            this.agent = Configuration.getAgent(this.id);
+            this.agent = preferenceManager.getAgent(this.id);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -145,7 +148,7 @@ System.err.println("Unable to modify the agent, " + this.id + ".\n" + e);
         try {
 
             // Save the agent.
-            this.agent = Configuration.saveAgent(this.agent);
+            this.agent = preferenceManager.saveAgent(this.agent);
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -166,7 +169,7 @@ System.err.println("Unable to add/modify the agent.\n" + e);
             if (this.agent.getId() != null) {
 
                 // Reset the agent.
-                this.agent = Configuration.getAgent(this.agent.getId());
+                this.agent = preferenceManager.getAgent(this.agent.getId());
             }
             else {
 
@@ -190,7 +193,7 @@ System.err.println("Unable to reset the agent, " + this.agent.getId() + ".\n" + 
         try {
 
             // Synchronize the agent.
-            Configuration.synchronizeAgent(Configuration.getAgent(this.id));
+            preferenceManager.synchronizeAgent(preferenceManager.getAgent(this.id));
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -208,7 +211,7 @@ System.err.println("Unable to synchronize the agent.");
         try {
 
             // Synchronize all agents.
-            Configuration.synchronizeAgents();
+            preferenceManager.synchronizeAgents();
         }
         catch(Exception e) {
             // TO DO: handle exception.
@@ -233,4 +236,6 @@ System.err.println("Unable to synchronize all the agents.");
     public void setId(Integer id) {
         this.id = id;
     }
+
+
 }

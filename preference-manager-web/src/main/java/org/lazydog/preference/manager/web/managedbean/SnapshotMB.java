@@ -6,8 +6,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.Snapshot;
+import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -19,6 +20,8 @@ public class SnapshotMB implements Serializable {
 
     private String name;
     private String oldName;
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
 
     /**
      * Get the name.
@@ -54,7 +57,7 @@ public class SnapshotMB implements Serializable {
         try {
 
             // Get the snapshots.
-            snapshots = Snapshot.getSnapshots();
+            snapshots = preferenceManager.getSnapshots();
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -93,7 +96,7 @@ System.err.println("Unable to get the snapshots.\n" + e);
         try {
 
             // Remove the snapshot.
-            Snapshot.removeSnapshot(this.name);
+            preferenceManager.removeSnapshot(this.name);
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -114,12 +117,12 @@ System.err.println("Unable to delete the snapshot " + this.name + ".\n" + e);
             if (!this.oldName.equals("")) {
 
                 // Rename the snapshot.
-                Snapshot.renameSnapshot(oldName, name);
+                preferenceManager.renameSnapshot(oldName, name);
             }
             else {
                 
                 // Create the snapshot.
-                Snapshot.createSnapshot(this.name);
+                preferenceManager.createSnapshot(this.name);
             }
         }
         catch(Exception e) {
@@ -174,7 +177,7 @@ System.err.println("Unable to reset the snapshot " + this.oldName + ".\n" + e);
         try {
 
             // Restore the snapshot.
-            Snapshot.restoreSnapshot(this.name);
+            preferenceManager.restoreSnapshot(this.name);
         }
         catch(Exception e) {
             // TODO: handle exception.

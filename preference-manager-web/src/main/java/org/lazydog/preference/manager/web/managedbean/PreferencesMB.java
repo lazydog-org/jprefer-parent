@@ -3,9 +3,10 @@ package org.lazydog.preference.manager.web.managedbean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.PreferencesTree;
-import org.lazydog.preference.manager.Preference;
+import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -21,8 +22,10 @@ public class PreferencesMB implements Serializable {
         MOVE;
     }
     private String actionType;
-    private String path;
     private String oldPath;
+    private String path;
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
 
     /**
      * Get the action type.
@@ -34,21 +37,21 @@ public class PreferencesMB implements Serializable {
     }
 
     /**
-     * Get the path.
-     *
-     * @return  the path.
-     */
-    public String getPath() {
-        return this.path;
-    }
-
-    /**
      * Get the old path.
      *
      * @return  the old path.
      */
     public String getOldPath() {
         return this.oldPath;
+    }
+
+    /**
+     * Get the path.
+     *
+     * @return  the path.
+     */
+    public String getPath() {
+        return this.path;
     }
 
     /**
@@ -67,7 +70,7 @@ public class PreferencesMB implements Serializable {
         try {
 
             // Get the children of the preferences tree.
-            preferencesTrees = Preference.getPreferencesTree().getChildren();
+            preferencesTrees = preferenceManager.getPreferencesTree().getChildren();
         }
         catch(Exception e) {
               // TODO: handle exception.
@@ -126,7 +129,7 @@ System.err.println("Unable to copy the preferences " + this.path + ".\n" + e);
         try {
 
             // Remove the preferences.
-            Preference.removePreferences(this.path);
+            preferenceManager.removePreferences(this.path);
         }
         catch(Exception e) {
             // TODO: handle exception.
@@ -168,20 +171,20 @@ System.err.println("Unable to move the preferences " + this.path + ".\n" + e);
             if (ActionType.valueOf(this.actionType) == ActionType.ADD) {
 
                 // Add the new preference.
-                Preference.savePreferences(this.path);
+                preferenceManager.savePreferences(this.path);
             }
             // Check if the action type is copy.
             else if (ActionType.valueOf(this.actionType) == ActionType.COPY) {
 
                 // Copy the preferences.
-                Preference.copyPreferences(this.oldPath, this.path);
+                preferenceManager.copyPreferences(this.oldPath, this.path);
             }
 
             // Check if the action type is move.
             else if (ActionType.valueOf(this.actionType) == ActionType.MOVE) {
 
                 // Move the preferences.
-                Preference.movePreferences(this.oldPath, this.path);
+                preferenceManager.movePreferences(this.oldPath, this.path);
             }
         }
         catch(Exception e) {
@@ -220,17 +223,6 @@ System.err.println("Unable to reset the preferences " + this.oldPath + ".\n" + e
     }
 
     /**
-     * Set the path.
-     *
-     * @param  path  the path.
-     */
-    public void setPath(String path) {
-
-        // Set the path.
-        this.path = path;
-    }
-
-    /**
      * Set the old path.
      *
      * @param  oldPath  the old path.
@@ -239,5 +231,16 @@ System.err.println("Unable to reset the preferences " + this.oldPath + ".\n" + e
 
         // Set the old absolute path.
         this.oldPath = oldPath;
+    }
+
+    /**
+     * Set the path.
+     *
+     * @param  path  the path.
+     */
+    public void setPath(String path) {
+
+        // Set the path.
+        this.path = path;
     }
 }

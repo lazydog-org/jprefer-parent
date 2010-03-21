@@ -1,7 +1,8 @@
 package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
-import org.lazydog.preference.manager.Configuration;
+import javax.ejb.EJB;
+import org.lazydog.preference.manager.PreferenceManager;
 import org.lazydog.preference.manager.model.SetupType;
 
 
@@ -19,6 +20,8 @@ public class SetupMB implements Serializable {
     private static final String SUCCESS = "success";
 
     private Boolean delete;
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
     private String type;
 
     /**
@@ -37,20 +40,20 @@ public class SetupMB implements Serializable {
         try {
 
             // Save the setup type.
-            Configuration.saveSetupType(SetupType.valueOf(type));
+            preferenceManager.saveSetupType(SetupType.valueOf(type));
             
             // Check if this is an agent setup.
-            if (Configuration.isAgentSetup()) {
+            if (preferenceManager.isAgentSetup()) {
                 outcome = AGENT_SETUP;
             }
 
             // Check if this is a manager setup.
-            else if (Configuration.isManagerSetup()) {
+            else if (preferenceManager.isManagerSetup()) {
                 outcome = MANAGER_SETUP;
             }
 
             // Check if this is a standalone setup.
-            else if (Configuration.isStandaloneSetup()) {
+            else if (preferenceManager.isStandaloneSetup()) {
                 outcome = STANDALONE_SETUP;
             }
         }
@@ -95,7 +98,7 @@ public class SetupMB implements Serializable {
         try {
 
             // Clear the configuration.
-            Configuration.clear();
+            preferenceManager.clearConfiguration();
 
             // Set the outcome to success.
             outcome = SUCCESS;

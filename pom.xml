@@ -37,5 +37,6 @@
         <module>preference-manager-snapshot</module>
         <module>preference-manager</module>
         <module>preference-manager-web</module>
+        <module>preference-manager-web-ear</module>
     </modules>
 </project>

@@ -18,7 +18,7 @@ public interface SnapshotService {
             throws ServiceException;
     public void removeSnapshot(String name)
             throws ServiceException;
-    public void renameSnapshot(String name, String newName)
+    public void renameSnapshot(String sourceName, String targetName)
             throws ServiceException;
     public void restoreSnapshot(String name)
             throws ServiceException;

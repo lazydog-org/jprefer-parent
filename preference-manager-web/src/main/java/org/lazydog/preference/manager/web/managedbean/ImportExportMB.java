@@ -4,13 +4,14 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
-import org.lazydog.preference.manager.Configuration;
+import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -19,6 +20,9 @@ import org.lazydog.preference.manager.Configuration;
  * @author  Ron Rickard
  */
 public class ImportExportMB {
+
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
 
     /**
      * Read the file as a string.
@@ -59,7 +63,7 @@ public class ImportExportMB {
             ServletOutputStream output;
 
             // Export the document.
-            document = Configuration.exportDocument();
+            document = preferenceManager.exportDocument();
 
             // Set the response headers.
             context = FacesContext.getCurrentInstance();
@@ -99,7 +103,7 @@ System.err.println("Unable to export document.\n" + e);
             document = readFileAsString(uploadItem.getFile().getAbsolutePath());
 
             // Import the document.
-            Configuration.importDocument(document);
+            preferenceManager.importDocument(document);
         }
         catch(Exception e) {
             // TODO: handle exception.

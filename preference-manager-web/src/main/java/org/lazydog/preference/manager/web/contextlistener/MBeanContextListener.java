@@ -1,13 +1,14 @@
 package org.lazydog.preference.manager.web.contextlistener;
 
 import java.lang.management.ManagementFactory;
+import javax.ejb.EJB;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.lazydog.preference.manager.AgentSynchronizeService;
 import org.lazydog.preference.manager.AgentSynchronizeServiceFactory;
-import org.lazydog.preference.manager.Configuration;
+import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -16,6 +17,9 @@ import org.lazydog.preference.manager.Configuration;
  * @author  Ron Rickard
  */
 public class MBeanContextListener implements ServletContextListener {
+
+    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
+    protected PreferenceManager preferenceManager;
 
     /**
      * Destroy the servlet context.
@@ -28,7 +32,7 @@ public class MBeanContextListener implements ServletContextListener {
         try {
 
             // Check if this is an agent setup.
-            if (Configuration.isAgentSetup()) {
+            if (preferenceManager.isAgentSetup()) {
                 
                 // Declare.
                 MBeanServer mBeanServer;
@@ -65,7 +69,7 @@ e.printStackTrace();
         try {
 
             // Check if this is an agent setup.
-            if (Configuration.isAgentSetup()) {
+            if (preferenceManager.isAgentSetup()) {
 
                 // Declare.
                 MBeanServer mBeanServer;
