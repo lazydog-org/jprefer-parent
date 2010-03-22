@@ -16,7 +16,8 @@
                     <a4j:commandButton
                         value="Create"
                         oncomplete="Richfaces.showModalPanel('pm-snapshot-modal-panel');"
-                        reRender="pm-snapshot-modal-panel-content"/>
+                        reRender="pm-snapshot-modal-panel-content"
+                        rendered="#{userMB.roles['OPERATOR']}"/>
                 </div>
                 <rich:dataTable
                     value="#{snapshotMB.snapshotKeys}"
@@ -37,7 +38,8 @@
                             submitMode="ajax">
                             <rich:menuItem
                                 value="Restore"
-                                reRender="pm-preferences-table,pm-agent-table">
+                                reRender="pm-preferences-table,pm-agent-table"
+                                rendered="#{userMB.roles['OPERATOR']}">
                                 <a4j:actionparam
                                     name="name"
                                     assignTo="#{snapshotMB.name}"
@@ -47,7 +49,8 @@
                             <rich:menuItem
                                 value="Rename"
                                 oncomplete="Richfaces.showModalPanel('pm-snapshot-modal-panel');"
-                                reRender="pm-snapshot-modal-panel-content">
+                                reRender="pm-snapshot-modal-panel-content"
+                                rendered="#{userMB.roles['OPERATOR']}">
                                 <a4j:actionparam
                                     name="name"
                                     assignTo="#{snapshotMB.name}"
@@ -56,7 +59,8 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Delete"
-                                reRender="pm-snapshots-table">
+                                reRender="pm-snapshots-table"
+                                rendered="#{userMB.roles['OPERATOR']}">
                                 <a4j:actionparam
                                     name="name"
                                     assignTo="#{snapshotMB.name}"

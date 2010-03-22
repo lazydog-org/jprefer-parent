@@ -19,11 +19,13 @@
                     <a4j:commandButton
                         value="Add"
                         oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
-                        reRender="pm-agent-modal-panel-content"/>
+                        reRender="pm-agent-modal-panel-content"
+                        rendered="#{userMB.roles['ADMIN']}"/>
                     <a4j:commandButton
                         value="Synchronize All"
                         actionListener="#{agentMB.processSynchronizeAllButton}"
-                        reRender="pm-agent-table"/>
+                        reRender="pm-agent-table"
+                        rendered="#{userMB.roles['OPERATOR']}"/>
                 </div>
                 <rich:dataTable
                     value="#{agentMB.agents}"
@@ -51,7 +53,8 @@
                             <rich:menuItem
                                 value="Modify"
                                 oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
-                                reRender="pm-agent-modal-panel-content">
+                                reRender="pm-agent-modal-panel-content"
+                                rendered="#{userMB.roles['ADMIN']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -60,7 +63,8 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Delete"
-                                reRender="pm-agent-table">
+                                reRender="pm-agent-table"
+                                rendered="#{userMB.roles['ADMIN']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -68,9 +72,9 @@
                                     actionListener="#{agentMB.processDeleteButton}"/>
                             </rich:menuItem>
                             <rich:menuItem
-                                style="display: #{agent.enabled ? 'none' : 'block'};"
                                 value="Enable"
-                                reRender="pm-agent-table">
+                                reRender="pm-agent-table"
+                                rendered="#{!agent.enabled and userMB.roles['OPERATOR']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -78,9 +82,9 @@
                                     actionListener="#{agentMB.processEnableButton}"/>
                             </rich:menuItem>
                             <rich:menuItem
-                                style="display: #{agent.enabled ? 'block' : 'none'};"
                                 value="Disable"
-                                reRender="pm-agent-table">
+                                reRender="pm-agent-table"
+                                rendered="#{agent.enabled and userMB.roles['OPERATOR']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -88,9 +92,9 @@
                                     actionListener="#{agentMB.processDisableButton}"/>
                             </rich:menuItem>
                             <rich:menuItem
-                                style="display: #{agent.enabled ? 'block' : 'none'};"
                                 value="Synchronize"
-                                reRender="pm-agent-table">
+                                reRender="pm-agent-table"
+                                rendered="#{agent.enabled and userMB.roles['OPERATOR']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"

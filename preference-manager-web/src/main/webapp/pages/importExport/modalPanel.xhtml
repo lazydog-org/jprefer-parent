@@ -14,7 +14,8 @@
             <rich:modalPanel
                 id="pm-import-export-modal-panel"
                 minWidth="400"
-                autosized="true">
+                autosized="true"
+                rendered="#{userMB.roles['OPERATOR']}">
                 <f:facet name="header">
                     <h:panelGroup>
                         importExport

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import org.lazydog.preference.manager.model.Agent;
@@ -45,6 +46,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to clear the configuration.
      */
     @Override
+    @RolesAllowed("ADMIN")
     public void clearConfiguration()
             throws ServiceException {
 
@@ -68,6 +70,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to copy the preferences.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void copyPreferences(String sourcePath, String targetPath)
             throws ServiceException {
 
@@ -86,6 +89,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to create the snapshot.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void createSnapshot(String name)
             throws ServiceException {
             snapshotService.createSnapshot(name);
@@ -171,6 +175,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to disable the agent.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public Agent disableAgent(int id) 
             throws ServiceException {
 
@@ -195,6 +200,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to enable the agent.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public Agent enableAgent(int id) 
             throws ServiceException {
 
@@ -217,6 +223,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to export the document.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public String exportDocument()
             throws ServiceException {
 
@@ -262,6 +269,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the agent.
      */
     @Override
+    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public Agent getAgent(int id) 
             throws ServiceException {
 
@@ -285,6 +293,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the agents.
      */
     @Override
+    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public List<Agent> getAgents() 
             throws ServiceException {
 
@@ -314,6 +323,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the preferences.
      */
     @Override
+    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public Map<String,String> getPreferences(String path)
             throws ServiceException {
         return preferenceService.findPreferences(path);
@@ -327,6 +337,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the preference tree.
      */
     @Override
+    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public PreferencesTree getPreferencesTree()
             throws ServiceException {
         return preferenceService.findPreferencesTree();
@@ -340,6 +351,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the snapshots.
      */
     @Override
+    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public Map<String,Date> getSnapshots()
             throws ServiceException {
         return snapshotService.findSnapshots();
@@ -353,6 +365,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to import the document.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void importDocument(String document)
             throws ServiceException {
 
@@ -458,6 +471,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to move the preferences.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void movePreferences(String sourcePath, String targetPath)
             throws ServiceException {
 
@@ -476,6 +490,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to remove the agent.
      */
     @Override
+    @RolesAllowed("ADMIN")
     public void removeAgent(int id)
             throws ServiceException {
         configurationService.removeAgent(id);
@@ -490,6 +505,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to remove the preference.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void removePreference(String path, String key)
             throws ServiceException {
 
@@ -508,6 +524,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to remove the preferences.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void removePreferences(String path)
             throws ServiceException {
 
@@ -526,6 +543,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to remove the snapshot.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void removeSnapshot(String name)
             throws ServiceException {
         snapshotService.removeSnapshot(name);
@@ -540,6 +558,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to rename the snapshot.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void renameSnapshot(String sourceName, String targetName)
             throws ServiceException {
         snapshotService.renameSnapshot(sourceName, targetName);
@@ -553,6 +572,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to restore the snapshot.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void restoreSnapshot(String name)
             throws ServiceException {
 
@@ -573,6 +593,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to save the agent.
      */
     @Override
+    @RolesAllowed("ADMIN")
     public Agent saveAgent(Agent agent) 
             throws ServiceException {
         return configurationService.persistAgent(agent);
@@ -588,6 +609,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to save the setup type.
      */
     @Override
+    @RolesAllowed({"ADMIN"})
     public SetupType saveSetupType(SetupType setupType) 
             throws ServiceException {
         return configurationService.persistSetupType(setupType);
@@ -603,6 +625,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to save the preference.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void savePreference(String path, String key, String value)
             throws ServiceException {
 
@@ -621,6 +644,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to save the preferences.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void savePreferences(String path)
             throws ServiceException {
 
@@ -639,6 +663,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to synchronize the agent.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void synchronizeAgent(Agent agent)
             throws ServiceException {
 
@@ -658,6 +683,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to synchronize the agents.
      */
     @Override
+    @RolesAllowed({"ADMIN","OPERATOR"})
     public void synchronizeAgents()
             throws ServiceException {
 

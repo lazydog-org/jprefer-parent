@@ -20,11 +20,22 @@
                         value="Add"
                         actionListener="#{preferencesMB.processAddButton}"
                         oncomplete="Richfaces.showModalPanel('pm-preferences-modal-panel');"
-                        reRender="pm-preferences-modal-panel-content"/>
+                        reRender="pm-preferences-modal-panel-content"
+                        rendered="#{userMB.roles['OPERATOR']}"/>
                     <a4j:commandButton
                         value="Manage Snapshots"
                         oncomplete="Richfaces.showModalPanel('pm-snapshots-modal-panel');"
-                        reRender="pm-snapshots-modal-panel-content"/>
+                        reRender="pm-snapshots-modal-panel-content"
+                        rendered="#{userMB.roles['OPERATOR']}"/>
+                    <h:commandButton
+                        value="Export"
+                        actionListener="#{importExportMB.exportDocument}"
+                        rendered="#{userMB.roles['OPERATOR']}"/>
+                    <a4j:commandButton
+                        value="Import"
+                        oncomplete="Richfaces.showModalPanel('pm-import-export-modal-panel');"
+                        reRender="pm-import-export-modal-panel-content"
+                        rendered="#{userMB.roles['OPERATOR']}"/>
                 </div>
                 <rich:tree
                     switchType="ajax">
@@ -47,7 +58,8 @@
                                     <rich:menuItem
                                         value="Modify"
                                         oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
-                                        reRender="pm-preference-modal-panel-content">
+                                        reRender="pm-preference-modal-panel-content"
+                                        rendered="#{userMB.roles['OPERATOR']}">
                                         <a4j:actionparam
                                             name="path"
                                             assignTo="#{preferenceMB.path}"
@@ -64,7 +76,8 @@
                                     </rich:menuItem>
                                     <rich:menuItem
                                         value="Delete"
-                                        reRender="pm-preferences-table,pm-agent-table">
+                                        reRender="pm-preferences-table,pm-agent-table"
+                                        rendered="#{userMB.roles['OPERATOR']}">
                                         <a4j:actionparam
                                             name="path"
                                             assignTo="#{preferenceMB.path}"
@@ -89,7 +102,8 @@
                                 <rich:menuItem
                                     value="Add Preference"
                                     oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
-                                    reRender="pm-preference-modal-panel-content">
+                                    reRender="pm-preference-modal-panel-content"
+                                    rendered="#{userMB.roles['OPERATOR']}">
                                     <a4j:actionparam
                                         name="path"
                                         assignTo="#{preferenceMB.path}"
@@ -98,7 +112,8 @@
                                 <rich:menuItem
                                     value="Move"
                                     oncomplete="Richfaces.showModalPanel('pm-preferences-modal-panel');"
-                                    reRender="pm-preferences-modal-panel-content">
+                                    reRender="pm-preferences-modal-panel-content"
+                                    rendered="#{userMB.roles['OPERATOR']}">
                                     <a4j:actionparam
                                         name="path"
                                         assignTo="#{preferencesMB.path}"
@@ -108,7 +123,8 @@
                                 <rich:menuItem
                                     value="Copy"
                                     oncomplete="Richfaces.showModalPanel('pm-preferences-modal-panel');"
-                                    reRender="pm-preferences-modal-panel-content">
+                                    reRender="pm-preferences-modal-panel-content"
+                                    rendered="#{userMB.roles['OPERATOR']}">
                                     <a4j:actionparam
                                         name="path"
                                         assignTo="#{preferencesMB.path}"
@@ -117,7 +133,8 @@
                                 </rich:menuItem>
                                 <rich:menuItem
                                     value="Delete"
-                                    reRender="pm-preferences-table,pm-agent-table">
+                                    reRender="pm-preferences-table,pm-agent-table"
+                                    rendered="#{userMB.roles['OPERATOR']}">
                                     <a4j:actionparam
                                         name="path"
                                         assignTo="#{preferencesMB.path}"

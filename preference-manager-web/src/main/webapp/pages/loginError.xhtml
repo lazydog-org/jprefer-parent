@@ -4,17 +4,19 @@
                       
 <html
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html">
     <head/>
     <body>
         <ui:composition template="/layout/pageLayout.xhtml">
-            <ui:define name="title">Preference Manager Login</ui:define>
+            <ui:define name="title">Preference Manager Login Error</ui:define>
             <ui:define name="header">
                 <ui:include src="/pages/common/header.xhtml"/>
+                <ui:include src="/pages/common/headerBar.xhtml"/>
             </ui:define>
             <ui:define name="content">
-                <div id="pm-login">
-                    <ui:include src="/pages/login/form.xhtml"/>
+                <div id="pm-login-error">
+                    Failed to login.
                 </div>
             </ui:define>
             <ui:define name="footer">

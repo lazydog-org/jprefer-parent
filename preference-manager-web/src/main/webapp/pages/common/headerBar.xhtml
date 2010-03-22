@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:outputText value="#{userMB.user} logged in" rendered="#{userMB.authenticated}"/>
+            <h:form id="pm-header-bar-form">
+                <h:commandButton
+                    value="Login"
+                    action="#{userMB.login}"
+                    rendered="#{!userMB.authenticated}"/>
+                <h:commandButton
+                    value="Logout"
+                    action="#{userMB.logout}"
+                    rendered="#{userMB.authenticated}"/>
+                <h:commandButton
+                    value="Reconfigure"
+                    action="#{setupMB.reconfigure}"
+                    rendered="#{userMB.roles['ADMIN']}"/>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>
+

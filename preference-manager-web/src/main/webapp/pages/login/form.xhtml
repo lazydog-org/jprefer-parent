@@ -9,21 +9,21 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-login-form">
+            <h:form id="pm-login-form" prependId="false">
                 <fieldset>
                     <ol>
                         <li>
-                            <label for="user-name">User Name: </label>
+                            <label for="username">Username: </label>
                             <h:inputText
-                                id="user-name"
-                                value="#{userMB.name}"
+                                id="username"
+                                value="#{userMB.username}"
                                 size="25"
                                 maxlength="50"/>
                         </li>
                         <li>
-                            <label for="user-password">Password: </label>
+                            <label for="password">Password: </label>
                             <h:inputSecret
-                                id="user-password"
+                                id="password"
                                 value="#{userMB.password}"
                                 size="25"
                                 maxlength="50"/>
@@ -32,9 +32,8 @@
                 </fieldset>
                 <div class="pm-form-buttons">
                     <h:commandButton
-                        value="Sign In"
-                        action="#{userMB.login}"
-                        actionListener="#{userMB.authenticate}"/>
+                        value="Log In"
+                        action="#{userMB.authenticate}"/>
                 </div>
             </h:form>
         </ui:composition>
