@@ -11,7 +11,7 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-agent-table">
+            <h:form id="pm-agent-table" rendered="#{setupMB.setupTypes['MANAGER']}">
                 <div class="pm-form-buttons">
                     <a4j:commandButton
                         value="Refresh"
@@ -20,12 +20,12 @@
                         value="Add"
                         oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
                         reRender="pm-agent-modal-panel-content"
-                        rendered="#{userMB.roles['ADMIN']}"/>
+                        rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}"/>
                     <a4j:commandButton
                         value="Synchronize All"
                         actionListener="#{agentMB.processSynchronizeAllButton}"
                         reRender="pm-agent-table"
-                        rendered="#{userMB.roles['OPERATOR']}"/>
+                        rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}"/>
                 </div>
                 <rich:dataTable
                     value="#{agentMB.agents}"
@@ -54,7 +54,7 @@
                                 value="Modify"
                                 oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
                                 reRender="pm-agent-modal-panel-content"
-                                rendered="#{userMB.roles['ADMIN']}">
+                                rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -64,7 +64,7 @@
                             <rich:menuItem
                                 value="Delete"
                                 reRender="pm-agent-table"
-                                rendered="#{userMB.roles['ADMIN']}">
+                                rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -74,7 +74,7 @@
                             <rich:menuItem
                                 value="Enable"
                                 reRender="pm-agent-table"
-                                rendered="#{!agent.enabled and userMB.roles['OPERATOR']}">
+                                rendered="#{!agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -84,7 +84,7 @@
                             <rich:menuItem
                                 value="Disable"
                                 reRender="pm-agent-table"
-                                rendered="#{agent.enabled and userMB.roles['OPERATOR']}">
+                                rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"
@@ -94,7 +94,7 @@
                             <rich:menuItem
                                 value="Synchronize"
                                 reRender="pm-agent-table"
-                                rendered="#{agent.enabled and userMB.roles['OPERATOR']}">
+                                rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
                                     assignTo="#{agentMB.id}"

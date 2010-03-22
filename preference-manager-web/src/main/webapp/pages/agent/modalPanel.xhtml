@@ -15,7 +15,7 @@
                 id="pm-agent-modal-panel"
                 minWidth="400"
                 autosized="true"
-                rendered="#{userMB.roles['ADMIN']}">
+                rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
                 <f:facet name="header">
                     <h:panelGroup>
                         agent

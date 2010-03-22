@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 
 /**
- * Setup type ordered by precendence.
+ * Role ordered by precendence.
  *
  * @author  Ron Rickard
  */
-public enum SetupType implements Serializable {
-    MANAGER,
-    STANDALONE,
-    AGENT,
+public enum Role implements Serializable {
+    ADMIN,
+    OPERATOR,
+    USER,
     UNKNOWN;
 };
 

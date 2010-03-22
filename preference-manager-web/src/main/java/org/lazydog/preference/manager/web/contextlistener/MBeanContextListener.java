@@ -8,6 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.lazydog.preference.manager.AgentSynchronizeService;
 import org.lazydog.preference.manager.AgentSynchronizeServiceFactory;
+import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.PreferenceManager;
 
 
@@ -32,7 +33,7 @@ public class MBeanContextListener implements ServletContextListener {
         try {
 
             // Check if this is an agent setup.
-            if (preferenceManager.isAgentSetup()) {
+            if (preferenceManager.getSetupType() == SetupType.AGENT) {
                 
                 // Declare.
                 MBeanServer mBeanServer;
@@ -69,7 +70,7 @@ e.printStackTrace();
         try {
 
             // Check if this is an agent setup.
-            if (preferenceManager.isAgentSetup()) {
+            if (preferenceManager.getSetupType() == SetupType.AGENT) {
 
                 // Declare.
                 MBeanServer mBeanServer;

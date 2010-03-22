@@ -15,7 +15,7 @@
                 id="pm-preference-modal-panel"
                 minWidth="400"
                 autosized="true"
-                rendered="#{userMB.roles['OPERATOR']}">
+                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                 <f:facet name="header">
                     <h:panelGroup>
                         preference

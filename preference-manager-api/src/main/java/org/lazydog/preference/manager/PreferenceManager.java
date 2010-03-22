@@ -123,6 +123,16 @@ public interface PreferenceManager {
             throws ServiceException;
 
     /**
+     * Get the setup type.
+     * 
+     * @return  the setup type.
+     * 
+     * @throws  ServiceException  if unable to get the setup type.
+     */
+    public SetupType getSetupType()
+            throws ServiceException;
+
+    /**
      * Get the snapshots.
      *
      * @return  the snapshots.
@@ -140,46 +150,6 @@ public interface PreferenceManager {
      * @throws  ServiceException  if unable to import the document.
      */
     public void importDocument(String document)
-            throws ServiceException;
-
-    /**
-     * Is this an agent setup.
-     *
-     * @return  true if this is an agent setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    public boolean isAgentSetup()
-            throws ServiceException;
-
-    /**
-     * Is this a manager setup.
-     *
-     * @return  true if this is a manager setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    public boolean isManagerSetup()
-            throws ServiceException;
-
-    /**
-     * Is this setup.
-     *
-     * @return  true if this is setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    public boolean isSetup()
-            throws ServiceException;
-
-    /**
-     * Is this a standalone setup.
-     *
-     * @return  true if this is a standalone setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    public boolean isStandaloneSetup()
             throws ServiceException;
 
     /**

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
+import org.lazydog.preference.manager.model.Role;
+import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.PreferenceManager;
 
 
@@ -19,17 +21,8 @@ import org.lazydog.preference.manager.PreferenceManager;
  */
 public class UserMB implements Serializable {
 
-    // Roles ordered by precendence.
-    private enum Roles {
-        ADMIN,
-        OPERATOR,
-        USER;
-    }
-    private static final String AGENT_SETUP = "agent";
     private static final String FAILURE = "failure";
-    private static final String MANAGER_SETUP = "manager";
     private static final String NO_SETUP = "setup";
-    private static final String STANDALONE_SETUP = "standalone";
     private static final String SUCCESS = "success";
 
     private String password;
@@ -125,10 +118,7 @@ e.printStackTrace();
         try {
 
             // Loop through the roles in order of precedence.
-            for (Roles role : Roles.values()) {
-
-                // Assume the user is not in the role.
-                roles.put(role.toString(), Boolean.FALSE);
+            for (Role role : Role.values()) {
 
                 // Check if the user is in the role.
                 if (FacesContext.getCurrentInstance().getExternalContext()
@@ -137,14 +127,19 @@ e.printStackTrace();
                     // Add the role and lower precedent roles to the roles map.
                     switch(role) {
                         case ADMIN:
-                            roles.put(Roles.ADMIN.toString(), Boolean.TRUE);
+                            roles.put(Role.ADMIN.toString(), Boolean.TRUE);
                         case OPERATOR:
-                            roles.put(Roles.OPERATOR.toString(), Boolean.TRUE);
+                            roles.put(Role.OPERATOR.toString(), Boolean.TRUE);
                         case USER:
-                            roles.put(Roles.USER.toString(), Boolean.TRUE);
+                            roles.put(Role.USER.toString(), Boolean.TRUE);
                             break;
                     }
                     break;
+                }
+                else {
+
+                    // The user is not in the role.
+                    roles.put(role.toString(), Boolean.FALSE);
                 }
             }
         }
@@ -206,22 +201,16 @@ e.printStackTrace();
 
         try {
 
-            // Check if this is an agent setup.
-            if (preferenceManager.isAgentSetup()) {
-                outcome = AGENT_SETUP;
-            }
+            // Check if there is no setup.
+            if (preferenceManager.getSetupType() == SetupType.UNKNOWN) {
 
-            // Check if this is a manager setup.
-            else if (preferenceManager.isManagerSetup()) {
-                outcome = MANAGER_SETUP;
-            }
-
-            // Check if this is a standalone setup.
-            else if (preferenceManager.isStandaloneSetup()) {
-                outcome = STANDALONE_SETUP;
+                // Set the outcome to no setup.
+                outcome = NO_SETUP;
             }
             else {
-                outcome = NO_SETUP;
+
+                // Set the outcome to success.
+                outcome = SUCCESS;
             }
         }
         catch(Exception e) {

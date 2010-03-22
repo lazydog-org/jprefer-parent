@@ -19,15 +19,9 @@
                                 value="#{setupMB.type}"
                                 layout="pageDirection">
                                 <f:selectItem itemLabel="Preference Manager" itemValue="MANAGER"/>
-                                <f:selectItem itemLabel="Preference Manager (Standalone)" itemValue="STANDALONE"/>
-                                <f:selectItem itemLabel="Preference Agent" itemValue="AGENT"/>
+                                <f:selectItem itemLabel="Standalone Preference Manager" itemValue="STANDALONE"/>
+                                <f:selectItem itemLabel="Preference Manager Agent" itemValue="AGENT"/>
                             </h:selectOneRadio>
-                        </li>
-                        <li>
-                            <label for="delete">Delete existing preferences </label>
-                            <h:selectBooleanCheckbox
-                                id="delete"
-                                value="#{setupMB.delete}"/>
                         </li>
                     </ol>
                 </fieldset>

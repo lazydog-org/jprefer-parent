@@ -14,23 +14,13 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>agent</from-outcome>
-            <to-view-id>/pages/agent.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>manager</from-outcome>
-            <to-view-id>/pages/manager.xhtml</to-view-id>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/main.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>setup</from-outcome>
             <to-view-id>/pages/setup.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>standalone</from-outcome>
-            <to-view-id>/pages/standalone.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -42,23 +32,13 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>agent</from-outcome>
-            <to-view-id>/pages/agent.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>manager</from-outcome>
-            <to-view-id>/pages/manager.xhtml</to-view-id>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/main.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>setup</from-outcome>
             <to-view-id>/pages/setup.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>standalone</from-outcome>
-            <to-view-id>/pages/standalone.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -78,18 +58,8 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>agent</from-outcome>
-            <to-view-id>/pages/agent.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>manager</from-outcome>
-            <to-view-id>/pages/manager.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>standalone</from-outcome>
-            <to-view-id>/pages/standalone.xhtml</to-view-id>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/main.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

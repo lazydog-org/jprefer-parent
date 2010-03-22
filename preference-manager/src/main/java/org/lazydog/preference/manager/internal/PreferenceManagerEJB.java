@@ -344,6 +344,19 @@ public class PreferenceManagerEJB implements PreferenceManager {
     }
 
     /**
+     * Get the setup type.
+     *
+     * @return  the setup type.
+     *
+     * @throws  ServiceException  if unable to get the setup type.
+     */
+    @Override
+    public SetupType getSetupType()
+            throws ServiceException {
+        return configurationService.findSetupType();
+    }
+
+    /**
      * Get the snapshots.
      *
      * @return  the snapshots.
@@ -404,62 +417,6 @@ public class PreferenceManagerEJB implements PreferenceManager {
                 // Ignore.
             }
         }
-    }
-
-    /**
-     * Is this an agent setup.
-     *
-     * @return  true if this is an agent setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    @Override
-    public boolean isAgentSetup() 
-            throws ServiceException {
-        return (configurationService.findSetupType() == SetupType.AGENT) ?
-                true : false;
-    }
-
-    /**
-     * Is this a manager setup.
-     *
-     * @return  true if this is a manager setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    @Override
-    public boolean isManagerSetup() 
-            throws ServiceException {
-        return (configurationService.findSetupType() == SetupType.MANAGER) ?
-                true : false;
-    }
-
-    /**
-     * Is this setup.
-     *
-     * @return  true if this is setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    @Override
-    public boolean isSetup() 
-            throws ServiceException {
-        return (configurationService.findSetupType() != SetupType.UNKNOWN) ?
-                true : false;
-    }
-
-    /**
-     * Is this a standalone setup.
-     *
-     * @return  true if this is a standalone setup, otherwise false.
-     *
-     * @throws  ServiceException  if unable to determine setup.
-     */
-    @Override
-    public boolean isStandaloneSetup() 
-            throws ServiceException {
-        return (configurationService.findSetupType() == SetupType.STANDALONE) ?
-                true : false;
     }
 
     /**

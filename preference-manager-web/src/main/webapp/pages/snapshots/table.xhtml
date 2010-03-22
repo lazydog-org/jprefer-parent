@@ -17,7 +17,7 @@
                         value="Create"
                         oncomplete="Richfaces.showModalPanel('pm-snapshot-modal-panel');"
                         reRender="pm-snapshot-modal-panel-content"
-                        rendered="#{userMB.roles['OPERATOR']}"/>
+                        rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}"/>
                 </div>
                 <rich:dataTable
                     value="#{snapshotMB.snapshotKeys}"
@@ -39,7 +39,7 @@
                             <rich:menuItem
                                 value="Restore"
                                 reRender="pm-preferences-table,pm-agent-table"
-                                rendered="#{userMB.roles['OPERATOR']}">
+                                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                 <a4j:actionparam
                                     name="name"
                                     assignTo="#{snapshotMB.name}"
@@ -50,7 +50,7 @@
                                 value="Rename"
                                 oncomplete="Richfaces.showModalPanel('pm-snapshot-modal-panel');"
                                 reRender="pm-snapshot-modal-panel-content"
-                                rendered="#{userMB.roles['OPERATOR']}">
+                                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                 <a4j:actionparam
                                     name="name"
                                     assignTo="#{snapshotMB.name}"
@@ -60,7 +60,7 @@
                             <rich:menuItem
                                 value="Delete"
                                 reRender="pm-snapshots-table"
-                                rendered="#{userMB.roles['OPERATOR']}">
+                                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                 <a4j:actionparam
                                     name="name"
                                     assignTo="#{snapshotMB.name}"
