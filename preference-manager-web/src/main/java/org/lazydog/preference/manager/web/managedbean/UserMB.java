@@ -49,7 +49,7 @@ public class UserMB implements Serializable {
             context = FacesContext.getCurrentInstance();
             request = (HttpServletRequest)context.getExternalContext().getRequest();
             request.setAttribute("j_username", this.username);
-            request.setAttribute("j_password", password);
+            request.setAttribute("j_password", this.password);
             response = (HttpServletResponse)context.getExternalContext().getResponse();
             dispatcher = request.getRequestDispatcher("/pages/loginProxy.jsp");
             dispatcher.forward(request, response);
