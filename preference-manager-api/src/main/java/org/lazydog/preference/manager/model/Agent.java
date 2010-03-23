@@ -16,7 +16,7 @@ public class Agent implements Serializable {
     private String login;
     private String password;
     private String serverName;
-    private AgentStatus status = AgentStatus.UNKNOWN;
+    private AgentStatus status = AgentStatus.DOWN;
 
     /**
      * Is the agent enabled?
@@ -145,8 +145,8 @@ public class Agent implements Serializable {
         // Check if the status exists.
         if (status == null) {
 
-            // Set the status to unknown.
-            status = AgentStatus.UNKNOWN;
+            // Set the status to down.
+            status = AgentStatus.DOWN;
         }
         this.status = status;
     }

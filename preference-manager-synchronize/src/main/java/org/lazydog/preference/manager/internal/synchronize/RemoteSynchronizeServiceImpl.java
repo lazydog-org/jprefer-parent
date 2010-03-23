@@ -20,7 +20,7 @@ import org.lazydog.preference.manager.spi.synchronize.RemoteSynchronizeService;
  *
  * @author  Ron Rickard
  */
-public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
+public final class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
 
     private Hashtable<String,String> environment;
 
@@ -68,7 +68,6 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
         String serverName;
 
         // Initialize.
-        connector = null;
         jmxPort = null;
         serverName = null;
 
@@ -159,7 +158,6 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
 
         // Initialize.
         connector = null;
-        document = null;
 
         try {
 
@@ -203,7 +201,6 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
 
         // Initialize.
         connector = null;
-        document = null;
 
         try {
 
@@ -242,9 +239,6 @@ public class RemoteSynchronizeServiceImpl implements RemoteSynchronizeService {
 
         // Declare.
         AgentSynchronizeService synchronizeService;
-
-        // Initialize.
-        synchronizeService = null;
 
         try {
 

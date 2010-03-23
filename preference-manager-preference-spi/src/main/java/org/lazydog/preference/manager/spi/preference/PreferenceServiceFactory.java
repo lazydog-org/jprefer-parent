@@ -8,7 +8,7 @@ import java.util.ServiceLoader;
  *
  * @author  Ron Rickard
  */
-public class PreferenceServiceFactory {
+public final class PreferenceServiceFactory {
 
     /**
      * Create the service.

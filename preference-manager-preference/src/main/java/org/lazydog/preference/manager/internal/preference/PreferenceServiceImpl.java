@@ -22,12 +22,12 @@ import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
  *
  * @author  Ron Rickard
  */
-public class PreferenceServiceImpl 
+public final class PreferenceServiceImpl
         implements PreferenceService, AgentSynchronizeService, SynchronizeService {
 
     private static final String ROOT_PATH = "/";
     private static final String STRING_ENCODING = "UTF-8";
-    private static Preferences system = Preferences.systemRoot();
+    private static final Preferences system = Preferences.systemRoot();
 
     /**
      * Copy the preferences.
@@ -264,9 +264,6 @@ public class PreferenceServiceImpl
 
         // Declare.
         PreferencesTree preferencesTree;
-
-        // Initialize.
-        preferencesTree = null;
 
         try {
 

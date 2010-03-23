@@ -9,7 +9,7 @@ import java.util.ServiceLoader;
  * 
  * @author  Ron Rickard
  */
-public class SynchronizeServiceFactory {
+public final class SynchronizeServiceFactory {
 
     /**
      * Create the service.

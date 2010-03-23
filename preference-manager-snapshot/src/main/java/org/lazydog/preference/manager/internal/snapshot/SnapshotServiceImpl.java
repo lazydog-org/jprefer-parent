@@ -17,7 +17,7 @@ import org.lazydog.preference.manager.spi.snapshot.SnapshotService;
  *
  * @author  Ron Rickard
  */
-public class SnapshotServiceImpl implements SnapshotService {
+public final class SnapshotServiceImpl implements SnapshotService {
 
     private static final String CREATE_DATE_KEY = "create.date";
     private static final String DATE_PATTERN = "MM/dd/yyyy HH:mm:ss.SSS";
@@ -25,9 +25,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String ROOT_PATH = "/";
     private static final String SNAPSHOT_NAME_PREFIX = "snapshot-";
     private static final String SNAPSHOTS_PATH = "org/lazydog/preference/manager/snapshots";
-    private static DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-    private static Preferences snapshotSystem = Preferences.userRoot().node(SNAPSHOTS_PATH);
-    private static Preferences sourceSystem = Preferences.systemRoot();
+    private static final DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+    private static final Preferences snapshotSystem = Preferences.userRoot().node(SNAPSHOTS_PATH);
+    private static final Preferences sourceSystem = Preferences.systemRoot();
 
     /**
      * Copy the preferences tree.

@@ -24,6 +24,8 @@ import org.lazydog.preference.manager.spi.snapshot.SnapshotService;
 import org.lazydog.preference.manager.spi.snapshot.SnapshotServiceFactory;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -36,11 +38,12 @@ import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
 @Remote(PreferenceManager.class)
 public class PreferenceManagerEJB implements PreferenceManager {
 
-    private static ConfigurationService configurationService
+    private static final Logger logger = LoggerFactory.getLogger(PreferenceManagerEJB.class);
+    private static final ConfigurationService configurationService
             = ConfigurationServiceFactory.create();
-    private static PreferenceService preferenceService
+    private static final PreferenceService preferenceService
             = PreferenceServiceFactory.create();
-    private static SnapshotService snapshotService
+    private static final SnapshotService snapshotService
             = SnapshotServiceFactory.create();
 
     /**
@@ -53,14 +56,21 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void clearConfiguration()
             throws ServiceException {
 
-        // Remove the setup type.
-        configurationService.removeSetupType();
+        try {
 
-        // Loop through the agents.
-        for (Agent agent : configurationService.findAgents()) {
+            // Remove the setup type.
+            configurationService.removeSetupType();
 
-            // Remove the agent.
-            configurationService.removeAgent(agent.getId());
+            // Loop through the agents.
+            for (Agent agent : configurationService.findAgents()) {
+
+                // Remove the agent.
+                configurationService.removeAgent(agent.getId());
+            }
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to clear configuration.", e);
+            throw e;
         }
     }
 
@@ -77,11 +87,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void copyPreferences(String sourcePath, String targetPath)
             throws ServiceException {
 
-        // Copy the preferences.
-        preferenceService.copyPreferences(sourcePath, targetPath);
+        try {
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Copy the preferences.
+            preferenceService.copyPreferences(sourcePath, targetPath);
+
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to copy the preferences.", e);
+            throw e;
+        }
     }
 
     /**
@@ -95,7 +112,16 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @RolesAllowed({"ADMIN","OPERATOR"})
     public void createSnapshot(String name)
             throws ServiceException {
+
+        try {
+            
+            // Create the snapshot.
             snapshotService.createSnapshot(name);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to create the snapshot.", e);
+            throw e;
+        }
     }
 
     /**
@@ -166,9 +192,6 @@ public class PreferenceManagerEJB implements PreferenceManager {
         // Declare.
         AgentStatus status;
 
-        // Set the status to up.
-        status = AgentStatus.UNKNOWN;
-
         try {
 
             // Declare.
@@ -219,10 +242,17 @@ public class PreferenceManagerEJB implements PreferenceManager {
         // Declare.
         Agent agent;
 
-        // Disable the agent.
-        agent = configurationService.findAgent(id);
-        agent.setEnabled(Boolean.FALSE);
-        agent = configurationService.persistAgent(agent);
+        try {
+
+            // Disable the agent.
+            agent = configurationService.findAgent(id);
+            agent.setEnabled(Boolean.FALSE);
+            agent = configurationService.persistAgent(agent);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to disable the agent.", e);
+            throw e;
+        }
 
         return agent;
     }
@@ -244,10 +274,17 @@ public class PreferenceManagerEJB implements PreferenceManager {
         // Declare.
         Agent agent;
 
-        // Enable the agent.
-        agent = configurationService.findAgent(id);
-        agent.setEnabled(Boolean.TRUE);
-        agent = configurationService.persistAgent(agent);
+        try {
+            
+            // Enable the agent.
+            agent = configurationService.findAgent(id);
+            agent.setEnabled(Boolean.TRUE);
+            agent = configurationService.persistAgent(agent);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to enable the agent.", e);
+            throw e;
+        }
 
         return agent;
     }
@@ -291,11 +328,20 @@ public class PreferenceManagerEJB implements PreferenceManager {
 
         // Declare.
         String document;
-        SynchronizeService synchronizeService;
 
-        // Export the document locally.
-        synchronizeService = SynchronizeServiceFactory.create();
-        document = synchronizeService.exportDocument();
+        try {
+
+            // Declare.
+            SynchronizeService synchronizeService;
+
+            // Export the document locally.
+            synchronizeService = SynchronizeServiceFactory.create();
+            document = synchronizeService.exportDocument();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to export the document.", e);
+            throw e;
+        }
 
         return document;
     }
@@ -338,18 +384,25 @@ public class PreferenceManagerEJB implements PreferenceManager {
         // Declare.
         Agent agent;
 
-        // Get the agent.
-        agent = configurationService.findAgent(id);
+        try {
+            
+            // Get the agent.
+            agent = configurationService.findAgent(id);
 
-        // Check if the password exists.
-        if (agent.getPassword() != null) {
+            // Check if the password exists.
+            if (agent.getPassword() != null) {
 
-            // Decode the password.
-            agent.setPassword(decode(agent.getPassword()));
+                // Decode the password.
+                agent.setPassword(decode(agent.getPassword()));
+            }
+
+            // Set the status for the agent.
+            agent.setStatus(determineStatus(agent));
         }
-
-        // Set the status for the agent.
-        agent.setStatus(determineStatus(agent));
+        catch(ServiceException e) {
+            logger.error("Unable to get the agent.", e);
+            throw e;
+        }
 
         return agent;
     }
@@ -369,21 +422,28 @@ public class PreferenceManagerEJB implements PreferenceManager {
         // Declare.
         List<Agent> agents;
 
-        // Get the agents.
-        agents = configurationService.findAgents();
+        try {
+            
+            // Get the agents.
+            agents = configurationService.findAgents();
 
-        // Loop through the agents.
-        for (Agent agent : agents) {
+            // Loop through the agents.
+            for (Agent agent : agents) {
 
-            // Check if the password exists.
-            if (agent.getPassword() != null) {
+                // Check if the password exists.
+                if (agent.getPassword() != null) {
 
-                // Decode the password.
-                agent.setPassword(decode(agent.getPassword()));
+                    // Decode the password.
+                    agent.setPassword(decode(agent.getPassword()));
+                }
+
+                // Set the status for the agent.
+                agent.setStatus(determineStatus(agent));
             }
-
-            // Set the status for the agent.
-            agent.setStatus(determineStatus(agent));
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to get the agents.", e);
+            throw e;
         }
 
         return agents;
@@ -402,21 +462,49 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public Map<String,String> getPreferences(String path)
             throws ServiceException {
-        return preferenceService.findPreferences(path);
+
+        // Declare.
+        Map<String,String> preferences;
+
+        try {
+
+            // Find the preferences.
+            preferences = preferenceService.findPreferences(path);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to get the preferences.", e);
+            throw e;
+        }
+
+        return preferences;
     }
 
     /**
-     * Get the preference tree.
+     * Get the preferences tree.
      *
-     * @return  the preference tree.
+     * @return  the preferences tree.
      *
-     * @throws  ServiceException  if unable to get the preference tree.
+     * @throws  ServiceException  if unable to get the preferences tree.
      */
     @Override
     @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public PreferencesTree getPreferencesTree()
             throws ServiceException {
-        return preferenceService.findPreferencesTree();
+
+        // Declare.
+        PreferencesTree preferencesTree;
+
+        try {
+
+            // Find the preferences tree.
+            preferencesTree = preferenceService.findPreferencesTree();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to get the preferences tree.", e);
+            throw e;
+        }
+
+        return preferencesTree;
     }
 
     /**
@@ -429,7 +517,21 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @Override
     public SetupType getSetupType()
             throws ServiceException {
-        return configurationService.findSetupType();
+
+        // Declare.
+        SetupType setupType;
+
+        try {
+
+            // Find the setup type.
+            setupType = configurationService.findSetupType();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to get the setup type.", e);
+            throw e;
+        }
+
+        return setupType;
     }
 
     /**
@@ -443,7 +545,21 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
     public Map<String,Date> getSnapshots()
             throws ServiceException {
-        return snapshotService.findSnapshots();
+
+        // Declare.
+        Map<String,Date> snapshots;
+
+        try {
+        
+            // Find the snapshots.
+            snapshots = snapshotService.findSnapshots();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to get the snapshots.", e);
+            throw e;
+        }
+
+        return snapshots;
     }
 
     /**
@@ -461,12 +577,19 @@ public class PreferenceManagerEJB implements PreferenceManager {
         // Declare.
         SynchronizeService synchronizeService;
 
-        // Import the document locally.
-        synchronizeService = SynchronizeServiceFactory.create();
-        synchronizeService.importDocument(document);
+        try {
+            
+            // Import the document locally.
+            synchronizeService = SynchronizeServiceFactory.create();
+            synchronizeService.importDocument(document);
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to import the document.", e);
+            throw e;
+        }
     }
 
     /**
@@ -508,11 +631,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void movePreferences(String sourcePath, String targetPath)
             throws ServiceException {
 
-        // Move the preferences.
-        preferenceService.movePreferences(sourcePath, targetPath);
+        try {
+            
+            // Move the preferences.
+            preferenceService.movePreferences(sourcePath, targetPath);
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to move the preferences.", e);
+            throw e;
+        }
     }
 
     /**
@@ -526,7 +656,16 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @RolesAllowed("ADMIN")
     public void removeAgent(int id)
             throws ServiceException {
-        configurationService.removeAgent(id);
+
+        try {
+            
+            // Remove the agent.
+            configurationService.removeAgent(id);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to remove the agent.", e);
+            throw e;
+        }
     }
 
     /**
@@ -542,11 +681,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void removePreference(String path, String key)
             throws ServiceException {
 
-        // Remove the preference.
-        preferenceService.removePreference(path, key);
+        try {
+            
+            // Remove the preference.
+            preferenceService.removePreference(path, key);
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to remove the preference.", e);
+            throw e;
+        }
     }
 
     /**
@@ -561,11 +707,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void removePreferences(String path)
             throws ServiceException {
 
-        // Remove the preferences.
-        preferenceService.removePreferences(path);
+        try {
+            
+            // Remove the preferences.
+            preferenceService.removePreferences(path);
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to remove the preferences.", e);
+            throw e;
+        }
     }
 
     /**
@@ -579,7 +732,16 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @RolesAllowed({"ADMIN","OPERATOR"})
     public void removeSnapshot(String name)
             throws ServiceException {
-        snapshotService.removeSnapshot(name);
+
+        try {
+            
+            // Remove the snapshot.
+            snapshotService.removeSnapshot(name);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to remove the snapshot.", e);
+            throw e;
+        }
     }
 
     /**
@@ -594,7 +756,16 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @RolesAllowed({"ADMIN","OPERATOR"})
     public void renameSnapshot(String sourceName, String targetName)
             throws ServiceException {
-        snapshotService.renameSnapshot(sourceName, targetName);
+
+        try {
+            
+            // Rename the snapshot.
+            snapshotService.renameSnapshot(sourceName, targetName);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to rename the snapshot.", e);
+            throw e;
+        }
     }
 
     /**
@@ -609,11 +780,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void restoreSnapshot(String name)
             throws ServiceException {
 
-        // Restore the snapshot.
-        snapshotService.restoreSnapshot(name);
+        try {
+            
+            // Restore the snapshot.
+            snapshotService.restoreSnapshot(name);
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to restore the snapshot.", e);
+            throw e;
+        }
     }
 
     /**
@@ -621,23 +799,29 @@ public class PreferenceManagerEJB implements PreferenceManager {
      *
      * @param  agent  the agent.
      *
-     * @return  the agent.
-     *
      * @throws  ServiceException  if unable to save the agent.
      */
     @Override
     @RolesAllowed("ADMIN")
-    public Agent saveAgent(Agent agent) 
+    public void saveAgent(Agent agent)
             throws ServiceException {
 
-        // Check if the password exists.
-        if (agent.getPassword() != null) {
+        try {
+            
+            // Check if the password exists.
+            if (agent.getPassword() != null) {
 
-            // Encode the password.
-            agent.setPassword(encode(agent.getPassword()));
+                // Encode the password.
+                agent.setPassword(encode(agent.getPassword()));
+            }
+
+            // Persist the agent.
+            configurationService.persistAgent(agent);
         }
-
-        return configurationService.persistAgent(agent);
+        catch(ServiceException e) {
+            logger.error("Unable to save the agent.", e);
+            throw e;
+        }
     }
 
     /**
@@ -645,15 +829,22 @@ public class PreferenceManagerEJB implements PreferenceManager {
      *
      * @param  setupType  the setup type.
      *
-     * @return  the setup type.
-     *
      * @throws  ServiceException  if unable to save the setup type.
      */
     @Override
     @RolesAllowed({"ADMIN"})
-    public SetupType saveSetupType(SetupType setupType) 
+    public void saveSetupType(SetupType setupType)
             throws ServiceException {
-        return configurationService.persistSetupType(setupType);
+
+        try {
+
+            // Persist the setup type.
+            configurationService.persistSetupType(setupType);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to save the setup type.", e);
+            throw e;
+        }
     }
 
     /**
@@ -670,11 +861,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void savePreference(String path, String key, String value)
             throws ServiceException {
 
-        // Persist the preference.
-        preferenceService.persistPreference(path, key, value);
+        try {
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Persist the preference.
+            preferenceService.persistPreference(path, key, value);
+
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to save the preference.", e);
+            throw e;
+        }
     }
 
     /**
@@ -689,11 +887,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void savePreferences(String path)
             throws ServiceException {
 
-        // Persist the preferences.
-        preferenceService.persistPreferences(path);
+        try {
 
-        // Synchronize the agents.
-        synchronizeAgents();
+            // Persist the preferences.
+            preferenceService.persistPreferences(path);
+
+            // Synchronize the agents.
+            synchronizeAgents();
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to save the preferences.", e);
+            throw e;
+        }
     }
 
     /**
@@ -708,14 +913,21 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void synchronizeAgent(Agent agent)
             throws ServiceException {
 
-        // Declare.
-        String document;
+        try {
 
-        // Export the document locally.
-        document = exportDocument();
+            // Declare.
+            String document;
 
-        // Import the document remotely.
-        importDocument(agent, document);
+            // Export the document locally.
+            document = exportDocument();
+
+            // Import the document remotely.
+            importDocument(agent, document);
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to synchronize the agent.", e);
+            throw e;
+        }
     }
 
     /**
@@ -728,21 +940,28 @@ public class PreferenceManagerEJB implements PreferenceManager {
     public void synchronizeAgents()
             throws ServiceException {
 
-        // Declare.
-        List<Agent> agents;
-        String document;
+        try {
+            
+            // Declare.
+            List<Agent> agents;
+            String document;
 
-        // Get the agents.
-        agents = configurationService.findAgents();
+            // Get the agents.
+            agents = configurationService.findAgents();
 
-        // Export the document locally.
-        document = exportDocument();
+            // Export the document locally.
+            document = exportDocument();
 
-        // Loop through the agents.
-        for (Agent agent : agents) {
+            // Loop through the agents.
+            for (Agent agent : agents) {
 
-            // Import the document remotely.
-            importDocument(agent, document);
+                // Import the document remotely.
+                importDocument(agent, document);
+            }
+        }
+        catch(ServiceException e) {
+            logger.error("Unable to synchronize the agents.", e);
+            throw e;
         }
     }
 }

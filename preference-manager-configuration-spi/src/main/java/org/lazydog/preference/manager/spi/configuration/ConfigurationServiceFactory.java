@@ -8,7 +8,7 @@ import java.util.ServiceLoader;
  * 
  * @author  Ron Rickard
  */
-public class ConfigurationServiceFactory {
+public final class ConfigurationServiceFactory {
 
     /**
      * Create the service.

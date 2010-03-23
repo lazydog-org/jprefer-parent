@@ -10,7 +10,6 @@ import java.io.Serializable;
  */
 public enum AgentStatus implements Serializable {
     DOWN          ("Down"),
-    UNKNOWN       ("Unknown"),
     UP_SYNCED     ("Up, Sync'd"),
     UP_NOT_SYNCED ("Up, Not Sync'd");
 

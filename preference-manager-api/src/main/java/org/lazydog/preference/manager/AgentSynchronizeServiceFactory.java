@@ -8,7 +8,7 @@ import java.util.ServiceLoader;
  *
  * @author  Ron Rickard
  */
-public class AgentSynchronizeServiceFactory {
+public final class AgentSynchronizeServiceFactory {
 
     /**
      * Create the service.

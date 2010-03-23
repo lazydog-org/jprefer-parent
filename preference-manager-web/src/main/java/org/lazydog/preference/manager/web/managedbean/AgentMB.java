@@ -1,6 +1,7 @@
 package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -41,7 +42,7 @@ public class AgentMB implements Serializable {
         List<Agent> agents;
 
         // Initialize.
-        agents = null;
+        agents = new ArrayList<Agent>();
         
         try {
 
@@ -81,7 +82,7 @@ System.err.println("Unable to get the agents.\n" + e);
         catch(Exception e) {
             // TO DO: handle exception.
 System.err.println("Unable to delete the agent, " + this.id + ".\n" + e);
-        };
+        }
     }
 
     /**
@@ -148,7 +149,7 @@ System.err.println("Unable to modify the agent, " + this.id + ".\n" + e);
         try {
 
             // Save the agent.
-            this.agent = preferenceManager.saveAgent(this.agent);
+            preferenceManager.saveAgent(this.agent);
         }
         catch(Exception e) {
             // TO DO: handle exception.

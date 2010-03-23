@@ -17,7 +17,7 @@ import org.lazydog.preference.manager.spi.configuration.ConfigurationService;
  *
  * @author  Ron Rickard
  */
-public class ConfigurationServiceImpl implements ConfigurationService {
+public final class ConfigurationServiceImpl implements ConfigurationService {
 
     private static final String AGENT_KEY_PREFIX = "agent.";
     private static final String AGENT_KEY_REGEX = AGENT_KEY_PREFIX + "\\d+";
@@ -33,7 +33,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private static final int PASSWORD_GROUP = 4;
     private static final int ENABLED_GROUP = 5;
 
-    private static Preferences preferences =
+    private static final Preferences preferences =
             Preferences.userRoot().node(CONFIGURATION_PATH);
 
     /**
@@ -201,9 +201,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         // Declare.
         StringBuffer agentValue;
 
-        // Initialize.
-        agentValue = null;
-
         // Check if the agent exits.
         if (agent != null) {
 
@@ -240,11 +237,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         // Declare.
         Agent agent;
-
-        // Initialize.
-        agent = null;
-
-        // Declare.
         Matcher matcher;
 
         // Create a matcher to parse.

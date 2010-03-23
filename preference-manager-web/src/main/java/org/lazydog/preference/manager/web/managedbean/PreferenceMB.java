@@ -1,15 +1,9 @@
 package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.PreferenceManager;
-import org.lazydog.preference.manager.web.utility.SessionKey;
-import org.lazydog.preference.manager.web.utility.SessionUtility;
 
 
 /**

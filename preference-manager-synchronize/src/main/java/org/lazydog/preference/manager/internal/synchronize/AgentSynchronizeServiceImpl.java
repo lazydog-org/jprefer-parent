@@ -11,9 +11,9 @@ import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
  * 
  * @author  Ron Rickard
  */
-public class AgentSynchronizeServiceImpl implements AgentSynchronizeService {
+public final class AgentSynchronizeServiceImpl implements AgentSynchronizeService {
 
-    private static SynchronizeService synchronizeService
+    private static final SynchronizeService synchronizeService
             = SynchronizeServiceFactory.create();
 
     /**

@@ -113,11 +113,11 @@ public interface PreferenceManager {
             throws ServiceException;
 
     /**
-     * Get the preference tree.
+     * Get the preferences tree.
      *
-     * @return  the preference tree.
+     * @return  the preferences tree.
      *
-     * @throws  ServiceException  if unable to get the preference tree.
+     * @throws  ServiceException  if unable to get the preferences tree.
      */
     public PreferencesTree getPreferencesTree()
             throws ServiceException;
@@ -230,11 +230,9 @@ public interface PreferenceManager {
      *
      * @param  agent  the agent.
      *
-     * @return  the agent.
-     *
      * @throws  ServiceException  if unable to save the agent.
      */
-    public Agent saveAgent(Agent agent) 
+    public void saveAgent(Agent agent)
             throws ServiceException;
 
     /**
@@ -242,11 +240,9 @@ public interface PreferenceManager {
      *
      * @param  setupType  the setup type.
      *
-     * @return  the setup type.
-     *
      * @throws  ServiceException  if unable to save the setup type.
      */
-    public SetupType saveSetupType(SetupType setupType) 
+    public void saveSetupType(SetupType setupType)
             throws ServiceException;
 
     /**

@@ -8,7 +8,7 @@ import java.util.ServiceLoader;
  * 
  * @author  Ron Rickard
  */
-public class SnapshotServiceFactory {
+public final class SnapshotServiceFactory {
 
     /**
      * Create the service.
