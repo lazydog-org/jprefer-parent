@@ -11,6 +11,7 @@
     <body>
         <ui:composition>
             <h:form id="pm-agent-form">
+                <h:messages/>
                 <fieldset>
                     <ol>
                         <li>
@@ -26,7 +27,9 @@
                                 id="server-name"
                                 value="#{agentMB.agent.serverName}"
                                 size="25"
-                                maxlength="50"/>
+                                maxlength="50"
+                                required="true"
+                                requiredMessage="The server name is required."/>
                         </li>
                         <li>
                             <label for="jmx-port">JMX Port: </label>

@@ -1,15 +1,11 @@
 package org.lazydog.preference.manager.web.contextlistener;
 
-import java.lang.management.ManagementFactory;
 import javax.ejb.EJB;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.lazydog.preference.manager.AgentSynchronizeService;
-import org.lazydog.preference.manager.AgentSynchronizeServiceFactory;
 import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.PreferenceManager;
+import org.lazydog.preference.manager.web.utility.MBeanUtility;
 
 
 /**
@@ -34,23 +30,9 @@ public class MBeanContextListener implements ServletContextListener {
 
             // Check if this is an agent setup.
             if (preferenceManager.getSetupType() == SetupType.AGENT) {
-                
-                // Declare.
-                MBeanServer mBeanServer;
-                ObjectName name;
 
-                // Get the MBean server.
-                mBeanServer = ManagementFactory.getPlatformMBeanServer();
-
-                // Get the MBean object name.
-                name = new ObjectName(AgentSynchronizeService.OBJECT_NAME);
-
-                // Check if the MBean is registered with the MBean server.
-                if (mBeanServer.isRegistered(name)) {
-
-                    // Unregister the MBean with the MBean server.
-                    mBeanServer.unregisterMBean(name);
-                }
+                // Unregister the MBean.
+                MBeanUtility.unregister();
             }
         }
         catch(Exception e) {
@@ -72,23 +54,8 @@ e.printStackTrace();
             // Check if this is an agent setup.
             if (preferenceManager.getSetupType() == SetupType.AGENT) {
 
-                // Declare.
-                MBeanServer mBeanServer;
-                ObjectName name;
-
-                // Get the MBean server.
-                mBeanServer = ManagementFactory.getPlatformMBeanServer();
-
-                // Get the MBean object name.
-                name = new ObjectName(AgentSynchronizeService.OBJECT_NAME);
-
-                // Check if the MBean is not registered with the MBean server.
-                if (!mBeanServer.isRegistered(name)) {
-
-                    // Register the MBean with the MBean server.
-                    mBeanServer.registerMBean(
-                            AgentSynchronizeServiceFactory.create(), name);
-                }
+                // Register the MBean.
+                MBeanUtility.register();
             }
         }
         catch(Exception e) {

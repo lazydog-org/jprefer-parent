@@ -8,7 +8,7 @@ import javax.faces.context.FacesContext;
  * 
  * @author  Ron Rickard
  */
-public class SessionUtility {
+public final class SessionUtility {
 
     /**
      * Get the value for the specified key from the session.
