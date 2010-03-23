@@ -7,36 +7,16 @@
     version="1.2">
 
     <navigation-rule>
-        <from-view-id>/pages/intro.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/pages/intro.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
+            <from-action>#{userMB.login}</from-action>
             <from-outcome>success</from-outcome>
             <to-view-id>/pages/main.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>setup</from-outcome>
-            <to-view-id>/pages/setup.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/pages/loginError.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/pages/loginError.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/pages/main.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
+            <from-action>#{userMB.login}</from-action>
             <from-outcome>setup</from-outcome>
             <to-view-id>/pages/setup.xhtml</to-view-id>
             <redirect/>
@@ -51,13 +31,8 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/pages/setup.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/pages/setup.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
+            <from-action>#{setupMB.configure}</from-action>
             <from-outcome>success</from-outcome>
             <to-view-id>/pages/main.xhtml</to-view-id>
             <redirect/>

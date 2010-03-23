@@ -81,17 +81,6 @@
     </security-constraint>
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Setup Page</web-resource-name>
-            <url-pattern>/pages/setup.jsf</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>ADMIN</role-name>
-        </auth-constraint>
-    </security-constraint>
-    <security-constraint>
-        <web-resource-collection>
             <web-resource-name>All Page</web-resource-name>
             <url-pattern>/pages/*</url-pattern>
             <http-method>GET</http-method>
