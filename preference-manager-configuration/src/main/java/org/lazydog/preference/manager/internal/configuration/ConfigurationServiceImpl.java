@@ -209,15 +209,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
             // Set the agent value.
             agentValue = new StringBuffer();
-            agentValue.append(agent.getServerName());
+            agentValue.append((agent.getServerName() == null) ? "" : agent.getServerName());
             agentValue.append(AGENT_VALUE_SEPARATOR);
-            agentValue.append(agent.getJmxPort());
+            agentValue.append((agent.getJmxPort() == null) ? "" : agent.getJmxPort());
             agentValue.append(AGENT_VALUE_SEPARATOR);
-            agentValue.append(agent.getLogin());
+            agentValue.append((agent.getLogin() == null) ? "" : agent.getLogin());
             agentValue.append(AGENT_VALUE_SEPARATOR);
-            agentValue.append(agent.getPassword());
+            agentValue.append((agent.getPassword() == null) ? "" : agent.getPassword());
             agentValue.append(AGENT_VALUE_SEPARATOR);
-            agentValue.append(agent.getEnabled());
+            agentValue.append((agent.getEnabled() == null) ? "" : agent.getEnabled());
         }
         else {
             throw new NullPointerException("The agent is null.");

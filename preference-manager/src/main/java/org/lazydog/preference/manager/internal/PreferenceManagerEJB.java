@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.DecoderException;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.model.AgentStatus;
 import org.lazydog.preference.manager.model.PreferencesTree;
@@ -22,6 +24,7 @@ import org.lazydog.preference.manager.spi.snapshot.SnapshotService;
 import org.lazydog.preference.manager.spi.snapshot.SnapshotServiceFactory;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
+
 
 
 /**
@@ -102,7 +105,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      *
      * @return  the environment.
      */
-    private Hashtable<String,String> getEnvironment(Agent agent) {
+    private static Hashtable<String,String> getEnvironment(Agent agent) {
 
         // Declare.
         Hashtable<String,String> env;
@@ -115,6 +118,40 @@ public class PreferenceManagerEJB implements PreferenceManager {
         env.put(RemoteSynchronizeService.SERVER_NAME, agent.getServerName());
 
         return env;
+    }
+
+    /**
+     * Decode the data.
+     *
+     * @param  data  the data.
+     *
+     * @return  the data decoded.
+     *
+     * @throws  IllegalArgumentException  if the data cannot be decoded.
+     */
+    private static String decode(String data) {
+
+        // Declare.
+        String decodedData;
+
+        // Initialize.
+        decodedData = null;
+
+        try {
+
+            // Check if the data is not null.
+            if (data != null) {
+
+                // Decode the data.
+                decodedData = new String(Hex.decodeHex(data.toCharArray()));
+            }
+        }
+        catch(DecoderException e) {
+            throw new IllegalArgumentException(
+                    "The data cannot be decoded.", e);
+        }
+
+        return decodedData;
     }
 
     /**
@@ -216,6 +253,31 @@ public class PreferenceManagerEJB implements PreferenceManager {
     }
 
     /**
+     * Encode the data.
+     *
+     * @param  data  the data.
+     *
+     * @return  the data encoded.
+     */
+    private static String encode(String data) {
+
+        // Declare.
+        String encodedData;
+
+        // Initialize.
+        encodedData = null;
+
+        // Check if the data is not null.
+        if (data != null) {
+
+            // Encode the data.
+            encodedData = Hex.encodeHexString(data.getBytes());
+        }
+
+        return encodedData;
+    }
+
+    /**
      * Export the document.
      *
      * @return  the document.
@@ -279,6 +341,13 @@ public class PreferenceManagerEJB implements PreferenceManager {
         // Get the agent.
         agent = configurationService.findAgent(id);
 
+        // Check if the password exists.
+        if (agent.getPassword() != null) {
+
+            // Decode the password.
+            agent.setPassword(decode(agent.getPassword()));
+        }
+
         // Set the status for the agent.
         agent.setStatus(determineStatus(agent));
 
@@ -305,6 +374,13 @@ public class PreferenceManagerEJB implements PreferenceManager {
 
         // Loop through the agents.
         for (Agent agent : agents) {
+
+            // Check if the password exists.
+            if (agent.getPassword() != null) {
+
+                // Decode the password.
+                agent.setPassword(decode(agent.getPassword()));
+            }
 
             // Set the status for the agent.
             agent.setStatus(determineStatus(agent));
@@ -553,6 +629,14 @@ public class PreferenceManagerEJB implements PreferenceManager {
     @RolesAllowed("ADMIN")
     public Agent saveAgent(Agent agent) 
             throws ServiceException {
+
+        // Check if the password exists.
+        if (agent.getPassword() != null) {
+
+            // Encode the password.
+            agent.setPassword(encode(agent.getPassword()));
+        }
+
         return configurationService.persistAgent(agent);
     }
 
