@@ -27,6 +27,7 @@
     </build>
     <modules>
         <module>preference-manager-api</module>
+        <module>preference-manager-utility</module>
         <module>preference-manager-preference-spi</module>
         <module>preference-manager-synchronize-spi</module>
         <module>preference-manager-configuration-spi</module>
@@ -36,6 +37,8 @@
         <module>preference-manager-configuration</module>
         <module>preference-manager-snapshot</module>
         <module>preference-manager</module>
+        <module>preference-manager-agent</module>
+        <module>preference-manager-ear</module>
         <module>preference-manager-web</module>
         <module>preference-manager-web-ear</module>
     </modules>
