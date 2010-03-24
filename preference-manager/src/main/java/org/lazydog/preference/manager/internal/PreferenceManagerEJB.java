@@ -12,6 +12,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.DecoderException;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.model.AgentStatus;
+import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.model.SetupType;
 import org.lazydog.preference.manager.PreferenceManager;
@@ -88,28 +89,28 @@ public class PreferenceManagerEJB implements PreferenceManager {
     }
 
     /**
-     * Copy the preferences.
+     * Copy the preference path.
      *
      * @param  sourcePath  the source path.
      * @param  targetPath  the target path.
      *
-     * @throws  ServiceException  if unable to copy the preferences.
+     * @throws  ServiceException  if unable to copy the preference path.
      */
     @Override
     @RolesAllowed({"ADMIN","OPERATOR"})
-    public void copyPreferences(String sourcePath, String targetPath)
+    public void copyPreferencePath(String sourcePath, String targetPath)
             throws ServiceException {
 
         try {
 
-            // Copy the preferences.
-            preferenceService.copyPreferences(sourcePath, targetPath);
+            // Copy the preference path.
+            preferenceService.copyPreferencePath(sourcePath, targetPath);
 
             // Synchronize the agents.
             synchronizeAgents();
         }
         catch(ServiceException e) {
-            logger.error("Unable to copy the preferences.", e);
+            logger.error("Unable to copy the preference path.", e);
             throw e;
         }
     }
@@ -632,28 +633,28 @@ public class PreferenceManagerEJB implements PreferenceManager {
     }
 
     /**
-     * Move the preferences.
+     * Move the preference path.
      * 
      * @param  sourcePath  the source path.
      * @param  targetPath  the target path.
      * 
-     * @throws  ServiceException  if unable to move the preferences.
+     * @throws  ServiceException  if unable to move the preference path.
      */
     @Override
     @RolesAllowed({"ADMIN","OPERATOR"})
-    public void movePreferences(String sourcePath, String targetPath)
+    public void movePreferencePath(String sourcePath, String targetPath)
             throws ServiceException {
 
         try {
             
-            // Move the preferences.
-            preferenceService.movePreferences(sourcePath, targetPath);
+            // Move the preference path.
+            preferenceService.movePreferencePath(sourcePath, targetPath);
 
             // Synchronize the agents.
             synchronizeAgents();
         }
         catch(ServiceException e) {
-            logger.error("Unable to move the preferences.", e);
+            logger.error("Unable to move the preference path.", e);
             throw e;
         }
     }
@@ -709,27 +710,27 @@ public class PreferenceManagerEJB implements PreferenceManager {
     }
 
     /**
-     * Remove the preferences.
+     * Remove the preference path.
      *
      * @param  path  the path.
      *
-     * @throws  ServiceException  if unable to remove the preferences.
+     * @throws  ServiceException  if unable to remove the preference path.
      */
     @Override
     @RolesAllowed({"ADMIN","OPERATOR"})
-    public void removePreferences(String path)
+    public void removePreferencePath(String path)
             throws ServiceException {
 
         try {
             
-            // Remove the preferences.
-            preferenceService.removePreferences(path);
+            // Remove the preference path.
+            preferenceService.removePreferencePath(path);
 
             // Synchronize the agents.
             synchronizeAgents();
         }
         catch(ServiceException e) {
-            logger.error("Unable to remove the preferences.", e);
+            logger.error("Unable to remove the preference path.", e);
             throw e;
         }
     }
@@ -875,21 +876,19 @@ public class PreferenceManagerEJB implements PreferenceManager {
     /**
      * Save the preference.
      *
-     * @param  path   the path.
-     * @param  key    the key.
-     * @param  value  the value.
+     * @param  preference  the preference.
      *
      * @throws  ServiceException  if unable to save the preference.
      */
     @Override
     @RolesAllowed({"ADMIN","OPERATOR"})
-    public void savePreference(String path, String key, String value)
+    public void savePreference(Preference preference)
             throws ServiceException {
 
         try {
 
             // Persist the preference.
-            preferenceService.persistPreference(path, key, value);
+            preferenceService.persistPreference(preference);
 
             // Synchronize the agents.
             synchronizeAgents();
@@ -901,27 +900,27 @@ public class PreferenceManagerEJB implements PreferenceManager {
     }
 
     /**
-     * Save the preferences.
+     * Save the preference path.
      *
      * @param  path  the path.
      *
-     * @throws  ServiceException  if unable to save the preferences.
+     * @throws  ServiceException  if unable to save the preference path.
      */
     @Override
     @RolesAllowed({"ADMIN","OPERATOR"})
-    public void savePreferences(String path)
+    public void savePreferencePath(String path)
             throws ServiceException {
 
         try {
 
-            // Persist the preferences.
-            preferenceService.persistPreferences(path);
+            // Persist the preference path.
+            preferenceService.persistPreferencePath(path);
 
             // Synchronize the agents.
             synchronizeAgents();
         }
         catch(ServiceException e) {
-            logger.error("Unable to save the preferences.", e);
+            logger.error("Unable to save the preference path.", e);
             throw e;
         }
     }

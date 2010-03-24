@@ -17,17 +17,17 @@
                             <label for="key">Key: </label>
                             <h:inputText
                                 id="key"
-                                value="#{preferenceMB.key}"
+                                value="#{preferenceMB.preference.key}"
                                 size="25"
                                 maxlength="50"/>
                             <h:inputHidden value="#{preferenceMB.oldKey}"/>
-                            <h:inputHidden value="#{preferenceMB.path}"/>
+                            <h:inputHidden value="#{preferenceMB.preference.path}"/>
                         </li>
                         <li>
                             <label for="value">Value: </label>
                             <h:inputText
                                 id="value"
-                                value="#{preferenceMB.value}"
+                                value="#{preferenceMB.preference.value}"
                                 size="25"
                                 maxlength="50"/>
                             <h:inputHidden value="#{preferenceMB.oldValue}"/>

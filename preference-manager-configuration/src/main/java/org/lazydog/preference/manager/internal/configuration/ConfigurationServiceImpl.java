@@ -319,7 +319,7 @@ public final class ConfigurationServiceImpl implements ConfigurationService {
                 agent = this.findAgent(id);
             }
             else {
-                throw new NullPointerException("The agent is null");
+                throw new NullPointerException("The agent is null.");
             }
         }
         catch(BackingStoreException e) {

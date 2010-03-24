@@ -1,8 +1,10 @@
 package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
+import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.PreferenceManager;
 
 
@@ -13,22 +15,11 @@ import org.lazydog.preference.manager.PreferenceManager;
  */
 public class PreferenceMB implements Serializable {
 
-    private String key;
     private String oldKey;
     private String oldValue;
-    private String path;
+    private Preference preference;
     @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
     protected PreferenceManager preferenceManager;
-    private String value;
-
-    /**
-     * Get the key.
-     *
-     * @return  the key.
-     */
-    public String getKey() {
-        return this.key;
-    }
 
     /**
      * Get the old key.
@@ -49,21 +40,22 @@ public class PreferenceMB implements Serializable {
     }
 
     /**
-     * Get the path.
-     * 
-     * @return  the path.
+     * Get the preference.
+     *
+     * @return  the key.
      */
-    public String getPath() {
-        return this.path;
+    public Preference getPreference() {
+        return this.preference;
     }
 
     /**
-     * Get the value.
-     *
-     * @return  the value.
+     * Initialize.
      */
-    public String getValue() {
-        return this.value;
+    @PostConstruct
+    public void initialize() {
+
+        // Create a new preference.
+        this.preference = new Preference();
     }
 
     /**
@@ -76,11 +68,11 @@ public class PreferenceMB implements Serializable {
         try {
 
             // Remove the preference.
-            preferenceManager.removePreference(this.path, this.key);
+            preferenceManager.removePreference(this.preference.getPath(), this.preference.getKey());
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to delete the preference " + this.key + ".\n" + e);
+System.err.println("Unable to delete the preference " + this.preference + ".\n" + e);
         }
     }
 
@@ -94,12 +86,12 @@ System.err.println("Unable to delete the preference " + this.key + ".\n" + e);
         try {
 
             // Set the old key, and old value.
-            this.oldKey = this.key;
-            this.oldValue = this.value;
+            this.oldKey = this.preference.getKey();
+            this.oldValue = this.preference.getValue();
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to modify the preference " + this.key + ".\n" + e);
+System.err.println("Unable to modify the preference " + this.preference.getKey() + ".\n" + e);
         }
     }
 
@@ -116,15 +108,15 @@ System.err.println("Unable to modify the preference " + this.key + ".\n" + e);
             if (this.oldKey != null && !this.oldKey.equals("")) {
 
                 // Remove the old preference.
-                preferenceManager.removePreference(this.path, this.oldKey);
+                preferenceManager.removePreference(this.preference.getPath(), this.oldKey);
             }
 
             // Add the new preference.
-            preferenceManager.savePreference(this.path, this.key, this.value);
+            preferenceManager.savePreference(this.preference);
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to add/modify the preference " + this.key + ".\n" + e);
+System.err.println("Unable to add/modify the preference " + this.preference + ".\n" + e);
         }
     }
 
@@ -138,22 +130,13 @@ System.err.println("Unable to add/modify the preference " + this.key + ".\n" + e
         try {
 
             // Reset the key and value.
-            this.key = this.oldKey;
-            this.value = this.oldValue;
+            this.preference.setKey(this.oldKey);
+            this.preference.setValue(this.oldValue);
         }
         catch(Exception e) {
             // TODO: handle exception.
 System.err.println("Unable to reset the preference " + this.oldKey + ".\n" + e);
         }
-    }
-
-    /**
-     * Set the key.
-     *
-     * @param  key  the key.
-     */
-    public void setKey(String key) {
-        this.key = key;
     }
 
     /**
@@ -175,20 +158,11 @@ System.err.println("Unable to reset the preference " + this.oldKey + ".\n" + e);
     }
 
     /**
-     * Set the path.
+     * Set the preference.
      *
-     * @param  path  the path.
+     * @param  preference  the preference.
      */
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    /**
-     * Set the value.
-     *
-     * @param  value  the value.
-     */
-    public void setValue(String value) {
-        this.value = value;
+    public void setPreference(Preference preference) {
+        this.preference = preference;
     }
 }

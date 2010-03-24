@@ -128,12 +128,12 @@ System.err.println("Unable to copy the preferences " + this.path + ".\n" + e);
 
         try {
 
-            // Remove the preferences.
-            preferenceManager.removePreferences(this.path);
+            // Remove the preference path.
+            preferenceManager.removePreferencePath(this.path);
         }
         catch(Exception e) {
             // TODO: handle exception.
-System.err.println("Unable to delete the preferences " + this.path + ".\n" + e);
+System.err.println("Unable to delete the preference path " + this.path + ".\n" + e);
         }
     }
 
@@ -170,21 +170,21 @@ System.err.println("Unable to move the preferences " + this.path + ".\n" + e);
             // Check if the action type is add.
             if (ActionType.valueOf(this.actionType) == ActionType.ADD) {
 
-                // Add the new preference.
-                preferenceManager.savePreferences(this.path);
+                // Add the preference path.
+                preferenceManager.savePreferencePath(this.path);
             }
             // Check if the action type is copy.
             else if (ActionType.valueOf(this.actionType) == ActionType.COPY) {
 
-                // Copy the preferences.
-                preferenceManager.copyPreferences(this.oldPath, this.path);
+                // Copy the preference path.
+                preferenceManager.copyPreferencePath(this.oldPath, this.path);
             }
 
             // Check if the action type is move.
             else if (ActionType.valueOf(this.actionType) == ActionType.MOVE) {
 
-                // Move the preferences.
-                preferenceManager.movePreferences(this.oldPath, this.path);
+                // Move the preference path.
+                preferenceManager.movePreferencePath(this.oldPath, this.path);
             }
         }
         catch(Exception e) {

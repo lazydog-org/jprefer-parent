@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.lazydog.preference.manager.model.Agent;
+import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.model.SetupType;
 
@@ -24,14 +25,14 @@ public interface PreferenceManager {
             throws ServiceException;
 
     /**
-     * Copy the preferences.
+     * Copy the preference path.
      *
      * @param  sourcePath  the source path.
      * @param  targetPath  the target path.
      *
-     * @throws  ServiceException  if unable to copy the preferences.
+     * @throws  ServiceException  if unable to copy the preference path.
      */
-    public void copyPreferences(String sourcePath, String targetPath)
+    public void copyPreferencePath(String sourcePath, String targetPath)
             throws ServiceException;
 
     /**
@@ -153,14 +154,14 @@ public interface PreferenceManager {
             throws ServiceException;
 
     /**
-     * Move the preferences.
+     * Move the preference path.
      * 
      * @param  sourcePath  the source path.
      * @param  targetPath  the target path.
      * 
-     * @throws  ServiceException  if unable to move the preferences.
+     * @throws  ServiceException  if unable to move the preference path.
      */
-    public void movePreferences(String sourcePath, String targetPath)
+    public void movePreferencePath(String sourcePath, String targetPath)
             throws ServiceException;
 
     /**
@@ -185,13 +186,13 @@ public interface PreferenceManager {
             throws ServiceException;
 
     /**
-     * Remove the preferences.
+     * Remove the preference path.
      *
      * @param  path  the path.
      *
-     * @throws  ServiceException  if unable to remove the preferences.
+     * @throws  ServiceException  if unable to remove the preference path.
      */
-    public void removePreferences(String path)
+    public void removePreferencePath(String path)
             throws ServiceException;
 
     /**
@@ -248,23 +249,21 @@ public interface PreferenceManager {
     /**
      * Save the preference.
      *
-     * @param  path   the path.
-     * @param  key    the key.
-     * @param  value  the value.
+     * @param  preference   the preference.
      *
      * @throws  ServiceException  if unable to save the preference.
      */
-    public void savePreference(String path, String key, String value)
+    public void savePreference(Preference preference)
             throws ServiceException;
 
     /**
-     * Save the preferences.
+     * Save the preference path.
      *
      * @param  path  the path.
      *
-     * @throws  ServiceException  if unable to save the preferences.
+     * @throws  ServiceException  if unable to save the preference path.
      */
-    public void savePreferences(String path)
+    public void savePreferencePath(String path)
             throws ServiceException;
 
     /**

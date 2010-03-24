@@ -10,10 +10,11 @@ import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
-import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeService;
+import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.ServiceException;
 import org.lazydog.preference.manager.spi.preference.PreferenceService;
+import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
 
 
@@ -30,18 +31,18 @@ public final class PreferenceServiceImpl
     private static final Preferences system = Preferences.systemRoot();
 
     /**
-     * Copy the preferences.
+     * Copy the preference path.
      * 
      * @param  sourcePath  the source path.
      * @param  targetPath  the target path.
      * 
-     * @throws  ServiceException          if unable to copy the preferences.
+     * @throws  ServiceException          if unable to copy the preference path.
      * @throws  NullPointerException      if the source or target path are null.
      * @throws  IllegalArgumentException  if the source path does not exist or
      *                                    the target path already exists.
      */
     @Override
-    public void copyPreferences(String sourcePath, String targetPath)
+    public void copyPreferencePath(String sourcePath, String targetPath)
             throws ServiceException {
         
         try {
@@ -78,7 +79,7 @@ public final class PreferenceServiceImpl
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
-                    "Unable to copy the preferences from "
+                    "Unable to copy the preference path from "
                     + sourcePath + " to " + targetPath + ".", e);
         }
     }
@@ -387,8 +388,8 @@ public final class PreferenceServiceImpl
             // Declare.
             ByteArrayInputStream inputStream;
 
-            // Remove the preferences.
-            this.removePreferences(path);
+            // Remove the preference path.
+            this.removePreferencePath(path);
 
             // Convert the document to a input stream.
             inputStream = new ByteArrayInputStream(
@@ -412,31 +413,31 @@ public final class PreferenceServiceImpl
     }
 
     /**
-     * Move the preferences.
+     * Move the preference path.
      * 
      * @param  sourcePath  the source path.
      * @param  targetPath  the target path.
      * 
-     * @throws  ServiceException          if unable to move the preferences.
+     * @throws  ServiceException          if unable to move the preference path.
      * @throws  NullPointerException      if the source or target path are null.
      * @throws  IllegalArgumentException  if the source path does not exist or
      *                                    the target path already exists.
      */
     @Override
-    public void movePreferences(String sourcePath, String targetPath)
+    public void movePreferencePath(String sourcePath, String targetPath)
             throws ServiceException {
 
         try {
 
-            // Copy the preferences.
-            this.copyPreferences(sourcePath, targetPath);
+            // Copy the preference path.
+            this.copyPreferencePath(sourcePath, targetPath);
 
-            // Remove the preferences.
-            this.removePreferences(sourcePath);
+            // Remove the preference path.
+            this.removePreferencePath(sourcePath);
         }
         catch(ServiceException e) {
             throw new ServiceException(
-                    "Unable to move the preferences from "
+                    "Unable to move the preference path from "
                     + sourcePath + " to " + targetPath + ".", e);
         }
     }
@@ -444,76 +445,65 @@ public final class PreferenceServiceImpl
     /**
      * Persist the preference.
      *
-     * @param  path   the path.
-     * @param  key    the key.
-     * @param  value  the value.
+     * @param  preference  the preference.
      *
-     * @return  the preference value.
+     * @return  the preference.
      *
      * @throws  ServiceException          if unable to persist the preference.
-     * @throws  NullPointerException      if the path, key, or value is null.
-     * @throws  IllegalArgumentException  if the path does not exist.
+     * @throws  NullPointerException      if the preference is null.
+     * @throws  IllegalArgumentException  if the preference path does not exist.
      */
     @Override
-    public String persistPreference(String path, String key, String value)
+    public Preference persistPreference(Preference preference)
             throws ServiceException {
 
         try {
 
-            // Check if the path is null.
-            if (path == null) {
-                throw new NullPointerException("The path is null.");
-            }
+            // Check if the preference is not null.
+            if (preference != null) {
 
-            // Check if the key is null.
-            if (key == null) {
-                throw new NullPointerException("The key is null.");
-            }
+                // Check if the path exists.
+                if (system.nodeExists(preference.getPath())) {
 
-            // Check if the value is null.
-            if (key == null) {
-                throw new NullPointerException("The value is null.");
-            }
+                    // Persist the preference.
+                    system.node(preference.getPath())
+                            .put(preference.getKey(), preference.getValue());
 
-            // Check if the path exists.
-            if (system.nodeExists(path)) {
-
-                // Persist the preference.
-                system.node(path).put(key, value);
-
-                // Flush the system.
-                system.flush();
+                    // Flush the system.
+                    system.flush();
+                }
+                else {
+                    throw new IllegalArgumentException(
+                            "The preference path, " + preference.getPath()
+                            + ", does not exist.");
+                }
             }
             else {
-                throw new IllegalArgumentException(
-                        "The path, " + path + ", does not exist.");
+                throw new NullPointerException("The preference is null.");
             }
-
-            // Get the value.
-            system.node(path).get(key, null);
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
-                    "Unable to persist the preference, "
-                    + key + "=" + value + ", at " + path + ".", e);
+                    "Unable to persist the preference, " + preference + ".", e);
         }
 
-        return value;
+        return preference;
     }
 
     /**
-     * Persist the preferences.
+     * Persist the preference path.
      *
      * @param  path   the path.
      *
-     * @return  the preferences.
+     * @return  the preference path.
      *
-     * @throws  ServiceException          if unable to persist the preferences.
+     * @throws  ServiceException          if unable to persist the preference
+     *                                    path.
      * @throws  NullPointerException      if the path is null.
      * @throws  IllegalArgumentException  if the path already exists.
      */
     @Override
-    public String persistPreferences(String path)
+    public String persistPreferencePath(String path)
             throws ServiceException {
 
         try {
@@ -526,7 +516,7 @@ public final class PreferenceServiceImpl
             // Check if the path does not exists.
             if (!system.nodeExists(path)) {
 
-                // Persist the preferences.
+                // Persist the preference path.
                 system.node(path);
 
                 // Flush the system.
@@ -603,16 +593,17 @@ public final class PreferenceServiceImpl
         }
     }
     /**
-     * Remove the preferences.
+     * Remove the preference path.
      *
      * @param  path  the path.
      *
-     * @throws  ServiceException          if unable to remove the preferences.
+     * @throws  ServiceException          if unable to remove the preference
+     *                                    path.
      * @throws  NullPointerException      if the path is null.
      * @throws  IllegalArgumentException  if the path does not exist.
      */
     @Override
-    public void removePreferences(String path)
+    public void removePreferencePath(String path)
             throws ServiceException {
 
         try {
@@ -625,7 +616,7 @@ public final class PreferenceServiceImpl
             // Check if the path exists.
             if (system.nodeExists(path)) {
 
-                // Remove the preferences.
+                // Remove the preference path.
                 removeTree(system, path);
             }
             else {
@@ -635,7 +626,7 @@ public final class PreferenceServiceImpl
         }
         catch(BackingStoreException e) {
             throw new ServiceException(
-                    "Unable to remove the preferences, " + path + ".", e);
+                    "Unable to remove the preference path, " + path + ".", e);
         }
     }
 

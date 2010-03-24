@@ -62,15 +62,15 @@
                                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                         <a4j:actionparam
                                             name="path"
-                                            assignTo="#{preferenceMB.path}"
+                                            assignTo="#{preferenceMB.preference.path}"
                                             value="#{preferenceGroup.path}"/>
                                         <a4j:actionparam
                                             name="key"
-                                            assignTo="#{preferenceMB.key}"
+                                            assignTo="#{preferenceMB.preference.key}"
                                             value="#{key}"/>
                                         <a4j:actionparam
                                             name="value"
-                                            assignTo="#{preferenceMB.value}"
+                                            assignTo="#{preferenceMB.preference.value}"
                                             value="#{preferenceGroup.preferences[key]}"
                                             actionListener="#{preferenceMB.processModifyButton}"/>
                                     </rich:menuItem>
@@ -80,12 +80,16 @@
                                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                         <a4j:actionparam
                                             name="path"
-                                            assignTo="#{preferenceMB.path}"
+                                            assignTo="#{preferenceMB.preference.path}"
                                             value="#{preferenceGroup.path}"/>
                                         <a4j:actionparam
                                             name="key"
-                                            assignTo="#{preferenceMB.key}"
-                                            value="#{key}"
+                                            assignTo="#{preferenceMB.preference.key}"
+                                            value="#{key}"/>
+                                        <a4j:actionparam
+                                            name="value"
+                                            assignTo="#{preferenceMB.preference.value}"
+                                            value="#{preferenceGroup.preferences[key]}"
                                             actionListener="#{preferenceMB.processDeleteButton}"/>
                                     </rich:menuItem>
                                 </rich:contextMenu>
@@ -106,7 +110,7 @@
                                     rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                     <a4j:actionparam
                                         name="path"
-                                        assignTo="#{preferenceMB.path}"
+                                        assignTo="#{preferenceMB.preference.path}"
                                         value="#{preferenceGroup.path}"/>
                                 </rich:menuItem>
                                 <rich:menuItem

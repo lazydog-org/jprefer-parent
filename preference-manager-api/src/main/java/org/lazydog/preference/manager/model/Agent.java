@@ -1,6 +1,14 @@
 package org.lazydog.preference.manager.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 
 /**
@@ -12,9 +20,16 @@ public class Agent implements Serializable {
 
     private Boolean enabled;
     private Integer id;
+    @NotNull(message="JMX port is required.")
     private Integer jmxPort;
+    @NotNull(message="Login is required.")
+    @Size(min=1, message="Login is required.")
     private String login;
+    @NotNull(message = "Password is required.")
+    @Size(min=1, message="Password is required.")
     private String password;
+    @NotNull(message = "Server name is required.")
+    @Size(min=1, message="Server name is required.")
     private String serverName;
     private AgentStatus status = AgentStatus.DOWN;
 
@@ -176,5 +191,36 @@ public class Agent implements Serializable {
         toString.append("]");
 
         return toString.toString();
+    }
+
+    /**
+     * Validate this object.
+     *
+     * @return  the list of violation messages.
+     */
+    public List<String> validate() {
+
+        // Declare.
+        Set<ConstraintViolation<Agent>> constraintViolations;
+        Validator validator;
+        List<String> violationMessages;
+
+        // Initialize.
+        violationMessages = new ArrayList<String>();
+
+        // Get the validator.
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+        // Validate this object.
+        constraintViolations = validator.validate(this);
+
+        // Loop through the constraint violations.
+        for (ConstraintViolation constraintViolation : constraintViolations) {
+
+            // Add the constraint violation message to the violation messages.
+            violationMessages.add(constraintViolation.getMessage());
+        }
+
+        return violationMessages;
     }
 }
