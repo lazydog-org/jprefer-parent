@@ -1,4 +1,4 @@
-package org.lazydog.preference.manager;
+package org.lazydog.preference.manager.spi.synchronize;
 
 import java.util.ServiceLoader;
 

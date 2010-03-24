@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.DeclareRoles;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import org.apache.commons.codec.binary.Hex;
@@ -19,11 +20,15 @@ import org.lazydog.preference.manager.spi.configuration.ConfigurationService;
 import org.lazydog.preference.manager.spi.configuration.ConfigurationServiceFactory;
 import org.lazydog.preference.manager.spi.preference.PreferenceService;
 import org.lazydog.preference.manager.spi.preference.PreferenceServiceFactory;
-import org.lazydog.preference.manager.spi.synchronize.RemoteSynchronizeService;
 import org.lazydog.preference.manager.spi.snapshot.SnapshotService;
 import org.lazydog.preference.manager.spi.snapshot.SnapshotServiceFactory;
+import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeService;
+import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeServiceFactory;
+import org.lazydog.preference.manager.spi.synchronize.RemoteSynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
+import org.lazydog.preference.manager.utility.MBeanUtility;
+import org.lazydog.preference.manager.utility.MBeanUtilityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +40,7 @@ import org.slf4j.LoggerFactory;
  * @author  Ron Rickard
  */
 @Stateless(mappedName="ejb/PreferenceManager")
+@DeclareRoles({"ADMIN","OPERATOR","USER"})
 @Remote(PreferenceManager.class)
 public class PreferenceManagerEJB implements PreferenceManager {
 
@@ -67,6 +73,13 @@ public class PreferenceManagerEJB implements PreferenceManager {
                 // Remove the agent.
                 configurationService.removeAgent(agent.getId());
             }
+
+            // Unregister the agent synchronize service MBean.
+            MBeanUtility.unregister(AgentSynchronizeService.OBJECT_NAME);
+        }
+        catch(MBeanUtilityException e) {
+            logger.error("Unable to clear configuration.", e);
+            throw new ServiceException("Unable to clear configuration.", e);
         }
         catch(ServiceException e) {
             logger.error("Unable to clear configuration.", e);
@@ -377,7 +390,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the agent.
      */
     @Override
-    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
+    @RolesAllowed({"ADMIN","OPERATOR","USER"})
     public Agent getAgent(int id) 
             throws ServiceException {
 
@@ -415,7 +428,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the agents.
      */
     @Override
-    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
+    @RolesAllowed({"ADMIN","OPERATOR","USER"})
     public List<Agent> getAgents() 
             throws ServiceException {
 
@@ -459,7 +472,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the preferences.
      */
     @Override
-    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
+    @RolesAllowed({"ADMIN","OPERATOR","USER"})
     public Map<String,String> getPreferences(String path)
             throws ServiceException {
 
@@ -487,7 +500,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the preferences tree.
      */
     @Override
-    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
+    @RolesAllowed({"ADMIN","OPERATOR","USER"})
     public PreferencesTree getPreferencesTree()
             throws ServiceException {
 
@@ -542,7 +555,7 @@ public class PreferenceManagerEJB implements PreferenceManager {
      * @throws  ServiceException  if unable to get the snapshots.
      */
     @Override
-    @RolesAllowed({"ADMIN","AUTHENTICATED","OPERATOR"})
+    @RolesAllowed({"ADMIN","OPERATOR","USER"})
     public Map<String,Date> getSnapshots()
             throws ServiceException {
 
@@ -840,6 +853,18 @@ public class PreferenceManagerEJB implements PreferenceManager {
 
             // Persist the setup type.
             configurationService.persistSetupType(setupType);
+
+            // Check if the setup type is an agent setup type.
+            if (setupType == SetupType.AGENT) {
+
+                // Register the agent synchronize service MBean.
+                MBeanUtility.register(AgentSynchronizeService.OBJECT_NAME,
+                        AgentSynchronizeServiceFactory.create());
+            }
+        }
+        catch(MBeanUtilityException e) {
+            logger.error("Unable to save the setup type.", e);
+            throw new ServiceException("Unable to save the setup type.", e);
         }
         catch(ServiceException e) {
             logger.error("Unable to save the setup type.", e);

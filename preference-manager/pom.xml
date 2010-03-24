@@ -100,5 +100,10 @@
             <artifactId>preference-manager-synchronize-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-utility</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

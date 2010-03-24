@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
-import org.lazydog.preference.manager.AgentSynchronizeService;
+import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeService;
 import org.lazydog.preference.manager.model.PreferencesTree;
 import org.lazydog.preference.manager.ServiceException;
 import org.lazydog.preference.manager.spi.preference.PreferenceService;

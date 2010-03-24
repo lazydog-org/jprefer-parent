@@ -36,9 +36,6 @@
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
-    <listener>
-        <listener-class>org.lazydog.preference.manager.web.contextlistener.MBeanContextListener</listener-class>
-    </listener>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -89,7 +86,7 @@
         <auth-constraint>
             <role-name>ADMIN</role-name>
             <role-name>OPERATOR</role-name>
-            <role-name>AUTHENTICATED</role-name>
+            <role-name>USER</role-name>
         </auth-constraint>
     </security-constraint>
     <security-role>
@@ -97,11 +94,11 @@
         <role-name>ADMIN</role-name>
     </security-role>
     <security-role>
-        <description>Authenticated User</description>
-        <role-name>AUTHENTICATED</role-name>
-    </security-role>
-    <security-role>
         <description>Operator</description>
         <role-name>OPERATOR</role-name>
+    </security-role>
+    <security-role>
+        <description>User</description>
+        <role-name>USER</role-name>
     </security-role>
 </web-app>

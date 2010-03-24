@@ -3,16 +3,16 @@
 <sun-web-app error-url="">
   <context-root>/PreferenceManager</context-root>
   <security-role-mapping>
-    <role-name>OPERATOR</role-name>
-    <principal-name>operator</principal-name>
-  </security-role-mapping>
-  <security-role-mapping>
-    <role-name>AUTHENTICATED</role-name>
-    <principal-name>user</principal-name>
-  </security-role-mapping>
-  <security-role-mapping>
     <role-name>ADMIN</role-name>
-    <principal-name>admin</principal-name>
+    <group-name>admin</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>OPERATOR</role-name>
+    <group-name>operator</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>USER</role-name>
+    <group-name>user</group-name>
   </security-role-mapping>
   <class-loader delegate="true"/>
   <jsp-config>

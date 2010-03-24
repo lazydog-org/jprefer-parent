@@ -23,22 +23,12 @@
                             <artifactId>preference-manager-web</artifactId>
                             <contextRoot>PreferenceManager</contextRoot>
                         </webModule>
-			<ejbModule>
-			    <groupId>${project.groupId}</groupId>
-			    <artifactId>preference-manager</artifactId>
-			</ejbModule>
                     </modules>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager</artifactId>
-            <version>${project.version}</version>
-            <type>ejb</type>
-        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>preference-manager-web</artifactId>
