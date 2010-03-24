@@ -37,7 +37,9 @@
                                 id="jmx-port"
                                 value="#{agentMB.agent.jmxPort}"
                                 size="10"
-                                maxlength="10"/>
+                                maxlength="10"
+                                required="true"
+                                requiredMessage="The JMX port is required."/>
                         </li>
                         <li>
                             <label for="login">Login: </label>
@@ -45,7 +47,9 @@
                                 id="login"
                                 value="#{agentMB.agent.login}"
                                 size="25"
-                                maxlength="50"/>
+                                maxlength="50"
+                                required="true"
+                                requiredMessage="The login is required."/>
                         </li>
                         <li>
                             <label for="password">Password: </label>
@@ -54,7 +58,9 @@
                                 value="#{agentMB.agent.password}"
                                 size="25"
                                 maxlength="50"
-                                redisplay="true"/>
+                                redisplay="true"
+                                required="true"
+                                requiredMessage="The password is required."/>
                         </li>
                     </ol>
                 </fieldset>
@@ -62,11 +68,13 @@
                     <a4j:commandButton
                         value="Reset"
                         actionListener="#{agentMB.processResetButton}"
-                        reRender="pm-agent-form"/>
+                        reRender="pm-agent-form"
+                        immediate="true"/>
                     <a4j:commandButton
                         value="Cancel"
                         oncomplete="Richfaces.hideModalPanel('pm-agent-modal-panel');"
-                        reRender="pm-agent-table"/>
+                        reRender="pm-agent-table"
+                        immediate="true"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
