@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.PreferenceManager;
@@ -17,14 +15,13 @@ import org.lazydog.preference.manager.PreferenceManager;
  *
  * @author  Ron Rickard
  */
-public class AgentMB implements Serializable {
+public class AgentMB extends AbstractMB implements Serializable {
 
     private Agent agent;
     private Integer id;
     @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
     protected PreferenceManager preferenceManager;
-    private Boolean hideModal;
-    
+
     /**
      * Get the agent.
      * 
@@ -53,20 +50,10 @@ public class AgentMB implements Serializable {
             agents = preferenceManager.getAgents();
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to get the agents."));
+            this.createMessage("Unable to get the agents.");
         }
 
         return agents;
-    }
-
-    /**
-     * Hide the modal panel?
-     * 
-     * @return  true to hide the modal panel, otherwise false.
-     */
-    public Boolean getHideModal() {
-        return this.hideModal;
     }
 
     /**
@@ -78,8 +65,8 @@ public class AgentMB implements Serializable {
         // Create an agent.
         this.agent = new Agent();
 
-        // Do not hide the modal panel.
-        hideModal = false;
+        // Set message available to false.
+        this.setMessageAvailable(Boolean.FALSE);
     }
 
     /**
@@ -95,8 +82,7 @@ public class AgentMB implements Serializable {
             preferenceManager.removeAgent(this.id);
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to delete the agent."));
+            this.createMessage("Unable to delete the agent.");
         }
     }
 
@@ -113,8 +99,7 @@ public class AgentMB implements Serializable {
             this.agent = preferenceManager.disableAgent(this.id);
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to disable the agent."));
+            this.createMessage("Unable to disable the agent.");
         }
     }
 
@@ -131,8 +116,7 @@ public class AgentMB implements Serializable {
             this.agent = preferenceManager.enableAgent(this.id);
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to enable the agent."));
+            this.createMessage("Unable to enable the agent.");
         }
     }
 
@@ -149,8 +133,7 @@ public class AgentMB implements Serializable {
             this.agent = preferenceManager.getAgent(this.id);
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to modify the agent."));
+            this.createMessage("Unable to modify the agent.");
         }
     }
 
@@ -168,16 +151,12 @@ public class AgentMB implements Serializable {
 
                 // Save the agent.
                 preferenceManager.saveAgent(this.agent);
-
-                // Hide the modal panel.
-                this.hideModal = true;
             }
             else {
 
                 // Loop through the violation messages.
                 for (String violationMessage : this.agent.validate()) {
-                    FacesContext.getCurrentInstance().addMessage("agent-form-messages",
-                            new FacesMessage(violationMessage));
+                    this.createMessage(violationMessage);
                 }
             }
         }
@@ -185,12 +164,10 @@ public class AgentMB implements Serializable {
 
             // Check if this is a new agent.
             if (this.agent.getId() == null) {
-                FacesContext.getCurrentInstance().addMessage("agent-form-messages",
-                    new FacesMessage("Unable to add the agent."));
+                this.createMessage("Unable to add the agent.");
             }
             else {
-                FacesContext.getCurrentInstance().addMessage("agent-form-messages",
-                    new FacesMessage("Unable to modify the agent."));
+                this.createMessage("Unable to modify the agent.");
             }
         }
     }
@@ -217,8 +194,7 @@ public class AgentMB implements Serializable {
             }
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to reset."));
+            this.createMessage("Unable to reset.");
         }
     }
 
@@ -235,8 +211,7 @@ public class AgentMB implements Serializable {
             preferenceManager.synchronizeAgent(preferenceManager.getAgent(this.id));
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to synchronize the agent."));
+            this.createMessage("Unable to synchronize the agent.");
         }
     }
 
@@ -253,8 +228,7 @@ public class AgentMB implements Serializable {
             preferenceManager.synchronizeAgents();
         }
         catch(Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Unable to synchronize all the agents."));
+            this.createMessage("Unable to synchronize all the agents.");
         }
     }
 
@@ -275,6 +249,4 @@ public class AgentMB implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
-
 }
