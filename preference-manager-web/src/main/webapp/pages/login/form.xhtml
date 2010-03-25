@@ -3,13 +3,12 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-login-form" prependId="false">
+            <h:form id="login-form" prependId="false">
                 <fieldset>
                     <ol>
                         <li>
@@ -30,7 +29,7 @@
                         </li>
                     </ol>
                 </fieldset>
-                <div class="pm-form-buttons">
+                <div class="form-buttons">
                     <h:commandButton
                         value="Log In"
                         action="#{userMB.authenticate}"/>

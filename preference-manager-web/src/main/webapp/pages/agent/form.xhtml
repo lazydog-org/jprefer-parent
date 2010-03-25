@@ -10,7 +10,7 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-agent-form">
+            <h:form id="agent-form">
                 <fieldset>
                     <ol>
                         <li>
@@ -55,29 +55,28 @@
                         </li>
                     </ol>
                 </fieldset>
-                <div class="pm-form-buttons">
+                <div class="form-buttons">
                     <a4j:commandButton
                         value="Reset"
                         actionListener="#{agentMB.processResetButton}"
                         oncomplete="if (#{agentMB.messageAvailable}) {
-                                        Richfaces.showModalPanel('pm-message-modal-panel');
+                                        Richfaces.showModalPanel('message-modal-panel');
                                     }"
-                        reRender="pm-agent-modal-panel-content"/>
+                        reRender="agent-form,message-table"/>
                     <a4j:commandButton
                         value="Cancel"
-                        oncomplete="Richfaces.hideModalPanel('pm-agent-modal-panel');"
-                        reRender="pm-agent-table"/>
+                        oncomplete="Richfaces.hideModalPanel('agent-modal-panel');"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
                         actionListener="#{agentMB.processOkButton}"
                         oncomplete="if (#{agentMB.messageAvailable}) {
-                                        Richfaces.showModalPanel('pm-message-modal-panel');
+                                        Richfaces.showModalPanel('message-modal-panel');
                                     }
                                     else {
-                                        Richfaces.hideModalPanel('pm-agent-modal-panel');
+                                        Richfaces.hideModalPanel('agent-modal-panel');
                                     }"
-                        reRender="pm-agent-modal-panel-content,pm-agent-table,pm-message-modal-panel-content"/>
+                        reRender="agent-form,agent-table,message-table"/>
                 </div>
             </h:form>
         </ui:composition>

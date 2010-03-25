@@ -3,6 +3,7 @@ package org.lazydog.preference.manager.web.managedbean;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import org.lazydog.preference.manager.PreferenceManager;
  * 
  * @author  Ron Rickard
  */
-public class UserMB implements Serializable {
+public class UserMB extends AbstractMB implements Serializable {
 
     private static final String FAILURE = "failure";
     private static final String NO_SETUP = "setup";
@@ -55,8 +56,7 @@ public class UserMB implements Serializable {
             dispatcher.forward(request, response);
         }
         catch(Exception e) {
-            // TODO: handle exception.
-e.printStackTrace();
+            this.createMessage("Unable to authenticate username/password.");
         }
 
         return null;
@@ -86,8 +86,7 @@ e.printStackTrace();
             }
         }
         catch(Exception e) {
-            // TODO: handle exception.
-e.printStackTrace();
+            this.createMessage("Unable to determine authentication.");
         }
 
         return authenticated;
@@ -144,8 +143,7 @@ e.printStackTrace();
             }
         }
         catch(Exception e) {
-            // TODO: handle exception.
-e.printStackTrace();
+            this.createMessage("Unable to get the roles.");
         }
 
         return roles;
@@ -170,8 +168,7 @@ e.printStackTrace();
                     .getRemoteUser();
         }
         catch(Exception e) {
-            // TODO: handle exception.
-e.printStackTrace();
+            this.createMessage("Unable to get the user.");
         }
 
         return user;
@@ -184,6 +181,16 @@ e.printStackTrace();
      */
     public String getUsername() {
         return this.username;
+    }
+
+    /**
+     * Initialize.
+     */
+    @PostConstruct
+    public void initialize() {
+
+        // Set message available to false.
+        this.setMessageAvailable(Boolean.FALSE);
     }
 
     /**
@@ -214,7 +221,7 @@ e.printStackTrace();
             }
         }
         catch(Exception e) {
-            // Ignore.
+            // Already handled.
         }
 
         return outcome;
@@ -248,8 +255,7 @@ e.printStackTrace();
             outcome = SUCCESS;
         }
         catch(Exception e) {
-            // TODO: handle exception.
-e.printStackTrace();
+            // Already handled.
         }
         
         return outcome;

@@ -3,13 +3,14 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html
     xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-setup-form" rendered="#{userMB.roles['ADMIN']}">
+            <h:form id="setup-form" rendered="#{userMB.roles['ADMIN']}">
                 <fieldset>
                     <ol>
                         <li>
@@ -25,10 +26,14 @@
                         </li>
                     </ol>
                 </fieldset>
-                <div class="pm-form-buttons">
-                    <h:commandButton
+                <div class="form-buttons">
+                    <a4j:commandButton
                         value="Configure"
-                        action="#{setupMB.configure}"/>
+                        action="#{setupMB.configure}"
+                        oncomplete="if (#{setupMB.messageAvailable}) {
+                                        Richfaces.showModalPanel('message-modal-panel');
+                                    }"
+                        reRender="setup-form,message-table"/>
                 </div>
             </h:form>
         </ui:composition>

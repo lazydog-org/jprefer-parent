@@ -3,6 +3,7 @@ package org.lazydog.preference.manager.web.managedbean;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import org.lazydog.preference.manager.PreferenceManager;
 import org.lazydog.preference.manager.model.SetupType;
@@ -13,7 +14,7 @@ import org.lazydog.preference.manager.model.SetupType;
  * 
  * @author  Ron Rickard
  */
-public class SetupMB implements Serializable {
+public class SetupMB extends AbstractMB implements Serializable {
 
     private static final String FAILURE = "failure";
     private static final String SUCCESS = "success";
@@ -44,7 +45,7 @@ public class SetupMB implements Serializable {
             outcome = SUCCESS;
         }
         catch(Exception e) {
-            // TO DO: handle exception.
+            this.createMessage("Unable to configure the server.");
         }
 
         return outcome;
@@ -100,11 +101,20 @@ public class SetupMB implements Serializable {
             }
         }
         catch(Exception e) {
-            // TODO: handle exception.
-e.printStackTrace();
+            this.createMessage("Unable to get the setup types.");
         }
 
         return setupTypes;
+    }
+
+    /**
+     * Initialize.
+     */
+    @PostConstruct
+    public void initialize() {
+
+        // Set message available to false.
+        this.setMessageAvailable(Boolean.FALSE);
     }
 
     /**
@@ -129,7 +139,7 @@ e.printStackTrace();
             outcome = SUCCESS;
         }
         catch(Exception e) {
-            // TO DO: handle exception.
+            this.createMessage("Unable to reconfigure the server.");
         }
 
         return outcome;

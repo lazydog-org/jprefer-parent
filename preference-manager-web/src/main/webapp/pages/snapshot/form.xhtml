@@ -10,7 +10,7 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-snapshot-form">
+            <h:form id="snapshot-form">
                 <fieldset>
                     <ol>
                         <li>
@@ -24,21 +24,28 @@
                         </li>
                     </ol>
                 </fieldset>
-                <div class="pm-form-buttons">
+                <div class="form-buttons">
                     <a4j:commandButton
                         value="Reset"
                         actionListener="#{snapshotMB.processResetButton}"
-                        reRender="pm-snapshot-modal-panel-content"/>
+                        oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                        Richfaces.showModalPanel('message-modal-panel');
+                                    }"
+                        reRender="snapshot-form,message-table"/>
                     <a4j:commandButton
                         value="Cancel"
-                        oncomplete="Richfaces.hideModalPanel('pm-snapshot-modal-panel');"
-                        reRender="pm-snapshots-modal-panel-content"/>
+                        oncomplete="Richfaces.hideModalPanel('snapshot-modal-panel');"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
                         actionListener="#{snapshotMB.processOkButton}"
-                        oncomplete="Richfaces.hideModalPanel('pm-snapshot-modal-panel');"
-                        reRender="pm-snapshot-modal-panel-content,pm-snapshots-modal-panel-content"/>
+                        oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                        Richfaces.showModalPanel('message-modal-panel');
+                                    }
+                                    else {
+                                        Richfaces.hideModalPanel('snapshot-modal-panel');
+                                    }"
+                        reRender="snapshot-form,snapshots-table,message-table"/>
                 </div>
             </h:form>
         </ui:composition>

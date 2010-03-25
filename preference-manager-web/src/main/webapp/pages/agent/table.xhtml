@@ -11,49 +11,57 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-agent-table" rendered="#{setupMB.setupTypes['MANAGER']}">
-                <div class="pm-form-buttons">
+            <h:form id="agent-table" rendered="#{setupMB.setupTypes['MANAGER']}">
+                <div class="form-buttons">
                     <a4j:commandButton
                         value="Refresh"
-                        reRender="pm-agent-table"/>
+                        reRender="agent-table"/>
                     <a4j:commandButton
                         value="Add"
-                        oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
-                        reRender="pm-agent-modal-panel-content"
+                        oncomplete="Richfaces.showModalPanel('agent-modal-panel');"
+                        reRender="agent-form"
                         rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}"/>
                     <a4j:commandButton
                         value="Synchronize All"
                         actionListener="#{agentMB.processSynchronizeAllButton}"
-                        reRender="pm-agent-table"
+                        oncomplete="if (#{agentMB.messageAvailable}) {
+                                        Richfaces.showModalPanel('message-modal-panel');
+                                    }"
+                        reRender="agent-table,message-table"
                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}"/>
                 </div>
                 <rich:dataTable
                     value="#{agentMB.agents}"
                     var="agent">
-                    <rich:column id="pm-agent-server-name" headerClass="pm-table-cell pm-table-agent-server-name-cell">
+                    <rich:column id="agent-server-name" headerClass="table-cell table-agent-server-name-cell">
                         <f:facet name="header">
                             <h:outputText value="Server Name"/>
                         </f:facet>
                         <h:outputText value="#{agent.serverName}"/>
                     </rich:column>
-                    <rich:column id="pm-agent-enabled" headerClass="pm-table-cell pm-table-agent-enabled-cell">
+                    <rich:column id="agent-enabled" headerClass="table-cell table-agent-enabled-cell">
                         <f:facet name="header">
                             <h:outputText value="Enabled"/>
                         </f:facet>
                         <h:outputText value="#{agent.enabled}"/>
                     </rich:column>
-                    <rich:column id="pm-agent-status" headerClass="pm-table-cell pm-table-agent-status-cell">
+                    <rich:column id="agent-status" headerClass="table-cell table-agent-status-cell">
                         <f:facet name="header">
                             <h:outputText value="Status"/>
                         </f:facet>
                         <h:outputText value="#{agent.status}"/>
                         <rich:contextMenu
-                            attachTo="pm-agent-server-name,pm-agent-enabled,pm-agent-status"
+                            attachTo="agent-server-name,agent-enabled,agent-status"
                             submitMode="ajax">
                             <rich:menuItem
                                 value="Modify"
-                                oncomplete="Richfaces.showModalPanel('pm-agent-modal-panel');"
-                                reRender="pm-agent-modal-panel-content"
+                                oncomplete="if (#{agentMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }
+                                            else {
+                                                Richfaces.showModalPanel('agent-modal-panel');
+                                            }"
+                                reRender="agent-form,message-table"
                                 rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
@@ -63,7 +71,10 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Delete"
-                                reRender="pm-agent-table"
+                                oncomplete="if (#{agentMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="agent-table,message-table"
                                 rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
@@ -73,7 +84,10 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Enable"
-                                reRender="pm-agent-table"
+                                oncomplete="if (#{agentMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="agent-table,message-table"
                                 rendered="#{!agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
@@ -83,7 +97,10 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Disable"
-                                reRender="pm-agent-table"
+                                oncomplete="if (#{agentMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="agent-table,message-table"
                                 rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"
@@ -93,7 +110,10 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Synchronize"
-                                reRender="pm-agent-table"
+                                oncomplete="if (#{agentMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="agent-table,message-table"
                                 rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
                                 <a4j:actionparam
                                     name="id"

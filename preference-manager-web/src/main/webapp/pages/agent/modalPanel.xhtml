@@ -12,7 +12,7 @@
     <body>
         <ui:composition>
             <rich:modalPanel
-                id="pm-agent-modal-panel"
+                id="agent-modal-panel"
                 minWidth="400"
                 autosized="true"
                 rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
@@ -26,12 +26,11 @@
                         <h:form>
                             <a4j:commandLink
                                 value="close"
-                                oncomplete="Richfaces.hideModalPanel('pm-agent-modal-panel');"
-                                reRender="pm-agent-table"/>
+                                oncomplete="Richfaces.hideModalPanel('agent-modal-panel');"/>
                         </h:form>
                     </h:panelGroup>
                 </f:facet>
-                <h:panelGrid id="pm-agent-modal-panel-content">
+                <h:panelGrid>
                     <ui:include src="/pages/agent/form.xhtml"/>
                 </h:panelGrid>
             </rich:modalPanel>

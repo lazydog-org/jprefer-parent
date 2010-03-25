@@ -11,34 +11,37 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-snapshots-table">
-                <div class="pm-form-buttons">
+            <h:form id="snapshots-table">
+                <div class="form-buttons">
                     <a4j:commandButton
                         value="Create"
-                        oncomplete="Richfaces.showModalPanel('pm-snapshot-modal-panel');"
-                        reRender="pm-snapshot-modal-panel-content"
+                        oncomplete="Richfaces.showModalPanel('snapshot-modal-panel');"
+                        reRender="snapshot-form"
                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}"/>
                 </div>
                 <rich:dataTable
                     value="#{snapshotMB.snapshotKeys}"
                     var="name">
-                    <rich:column id="pm-snapshots-name" headerClass="pm-table-cell pm-table-snapshots-name-cell">
+                    <rich:column id="snapshots-name" headerClass="table-cell table-snapshots-name-cell">
                         <f:facet name="header">
                             <h:outputText value="Name"/>
                         </f:facet>
                         <h:outputText value="#{name}"/>
                     </rich:column>
-                    <rich:column id="pm-snapshots-date" headerClass="pm-table-cell pm-table-snapshots-date-cell">
+                    <rich:column id="snapshots-date" headerClass="table-cell table-snapshots-date-cell">
                         <f:facet name="header">
                             <h:outputText value="Date"/>
                         </f:facet>
                         <h:outputText value="#{snapshotMB.snapshots[name]}"/>
                         <rich:contextMenu
-                            attachTo="pm-snapshots-name,pm-snapshots-date"
+                            attachTo="snapshots-name,snapshots-date"
                             submitMode="ajax">
                             <rich:menuItem
                                 value="Restore"
-                                reRender="pm-preferences-table,pm-agent-table"
+                                oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="preferences-table,agent-table,message-table"
                                 rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                 <a4j:actionparam
                                     name="name"
@@ -48,8 +51,13 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Rename"
-                                oncomplete="Richfaces.showModalPanel('pm-snapshot-modal-panel');"
-                                reRender="pm-snapshot-modal-panel-content"
+                                oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }
+                                            else {
+                                                Richfaces.showModalPanel('snapshot-modal-panel');
+                                            }"
+                                reRender="snapshot-form,message-table"
                                 rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                 <a4j:actionparam
                                     name="name"
@@ -59,7 +67,10 @@
                             </rich:menuItem>
                             <rich:menuItem
                                 value="Delete"
-                                reRender="pm-snapshots-table"
+                                oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="snapshots-table,message-table"
                                 rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                 <a4j:actionparam
                                     name="name"

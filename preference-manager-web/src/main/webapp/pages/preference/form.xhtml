@@ -10,7 +10,7 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-preference-form">
+            <h:form id="preference-form">
                 <fieldset>
                     <ol>
                         <li>
@@ -34,21 +34,28 @@
                         </li>
                     </ol>
                 </fieldset>
-                <div class="pm-form-buttons">
+                <div class="form-buttons">
                     <a4j:commandButton
                         value="Reset"
                         actionListener="#{preferenceMB.processResetButton}"
-                        reRender="pm-preference-modal-panel-content"/>
+                        oncomplete="if (#{preferenceMB.messageAvailable}) {
+                                        Richfaces.showModalPanel('message-modal-panel');
+                                    }"
+                        reRender="preference-form,message-table"/>
                     <a4j:commandButton
                         value="Cancel"
-                        oncomplete="Richfaces.hideModalPanel('pm-preference-modal-panel');"
-                        reRender="pm-preferences-table"/>
+                        oncomplete="Richfaces.hideModalPanel('preference-modal-panel');"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
                         actionListener="#{preferenceMB.processOkButton}"
-                        oncomplete="Richfaces.hideModalPanel('pm-preference-modal-panel');"
-                        reRender="pm-preference-modal-panel-content,pm-preferences-table,pm-agent-table"/>
+                        oncomplete="if (#{preferenceMB.messageAvailable}) {
+                                        Richfaces.showModalPanel('message-modal-panel');
+                                    }
+                                    else {
+                                        Richfaces.hideModalPanel('preference-modal-panel');
+                                    }"
+                        reRender="preference-form,preferences-table,agent-table,message-table"/>
                 </div>
             </h:form>
         </ui:composition>

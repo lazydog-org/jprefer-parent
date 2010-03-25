@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.faces.context.FacesContext;
@@ -19,33 +20,10 @@ import org.lazydog.preference.manager.PreferenceManager;
  *
  * @author  Ron Rickard
  */
-public class ImportExportMB {
+public class ImportExportMB implements Serializable {
 
     @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
     protected PreferenceManager preferenceManager;
-
-    /**
-     * Read the file as a string.
-     * 
-     * @param  filePath  the file path.
-     * 
-     * @return  the file as a string.
-     * 
-     * @throws  IOException  if unable to read the file as a string.
-     */
-    private static String readFileAsString(String filePath) throws IOException {
-
-        // Declare.
-        byte[] buffer;
-        BufferedInputStream input;
-
-        buffer = new byte[(int)new File(filePath).length()];
-        input = new BufferedInputStream(new FileInputStream(filePath));
-
-        input.read(buffer);
-
-        return new String(buffer);
-    }
 
     /**
      * Export the preferences to a document.
@@ -80,8 +58,7 @@ public class ImportExportMB {
             context.responseComplete();
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to export document.\n" + e);
+            e.printStackTrace();
         }
     }
 
@@ -106,8 +83,31 @@ System.err.println("Unable to export document.\n" + e);
             preferenceManager.importDocument(document);
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to import document.\n" + e);
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * Read the file as a string.
+     *
+     * @param  filePath  the file path.
+     *
+     * @return  the file as a string.
+     *
+     * @throws  IOException  if unable to read the file as a string.
+     */
+    private static String readFileAsString(String filePath) throws IOException {
+
+        // Declare.
+        byte[] buffer;
+        BufferedInputStream input;
+
+        // Read the file as a byte array.
+        buffer = new byte[(int)new File(filePath).length()];
+        input = new BufferedInputStream(new FileInputStream(filePath));
+        input.read(buffer);
+
+        // Convert the byte array to a string.
+        return new String(buffer);
     }
 }

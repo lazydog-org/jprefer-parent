@@ -12,7 +12,7 @@
     <body>
         <ui:composition>
             <rich:modalPanel
-                id="pm-snapshots-modal-panel"
+                id="snapshots-modal-panel"
                 minWidth="400"
                 autosized="true"
                 rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
@@ -26,11 +26,11 @@
                         <h:form>
                             <a4j:commandLink
                                 value="close"
-                                oncomplete="Richfaces.hideModalPanel('pm-snapshots-modal-panel');"/>
+                                oncomplete="Richfaces.hideModalPanel('snapshots-modal-panel');"/>
                         </h:form>
                     </h:panelGroup>
                 </f:facet>
-                <h:panelGrid id="pm-snapshots-modal-panel-content">
+                <h:panelGrid>
                     <ui:include src="/pages/snapshots/table.xhtml"/>
                 </h:panelGrid>
             </rich:modalPanel>

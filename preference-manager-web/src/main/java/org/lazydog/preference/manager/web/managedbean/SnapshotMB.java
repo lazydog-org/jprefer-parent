@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.PreferenceManager;
@@ -16,7 +17,7 @@ import org.lazydog.preference.manager.PreferenceManager;
  * 
  * @author  Ron Rickard
  */
-public class SnapshotMB implements Serializable {
+public class SnapshotMB extends AbstractMB implements Serializable {
 
     private String name;
     private String oldName;
@@ -60,8 +61,7 @@ public class SnapshotMB implements Serializable {
             snapshots = preferenceManager.getSnapshots();
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to get the snapshots.\n" + e);
+            this.createMessage("Unable to get the snapshots.");
         }
 
         return snapshots;
@@ -87,6 +87,16 @@ System.err.println("Unable to get the snapshots.\n" + e);
     }
 
     /**
+     * Initialize.
+     */
+    @PostConstruct
+    public void initialize() {
+
+        // Set message available to false.
+        this.setMessageAvailable(Boolean.FALSE);
+    }
+
+    /**
      * Process the delete button.
      *
      * @param  actionEvent  the action event.
@@ -99,8 +109,7 @@ System.err.println("Unable to get the snapshots.\n" + e);
             preferenceManager.removeSnapshot(this.name);
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to delete the snapshot " + this.name + ".\n" + e);
+            this.createMessage("Unable to delete the snapshot.");
         }
     }
 
@@ -114,7 +123,7 @@ System.err.println("Unable to delete the snapshot " + this.name + ".\n" + e);
         try {
 
             // Check if the old name exists.
-            if (!this.oldName.equals("")) {
+            if (this.oldName != null && !this.oldName.equals("")) {
 
                 // Rename the snapshot.
                 preferenceManager.renameSnapshot(oldName, name);
@@ -126,8 +135,14 @@ System.err.println("Unable to delete the snapshot " + this.name + ".\n" + e);
             }
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to create/rename the snapshot " + this.name + ".\n" + e);
+
+            // Check if this is a new snapshot.
+            if (this.oldName == null || this.oldName.equals("")) {
+                this.createMessage("Unable to create the snapshot.");
+            }
+            else {
+                this.createMessage("Unable to rename the snapshot.");
+            }
         }
     }
 
@@ -144,8 +159,7 @@ System.err.println("Unable to create/rename the snapshot " + this.name + ".\n" +
             this.oldName = this.name;
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to rename the snapshot " + this.name + ".\n" + e);
+            this.createMessage("Unable to rename the snapshot.");
         }
     }
 
@@ -162,8 +176,7 @@ System.err.println("Unable to rename the snapshot " + this.name + ".\n" + e);
             this.name = this.oldName;
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to reset the snapshot " + this.oldName + ".\n" + e);
+            this.createMessage("Unable to reset.");
         }
     }
 
@@ -180,8 +193,7 @@ System.err.println("Unable to reset the snapshot " + this.oldName + ".\n" + e);
             preferenceManager.restoreSnapshot(this.name);
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to restore the snapshot " + this.name + ".\n" + e);
+            this.createMessage("Unable to restore the snapshot.");
         }
     }
 

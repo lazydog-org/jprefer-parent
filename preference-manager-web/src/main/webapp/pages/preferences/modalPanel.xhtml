@@ -12,7 +12,7 @@
     <body>
         <ui:composition>
             <rich:modalPanel
-                id="pm-preferences-modal-panel"
+                id="preferences-modal-panel"
                 minWidth="400"
                 autosized="true"
                 rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
@@ -26,12 +26,11 @@
                         <h:form>
                             <a4j:commandLink
                                 value="close"
-                                oncomplete="Richfaces.hideModalPanel('pm-preferences-modal-panel');"
-                                reRender="pm-preferences-table"/>
+                                oncomplete="Richfaces.hideModalPanel('preferences-modal-panel');"/>
                         </h:form>
                     </h:panelGroup>
                 </f:facet>
-                <h:panelGrid id="pm-preferences-modal-panel-content">
+                <h:panelGrid>
                     <ui:include src="/pages/preferences/form.xhtml"/>
                 </h:panelGrid>
             </rich:modalPanel>

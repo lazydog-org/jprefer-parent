@@ -12,7 +12,8 @@
     <body>
         <ui:composition>
             <rich:modalPanel
-                id="pm-message-modal-panel"
+                id="message-modal-panel"
+                minWidth="200"
                 autosized="true">
                 <f:facet name="header">
                     <h:panelGroup>
@@ -24,11 +25,11 @@
                         <h:form>
                             <a4j:commandLink
                                 value="close"
-                                oncomplete="Richfaces.hideModalPanel('pm-message-modal-panel');"/>
+                                oncomplete="Richfaces.hideModalPanel('message-modal-panel');"/>
                         </h:form>
                     </h:panelGroup>
                 </f:facet>
-                <h:panelGrid id="pm-message-modal-panel-content">
+                <h:panelGrid id="message-table">
                     <h:messages/>
                 </h:panelGrid>
             </rich:modalPanel>

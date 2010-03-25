@@ -13,7 +13,7 @@ import org.lazydog.preference.manager.PreferenceManager;
  * 
  * @author  Ron Rickard
  */
-public class PreferenceMB implements Serializable {
+public class PreferenceMB extends AbstractMB implements Serializable {
 
     private String oldKey;
     private String oldValue;
@@ -56,6 +56,9 @@ public class PreferenceMB implements Serializable {
 
         // Create a new preference.
         this.preference = new Preference();
+
+        // Set message available to false.
+        this.setMessageAvailable(Boolean.FALSE);
     }
 
     /**
@@ -71,8 +74,7 @@ public class PreferenceMB implements Serializable {
             preferenceManager.removePreference(this.preference.getPath(), this.preference.getKey());
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to delete the preference " + this.preference + ".\n" + e);
+            this.createMessage("Unable to delete the preference .");
         }
     }
 
@@ -90,8 +92,7 @@ System.err.println("Unable to delete the preference " + this.preference + ".\n" 
             this.oldValue = this.preference.getValue();
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to modify the preference " + this.preference.getKey() + ".\n" + e);
+            this.createMessage("Unable to modify the preference.");
         }
     }
 
@@ -104,19 +105,36 @@ System.err.println("Unable to modify the preference " + this.preference.getKey()
 
         try {
 
-            // Check if the old key exists.
-            if (this.oldKey != null && !this.oldKey.equals("")) {
+            // Validate the preference.
+            if (this.preference.validate().size() == 0) {
 
-                // Remove the old preference.
-                preferenceManager.removePreference(this.preference.getPath(), this.oldKey);
+                // Check if the old key exists.
+                if (this.oldKey != null && !this.oldKey.equals("")) {
+
+                    // Remove the old preference.
+                    preferenceManager.removePreference(this.preference.getPath(), this.oldKey);
+                }
+
+                // Add the new preference.
+                preferenceManager.savePreference(this.preference);
             }
+            else {
 
-            // Add the new preference.
-            preferenceManager.savePreference(this.preference);
+                // Loop through the violation messages.
+                for (String violationMessage : this.preference.validate()) {
+                    this.createMessage(violationMessage);
+                }
+            }
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to add/modify the preference " + this.preference + ".\n" + e);
+
+            // Check if this is a new preference.
+            if (this.oldKey == null || this.oldKey.equals("")) {
+                this.createMessage("Unable to add the preference.");
+            }
+            else {
+                this.createMessage("Unable to modify the preference.");
+            }
         }
     }
 
@@ -134,8 +152,7 @@ System.err.println("Unable to add/modify the preference " + this.preference + ".
             this.preference.setValue(this.oldValue);
         }
         catch(Exception e) {
-            // TODO: handle exception.
-System.err.println("Unable to reset the preference " + this.oldKey + ".\n" + e);
+            this.createMessage("Unable to reset.");
         }
     }
 

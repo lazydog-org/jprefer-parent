@@ -11,21 +11,20 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="pm-preferences-table">
-                <div class="pm-form-buttons">
+            <h:form id="preferences-table">
+                <div class="form-buttons">
                     <a4j:commandButton
                         value="Refresh"
-                        reRender="pm-preferences-table"/>
+                        reRender="preferences-table"/>
                     <a4j:commandButton
                         value="Add"
-                        actionListener="#{preferencesMB.processAddButton}"
-                        oncomplete="Richfaces.showModalPanel('pm-preferences-modal-panel');"
-                        reRender="pm-preferences-modal-panel-content"
+                        oncomplete="Richfaces.showModalPanel('preferences-modal-panel');"
+                        reRender="preferences-form"
                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}"/>
                     <a4j:commandButton
                         value="Manage Snapshots"
-                        oncomplete="Richfaces.showModalPanel('pm-snapshots-modal-panel');"
-                        reRender="pm-snapshots-modal-panel-content"
+                        oncomplete="Richfaces.showModalPanel('snapshots-modal-panel');"
+                        reRender="snapshots-table"
                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}"/>
                     <h:commandButton
                         value="Export"
@@ -33,8 +32,8 @@
                         rendered="#{userMB.roles['OPERATOR']}"/>
                     <a4j:commandButton
                         value="Import"
-                        oncomplete="Richfaces.showModalPanel('pm-import-export-modal-panel');"
-                        reRender="pm-import-export-modal-panel-content"
+                        oncomplete="Richfaces.showModalPanel('import-export-modal-panel');"
+                        reRender="import-export-form"
                         rendered="#{userMB.roles['OPERATOR']}"/>
                 </div>
                 <rich:tree
@@ -47,18 +46,23 @@
                             var="key"
                             nodes="#{preferenceGroup.preferenceKeys}">
                             <rich:treeNode
-                                id="pm-preference-node"
+                                id="preference-node"
                                 icon="/images/iconLeaf.gif"
                                 iconLeaf="/images/iconLeaf.gif">
                                 <h:outputText value="#{key}"/>=
                                 <h:outputText value="#{preferenceGroup.preferences[key]}"/>
                                 <rich:contextMenu
-                                    attachTo="pm-preference-node"
+                                    attachTo="preference-node"
                                     submitMode="ajax">
                                     <rich:menuItem
                                         value="Modify"
-                                        oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
-                                        reRender="pm-preference-modal-panel-content"
+                                        oncomplete="if (#{preferenceMB.messageAvailable}) {
+                                                        Richfaces.showModalPanel('message-modal-panel');
+                                                    }
+                                                    else {
+                                                        Richfaces.showModalPanel('preference-modal-panel');
+                                                    }"
+                                        reRender="preference-form,message-table"
                                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                         <a4j:actionparam
                                             name="path"
@@ -76,7 +80,10 @@
                                     </rich:menuItem>
                                     <rich:menuItem
                                         value="Delete"
-                                        reRender="pm-preferences-table,pm-agent-table"
+                                        oncomplete="if (#{preferenceMB.messageAvailable}) {
+                                                        Richfaces.showModalPanel('message-modal-panel');
+                                                    }"
+                                        reRender="preferences-table,agent-table,message-table"
                                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                         <a4j:actionparam
                                             name="path"
@@ -96,17 +103,17 @@
                             </rich:treeNode>
                         </rich:treeNodesAdaptor>
                         <rich:treeNode
-                            id="pm-preferences-node"
+                            id="preferences-node"
                             icon="/images/iconFolder.gif"
                             iconLeaf="/images/iconFolder.gif">
                             <h:outputText value="#{preferenceGroup}"/>
                             <rich:contextMenu
-                                attachTo="pm-preferences-node"
+                                attachTo="preferences-node"
                                 submitMode="ajax">
                                 <rich:menuItem
                                     value="Add Preference"
-                                    oncomplete="Richfaces.showModalPanel('pm-preference-modal-panel');"
-                                    reRender="pm-preference-modal-panel-content"
+                                    oncomplete="Richfaces.showModalPanel('preference-modal-panel');"
+                                    reRender="preference-form,message-table"
                                     rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                     <a4j:actionparam
                                         name="path"
@@ -115,8 +122,13 @@
                                 </rich:menuItem>
                                 <rich:menuItem
                                     value="Move"
-                                    oncomplete="Richfaces.showModalPanel('pm-preferences-modal-panel');"
-                                    reRender="pm-preferences-modal-panel-content"
+                                    oncomplete="if (#{preferencesMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }
+                                                else {
+                                                    Richfaces.showModalPanel('preferences-modal-panel');
+                                                }"
+                                    reRender="preferences-form,message-table"
                                     rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                     <a4j:actionparam
                                         name="path"
@@ -126,8 +138,13 @@
                                 </rich:menuItem>
                                 <rich:menuItem
                                     value="Copy"
-                                    oncomplete="Richfaces.showModalPanel('pm-preferences-modal-panel');"
-                                    reRender="pm-preferences-modal-panel-content"
+                                    oncomplete="if (#{preferencesMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }
+                                                else {
+                                                    Richfaces.showModalPanel('preferences-modal-panel');
+                                                }"
+                                    reRender="preferences-form,message-table"
                                     rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                     <a4j:actionparam
                                         name="path"
@@ -137,7 +154,10 @@
                                 </rich:menuItem>
                                 <rich:menuItem
                                     value="Delete"
-                                    reRender="pm-preferences-table,pm-agent-table"
+                                    oncomplete="if (#{preferencesMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }"
+                                    reRender="preferences-table,agent-table,message-table"
                                     rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                     <a4j:actionparam
                                         name="path"
