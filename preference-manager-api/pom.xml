@@ -22,5 +22,10 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.5.6</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>preference-manager-utility</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

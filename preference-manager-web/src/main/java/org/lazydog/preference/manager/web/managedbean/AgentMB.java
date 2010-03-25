@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.Agent;
 import org.lazydog.preference.manager.PreferenceManager;
@@ -21,6 +23,7 @@ public class AgentMB implements Serializable {
     private Integer id;
     @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
     protected PreferenceManager preferenceManager;
+    private Boolean hideModal;
     
     /**
      * Get the agent.
@@ -50,11 +53,20 @@ public class AgentMB implements Serializable {
             agents = preferenceManager.getAgents();
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to get the agents.\n" + e);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to get the agents."));
         }
 
         return agents;
+    }
+
+    /**
+     * Hide the modal panel?
+     * 
+     * @return  true to hide the modal panel, otherwise false.
+     */
+    public Boolean getHideModal() {
+        return this.hideModal;
     }
 
     /**
@@ -63,8 +75,11 @@ System.err.println("Unable to get the agents.\n" + e);
     @PostConstruct
     public void initialize() {
 
-        // Create a new agent.
+        // Create an agent.
         this.agent = new Agent();
+
+        // Do not hide the modal panel.
+        hideModal = false;
     }
 
     /**
@@ -80,8 +95,8 @@ System.err.println("Unable to get the agents.\n" + e);
             preferenceManager.removeAgent(this.id);
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to delete the agent, " + this.id + ".\n" + e);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to delete the agent."));
         }
     }
 
@@ -98,8 +113,8 @@ System.err.println("Unable to delete the agent, " + this.id + ".\n" + e);
             this.agent = preferenceManager.disableAgent(this.id);
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to disable the agent, " + this.id + ".\n" + e);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to disable the agent."));
         }
     }
 
@@ -116,8 +131,8 @@ System.err.println("Unable to disable the agent, " + this.id + ".\n" + e);
             this.agent = preferenceManager.enableAgent(this.id);
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to enable the agent, " + this.id + ".\n" + e);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to enable the agent."));
         }
     }
 
@@ -134,8 +149,8 @@ System.err.println("Unable to enable the agent, " + this.id + ".\n" + e);
             this.agent = preferenceManager.getAgent(this.id);
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to modify the agent, " + this.id + ".\n" + e);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to modify the agent."));
         }
     }
 
@@ -148,12 +163,35 @@ System.err.println("Unable to modify the agent, " + this.id + ".\n" + e);
 
         try {
 
-            // Save the agent.
-            preferenceManager.saveAgent(this.agent);
+            // Validate the agent.
+            if (this.agent.validate().size() == 0) {
+
+                // Save the agent.
+                preferenceManager.saveAgent(this.agent);
+
+                // Hide the modal panel.
+                this.hideModal = true;
+            }
+            else {
+
+                // Loop through the violation messages.
+                for (String violationMessage : this.agent.validate()) {
+                    FacesContext.getCurrentInstance().addMessage("agent-form-messages",
+                            new FacesMessage(violationMessage));
+                }
+            }
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to add/modify the agent.\n" + e);
+
+            // Check if this is a new agent.
+            if (this.agent.getId() == null) {
+                FacesContext.getCurrentInstance().addMessage("agent-form-messages",
+                    new FacesMessage("Unable to add the agent."));
+            }
+            else {
+                FacesContext.getCurrentInstance().addMessage("agent-form-messages",
+                    new FacesMessage("Unable to modify the agent."));
+            }
         }
     }
 
@@ -179,8 +217,8 @@ System.err.println("Unable to add/modify the agent.\n" + e);
             }
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to reset the agent, " + this.agent.getId() + ".\n" + e);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to reset."));
         }
     }
 
@@ -197,8 +235,8 @@ System.err.println("Unable to reset the agent, " + this.agent.getId() + ".\n" + 
             preferenceManager.synchronizeAgent(preferenceManager.getAgent(this.id));
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to synchronize the agent.");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to synchronize the agent."));
         }
     }
 
@@ -215,8 +253,8 @@ System.err.println("Unable to synchronize the agent.");
             preferenceManager.synchronizeAgents();
         }
         catch(Exception e) {
-            // TO DO: handle exception.
-System.err.println("Unable to synchronize all the agents.");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Unable to synchronize all the agents."));
         }
     }
 

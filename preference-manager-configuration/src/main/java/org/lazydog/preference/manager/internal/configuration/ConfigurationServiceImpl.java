@@ -255,20 +255,16 @@ public final class ConfigurationServiceImpl implements ConfigurationService {
             // Declare.
             boolean enabled;
             String enabledValue;
-            int jmxPort;
-            String jmxPortValue;
 
             // Parse the enabled and JMX port values.
             enabledValue = matcher.group(ENABLED_GROUP);
             enabled = (enabledValue != null) ? Boolean.valueOf(enabledValue) : Boolean.FALSE;
-            jmxPortValue = matcher.group(JMX_PORT_GROUP);
-            jmxPort = (jmxPortValue != null) ? Integer.valueOf(jmxPortValue) : new Integer(0);
 
             // Set the agent.
             agent = new Agent();
             agent.setEnabled(enabled);
             agent.setId(Integer.valueOf(id));
-            agent.setJmxPort(jmxPort);
+            agent.setJmxPort(matcher.group(JMX_PORT_GROUP));
             agent.setLogin(matcher.group(LOGIN_GROUP));
             agent.setPassword(matcher.group(PASSWORD_GROUP));
             agent.setServerName(matcher.group(SERVER_NAME_GROUP));

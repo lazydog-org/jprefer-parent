@@ -11,7 +11,7 @@
     <body>
         <ui:composition>
             <h:form id="pm-agent-form">
-                <h:messages/>
+                <h:messages id="agent-form-messages"/>
                 <fieldset>
                     <ol>
                         <li>
@@ -27,9 +27,7 @@
                                 id="server-name"
                                 value="#{agentMB.agent.serverName}"
                                 size="25"
-                                maxlength="50"
-                                required="true"
-                                requiredMessage="The server name is required."/>
+                                maxlength="50"/>
                         </li>
                         <li>
                             <label for="jmx-port">JMX Port: </label>
@@ -37,9 +35,7 @@
                                 id="jmx-port"
                                 value="#{agentMB.agent.jmxPort}"
                                 size="10"
-                                maxlength="10"
-                                required="true"
-                                requiredMessage="The JMX port is required."/>
+                                maxlength="10"/>
                         </li>
                         <li>
                             <label for="login">Login: </label>
@@ -47,9 +43,7 @@
                                 id="login"
                                 value="#{agentMB.agent.login}"
                                 size="25"
-                                maxlength="50"
-                                required="true"
-                                requiredMessage="The login is required."/>
+                                maxlength="50"/>
                         </li>
                         <li>
                             <label for="password">Password: </label>
@@ -58,9 +52,7 @@
                                 value="#{agentMB.agent.password}"
                                 size="25"
                                 maxlength="50"
-                                redisplay="true"
-                                required="true"
-                                requiredMessage="The password is required."/>
+                                redisplay="true"/>
                         </li>
                     </ol>
                 </fieldset>
@@ -68,19 +60,17 @@
                     <a4j:commandButton
                         value="Reset"
                         actionListener="#{agentMB.processResetButton}"
-                        reRender="pm-agent-form"
-                        immediate="true"/>
+                        reRender="pm-agent-modal-panel-content"/>
                     <a4j:commandButton
                         value="Cancel"
                         oncomplete="Richfaces.hideModalPanel('pm-agent-modal-panel');"
-                        reRender="pm-agent-table"
-                        immediate="true"/>
+                        reRender="pm-agent-table"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
                         actionListener="#{agentMB.processOkButton}"
-                        oncomplete="Richfaces.hideModalPanel('pm-agent-modal-panel');"
-                        reRender="pm-agent-table"/>
+                        oncomplete="if (#{agentMB.hideModal}) Richfaces.hideModalPanel('pm-agent-modal-panel');"
+                        reRender="pm-agent-modal-panel-content,pm-agent-table"/>
                 </div>
             </h:form>
         </ui:composition>

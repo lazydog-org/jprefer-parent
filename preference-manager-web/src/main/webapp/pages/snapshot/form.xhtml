@@ -28,17 +28,17 @@
                     <a4j:commandButton
                         value="Reset"
                         actionListener="#{snapshotMB.processResetButton}"
-                        reRender="pm-snapshot-form"/>
+                        reRender="pm-snapshot-modal-panel-content"/>
                     <a4j:commandButton
                         value="Cancel"
                         oncomplete="Richfaces.hideModalPanel('pm-snapshot-modal-panel');"
-                        reRender="pm-snapshots-table"/>
+                        reRender="pm-snapshots-modal-panel-content"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
                         actionListener="#{snapshotMB.processOkButton}"
                         oncomplete="Richfaces.hideModalPanel('pm-snapshot-modal-panel');"
-                        reRender="pm-snapshots-table"/>
+                        reRender="pm-snapshot-modal-panel-content,pm-snapshots-modal-panel-content"/>
                 </div>
             </h:form>
         </ui:composition>

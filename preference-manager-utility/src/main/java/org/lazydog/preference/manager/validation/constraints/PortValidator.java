@@ -1,26 +1,23 @@
 package org.lazydog.preference.manager.validation.constraints;
 
-import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 
 /**
- * Path validator.
+ * Port validator.
  *
  * @author  Ron Rickard
  */
-public class PathValidator implements ConstraintValidator<Path, String> {
-
-    public static final String VALUE_REGEX = "^/[\\w]+(/[\\w]+)*$";
+public class PortValidator implements ConstraintValidator<Port, String> {
 
     /**
      * Initialize.
      *
-     * @param  path  the path constraint.
+     * @param  port  the port constraint.
      */
     @Override
-    public void initialize(Path path) {
+    public void initialize(Port port) {
     }
 
     /**
@@ -33,6 +30,24 @@ public class PathValidator implements ConstraintValidator<Path, String> {
      */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return (value != null) ? Pattern.matches(VALUE_REGEX, value) : false;
+
+        // Declare.
+        boolean isValid;
+
+        try {
+
+            // Covert string a an integer.
+            new Integer(value);
+
+            // Is valid is true.
+            isValid = true;
+        }
+        catch(NumberFormatException e) {
+
+            // Is valid is false.
+            isValid = false;
+        }
+
+        return isValid;
     }
 }

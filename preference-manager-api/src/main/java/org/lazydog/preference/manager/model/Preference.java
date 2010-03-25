@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import org.lazydog.preference.manager.validation.constraints.Path;
 
 
 /**
@@ -22,7 +23,7 @@ public class Preference implements Serializable {
     @Size(min=1, message="Key is required.")
     private String key;
     @NotNull(message="Path is required.")
-    @Size(min=1, message="Path is required.")
+    @Path(message="Path is invalid.")
     private String path;
     @NotNull(message="Value is required.")
     @Size(min=1, message="Value is required.")
@@ -125,6 +126,40 @@ public class Preference implements Serializable {
 
         // Validate this object.
         constraintViolations = validator.validate(this);
+
+        // Loop through the constraint violations.
+        for (ConstraintViolation constraintViolation : constraintViolations) {
+
+            // Add the constraint violation message to the violation messages.
+            violationMessages.add(constraintViolation.getMessage());
+        }
+
+        return violationMessages;
+    }
+
+    /**
+     * Validate the path.
+     *
+     * @param  path  the path.
+     *
+     * @return  the list of violation messages.
+     */
+    public static List<String> validatePath(String path) {
+
+        // Declare.
+        Set<ConstraintViolation<Preference>> constraintViolations;
+        Validator validator;
+        List<String> violationMessages;
+
+        // Initialize.
+        violationMessages = new ArrayList<String>();
+
+        // Get the validator.
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+        // Validate the path.
+        constraintViolations = validator.validateValue(
+                Preference.class, "path", path);
 
         // Loop through the constraint violations.
         for (ConstraintViolation constraintViolation : constraintViolations) {

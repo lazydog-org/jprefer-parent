@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import org.lazydog.preference.manager.validation.constraints.Port;
 
 
 /**
@@ -21,7 +22,8 @@ public class Agent implements Serializable {
     private Boolean enabled;
     private Integer id;
     @NotNull(message="JMX port is required.")
-    private Integer jmxPort;
+    @Port(message="JMX port is invalid.")
+    private String jmxPort;
     @NotNull(message="Login is required.")
     @Size(min=1, message="Login is required.")
     private String login;
@@ -56,7 +58,7 @@ public class Agent implements Serializable {
      *
      * @return  the JMX port.
      */
-    public Integer getJmxPort() {
+    public String getJmxPort() {
         return this.jmxPort;
     }
 
@@ -119,7 +121,7 @@ public class Agent implements Serializable {
      *
      * @param  jmxPort  the JMX port.
      */
-    public void setJmxPort(Integer jmxPort) {
+    public void setJmxPort(String jmxPort) {
         this.jmxPort = jmxPort;
     }
 

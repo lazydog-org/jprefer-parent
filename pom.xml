@@ -26,8 +26,8 @@
         </plugins>
     </build>
     <modules>
-        <module>preference-manager-api</module>
         <module>preference-manager-utility</module>
+        <module>preference-manager-api</module>
         <module>preference-manager-preference-spi</module>
         <module>preference-manager-synchronize-spi</module>
         <module>preference-manager-configuration-spi</module>
