@@ -73,9 +73,9 @@ public class EmbeddedServer {
         server.addContainer(containerBuilder);
         server.createPort(Integer.parseInt(environment.get("port")));
         server.start();
-        //this.createUser(server, "admin", "admin", "admin");
-        //this.createUser(server, "operator", "operator", "operator");
-        //this.createUser(server, "user", "user", "user");
+        this.createUser(server, "admin", "admin", "admin");
+        this.createUser(server, "operator", "operator", "operator");
+        this.createUser(server, "user", "user", "user");
 
         deployer = server.getDeployer();
         deployer.deploy(agentWAR, null);
