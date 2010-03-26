@@ -41,5 +41,6 @@
         <module>preference-manager-ear</module>
         <module>preference-manager-web</module>
         <module>preference-manager-web-ear</module>
+        <module>preference-manager-server</module>
     </modules>
 </project>
