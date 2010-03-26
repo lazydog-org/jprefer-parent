@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 import org.lazydog.preference.manager.model.Role;
 import org.lazydog.preference.manager.model.SetupType;
-import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -27,8 +25,6 @@ public class UserMB extends AbstractMB implements Serializable {
     private static final String SUCCESS = "success";
 
     private String password;
-    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
-    protected PreferenceManager preferenceManager;
     private String username;
     
     /**
@@ -209,7 +205,7 @@ public class UserMB extends AbstractMB implements Serializable {
         try {
 
             // Check if there is no setup.
-            if (preferenceManager.getSetupType() == SetupType.UNKNOWN) {
+            if (getPreferenceManager().getSetupType() == SetupType.UNKNOWN) {
 
                 // Set the outcome to no setup.
                 outcome = NO_SETUP;

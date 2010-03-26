@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import org.lazydog.preference.manager.PreferenceManager;
 import org.lazydog.preference.manager.model.SetupType;
 
 
@@ -19,8 +17,6 @@ public class SetupMB extends AbstractMB implements Serializable {
     private static final String FAILURE = "failure";
     private static final String SUCCESS = "success";
 
-    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
-    protected PreferenceManager preferenceManager;
     private String type;
 
     /**
@@ -39,7 +35,7 @@ public class SetupMB extends AbstractMB implements Serializable {
         try {
 
             // Save the setup type.
-            preferenceManager.saveSetupType(SetupType.valueOf(this.type));
+            getPreferenceManager().saveSetupType(SetupType.valueOf(this.type));
 
             // Set the outcome to success.
             outcome = SUCCESS;
@@ -79,7 +75,7 @@ public class SetupMB extends AbstractMB implements Serializable {
             for (SetupType setupType : SetupType.values()) {
 
                 // Check if the setup is the setup type.
-                if (preferenceManager.getSetupType() == setupType) {
+                if (getPreferenceManager().getSetupType() == setupType) {
 
                     // Add the role and lower precedent roles to the roles map.
                     switch(setupType) {
@@ -133,7 +129,7 @@ public class SetupMB extends AbstractMB implements Serializable {
         try {
 
             // Clear the configuration.
-            preferenceManager.clearConfiguration();
+            getPreferenceManager().clearConfiguration();
 
             // Set the outcome to success.
             outcome = SUCCESS;

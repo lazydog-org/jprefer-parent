@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
-import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -20,10 +18,7 @@ import org.lazydog.preference.manager.PreferenceManager;
  *
  * @author  Ron Rickard
  */
-public class ImportExportMB implements Serializable {
-
-    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
-    protected PreferenceManager preferenceManager;
+public class ImportExportMB extends AbstractMB implements Serializable {
 
     /**
      * Export the preferences to a document.
@@ -41,7 +36,7 @@ public class ImportExportMB implements Serializable {
             ServletOutputStream output;
 
             // Export the document.
-            document = preferenceManager.exportDocument();
+            document = getPreferenceManager().exportDocument();
 
             // Set the response headers.
             context = FacesContext.getCurrentInstance();
@@ -80,7 +75,7 @@ public class ImportExportMB implements Serializable {
             document = readFileAsString(uploadItem.getFile().getAbsolutePath());
 
             // Import the document.
-            preferenceManager.importDocument(document);
+            getPreferenceManager().importDocument(document);
         }
         catch(Exception e) {
             e.printStackTrace();

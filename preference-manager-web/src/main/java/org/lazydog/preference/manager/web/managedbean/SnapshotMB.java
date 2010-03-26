@@ -7,9 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -21,8 +19,6 @@ public class SnapshotMB extends AbstractMB implements Serializable {
 
     private String name;
     private String oldName;
-    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
-    protected PreferenceManager preferenceManager;
 
     /**
      * Get the name.
@@ -58,7 +54,7 @@ public class SnapshotMB extends AbstractMB implements Serializable {
         try {
 
             // Get the snapshots.
-            snapshots = preferenceManager.getSnapshots();
+            snapshots = getPreferenceManager().getSnapshots();
         }
         catch(Exception e) {
             this.createMessage("Unable to get the snapshots.");
@@ -106,7 +102,7 @@ public class SnapshotMB extends AbstractMB implements Serializable {
         try {
 
             // Remove the snapshot.
-            preferenceManager.removeSnapshot(this.name);
+            getPreferenceManager().removeSnapshot(this.name);
         }
         catch(Exception e) {
             this.createMessage("Unable to delete the snapshot.");
@@ -126,12 +122,12 @@ public class SnapshotMB extends AbstractMB implements Serializable {
             if (this.oldName != null && !this.oldName.equals("")) {
 
                 // Rename the snapshot.
-                preferenceManager.renameSnapshot(oldName, name);
+                getPreferenceManager().renameSnapshot(oldName, name);
             }
             else {
                 
                 // Create the snapshot.
-                preferenceManager.createSnapshot(this.name);
+                getPreferenceManager().createSnapshot(this.name);
             }
         }
         catch(Exception e) {
@@ -190,7 +186,7 @@ public class SnapshotMB extends AbstractMB implements Serializable {
         try {
 
             // Restore the snapshot.
-            preferenceManager.restoreSnapshot(this.name);
+            getPreferenceManager().restoreSnapshot(this.name);
         }
         catch(Exception e) {
             this.createMessage("Unable to restore the snapshot.");

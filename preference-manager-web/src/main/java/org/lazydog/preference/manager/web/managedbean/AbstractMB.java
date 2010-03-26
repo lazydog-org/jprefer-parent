@@ -2,6 +2,8 @@ package org.lazydog.preference.manager.web.managedbean;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.lazydog.preference.manager.PreferenceManager;
+import org.lazydog.preference.manager.PreferenceManagerFactory;
 
 
 /**
@@ -35,6 +37,15 @@ public abstract class AbstractMB {
      */
     public Boolean getMessageAvailable() {
         return this.messageAvailable;
+    }
+
+    /**
+     * Get the preference manager.
+     * 
+     * @return  the preference manager.
+     */
+    public PreferenceManager getPreferenceManager() {
+        return PreferenceManagerFactory.create();
     }
 
     /**

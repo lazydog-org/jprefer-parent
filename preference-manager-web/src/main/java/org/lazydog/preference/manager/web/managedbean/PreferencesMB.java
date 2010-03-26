@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.Preference;
 import org.lazydog.preference.manager.model.PreferencesTree;
-import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -26,8 +24,6 @@ public class PreferencesMB extends AbstractMB implements Serializable {
     private String actionType;
     private String oldPath;
     private String path;
-    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
-    protected PreferenceManager preferenceManager;
 
     /**
      * Get the action type.
@@ -72,7 +68,7 @@ public class PreferencesMB extends AbstractMB implements Serializable {
         try {
 
             // Get the children of the preferences tree.
-            preferencesTrees = preferenceManager.getPreferencesTree().getChildren();
+            preferencesTrees = getPreferenceManager().getPreferencesTree().getChildren();
         }
         catch(Exception e) {
             this.createMessage("Unable to get the preferences trees.");
@@ -124,7 +120,7 @@ public class PreferencesMB extends AbstractMB implements Serializable {
         try {
 
             // Remove the preference path.
-            preferenceManager.removePreferencePath(this.path);
+            getPreferenceManager().removePreferencePath(this.path);
         }
         catch(Exception e) {
             this.createMessage("Unable to delete the preference path.");
@@ -167,20 +163,20 @@ public class PreferencesMB extends AbstractMB implements Serializable {
                 if (ActionType.valueOf(this.actionType) == ActionType.ADD) {
 
                     // Add the preference path.
-                    preferenceManager.savePreferencePath(this.path);
+                    getPreferenceManager().savePreferencePath(this.path);
                 }
                 // Check if the action type is copy.
                 else if (ActionType.valueOf(this.actionType) == ActionType.COPY) {
 
                     // Copy the preference path.
-                    preferenceManager.copyPreferencePath(this.oldPath, this.path);
+                    getPreferenceManager().copyPreferencePath(this.oldPath, this.path);
                 }
 
                 // Check if the action type is move.
                 else if (ActionType.valueOf(this.actionType) == ActionType.MOVE) {
 
                     // Move the preference path.
-                    preferenceManager.movePreferencePath(this.oldPath, this.path);
+                    getPreferenceManager().movePreferencePath(this.oldPath, this.path);
                 }
             }
             else {

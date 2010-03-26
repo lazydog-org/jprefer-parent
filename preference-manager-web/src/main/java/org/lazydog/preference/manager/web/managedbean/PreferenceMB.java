@@ -2,10 +2,8 @@ package org.lazydog.preference.manager.web.managedbean;
 
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.Preference;
-import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -18,8 +16,6 @@ public class PreferenceMB extends AbstractMB implements Serializable {
     private String oldKey;
     private String oldValue;
     private Preference preference;
-    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
-    protected PreferenceManager preferenceManager;
 
     /**
      * Get the old key.
@@ -71,7 +67,8 @@ public class PreferenceMB extends AbstractMB implements Serializable {
         try {
 
             // Remove the preference.
-            preferenceManager.removePreference(this.preference.getPath(), this.preference.getKey());
+            getPreferenceManager().removePreference(
+                    this.preference.getPath(), this.preference.getKey());
         }
         catch(Exception e) {
             this.createMessage("Unable to delete the preference .");
@@ -112,11 +109,12 @@ public class PreferenceMB extends AbstractMB implements Serializable {
                 if (this.oldKey != null && !this.oldKey.equals("")) {
 
                     // Remove the old preference.
-                    preferenceManager.removePreference(this.preference.getPath(), this.oldKey);
+                    getPreferenceManager().removePreference(
+                            this.preference.getPath(), this.oldKey);
                 }
 
                 // Add the new preference.
-                preferenceManager.savePreference(this.preference);
+                getPreferenceManager().savePreference(this.preference);
             }
             else {
 

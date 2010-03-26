@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.manager.PreferenceManager;
 
 
 /**
@@ -19,8 +17,6 @@ public class AgentMB extends AbstractMB implements Serializable {
 
     private Agent agent;
     private Integer id;
-    @EJB(mappedName="ejb/PreferenceManager", beanInterface=PreferenceManager.class)
-    protected PreferenceManager preferenceManager;
 
     /**
      * Get the agent.
@@ -47,7 +43,7 @@ public class AgentMB extends AbstractMB implements Serializable {
         try {
 
             // Get the agents.
-            agents = preferenceManager.getAgents();
+            agents = getPreferenceManager().getAgents();
         }
         catch(Exception e) {
             this.createMessage("Unable to get the agents.");
@@ -79,7 +75,7 @@ public class AgentMB extends AbstractMB implements Serializable {
         try {
 
             // Remove the agent.
-            preferenceManager.removeAgent(this.id);
+            getPreferenceManager().removeAgent(this.id);
         }
         catch(Exception e) {
             this.createMessage("Unable to delete the agent.");
@@ -96,7 +92,7 @@ public class AgentMB extends AbstractMB implements Serializable {
         try {
 
             // Disable the agent.
-            this.agent = preferenceManager.disableAgent(this.id);
+            this.agent = getPreferenceManager().disableAgent(this.id);
         }
         catch(Exception e) {
             this.createMessage("Unable to disable the agent.");
@@ -113,7 +109,7 @@ public class AgentMB extends AbstractMB implements Serializable {
         try {
 
             // Enable the agent.
-            this.agent = preferenceManager.enableAgent(this.id);
+            this.agent = getPreferenceManager().enableAgent(this.id);
         }
         catch(Exception e) {
             this.createMessage("Unable to enable the agent.");
@@ -130,7 +126,7 @@ public class AgentMB extends AbstractMB implements Serializable {
         try {
 
             // Get the agent.
-            this.agent = preferenceManager.getAgent(this.id);
+            this.agent = getPreferenceManager().getAgent(this.id);
         }
         catch(Exception e) {
             this.createMessage("Unable to modify the agent.");
@@ -150,7 +146,7 @@ public class AgentMB extends AbstractMB implements Serializable {
             if (this.agent.validate().size() == 0) {
 
                 // Save the agent.
-                preferenceManager.saveAgent(this.agent);
+                getPreferenceManager().saveAgent(this.agent);
             }
             else {
 
@@ -185,7 +181,7 @@ public class AgentMB extends AbstractMB implements Serializable {
             if (this.agent.getId() != null) {
 
                 // Reset the agent.
-                this.agent = preferenceManager.getAgent(this.agent.getId());
+                this.agent = getPreferenceManager().getAgent(this.agent.getId());
             }
             else {
 
@@ -208,7 +204,7 @@ public class AgentMB extends AbstractMB implements Serializable {
         try {
 
             // Synchronize the agent.
-            preferenceManager.synchronizeAgent(preferenceManager.getAgent(this.id));
+            getPreferenceManager().synchronizeAgent(getPreferenceManager().getAgent(this.id));
         }
         catch(Exception e) {
             this.createMessage("Unable to synchronize the agent.");
@@ -225,7 +221,7 @@ public class AgentMB extends AbstractMB implements Serializable {
         try {
 
             // Synchronize all agents.
-            preferenceManager.synchronizeAgents();
+            getPreferenceManager().synchronizeAgents();
         }
         catch(Exception e) {
             this.createMessage("Unable to synchronize all the agents.");
