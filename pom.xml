@@ -42,5 +42,6 @@
         <module>preference-manager-web</module>
         <module>preference-manager-web-ear</module>
         <module>preference-manager-glassfish-server</module>
+        <module>preference-manager-jetty-server</module>
     </modules>
 </project>
