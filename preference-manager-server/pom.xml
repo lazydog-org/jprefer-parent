@@ -8,9 +8,9 @@
         <artifactId>preference-manager-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>preference-manager-server</artifactId>
+    <artifactId>preference-manager-glassfish-server</artifactId>
     <packaging>jar</packaging>
-    <name>Preference Manager Server</name>
+    <name>Preference Manager Glassfish Server</name>
     <dependencies>
         <dependency>
             <groupId>org.glassfish.extras</groupId>
