@@ -11,15 +11,14 @@
         <ui:composition template="/layout/pageLayout.xhtml">
             <ui:define name="title">Preference Manager Login Error</ui:define>
             <ui:define name="header">
-                <ui:include src="/pages/common/header.xhtml"/>
+                <ui:include src="/pages/common/headerBanner.xhtml"/>
                 <ui:include src="/pages/common/headerBar.xhtml"/>
             </ui:define>
             <ui:define name="content">
                 <div id="login-error">
-                    Failed to login.
-
-                    You are unable to login as this user at this time or the
-                    username/password is incorrect.
+                    <p>You failed to login.</p>
+                    <p>You are unable to login as this user at this time or the username/password is incorrect.</p>
+                    <p>Please try again.</p>
                 </div>
             </ui:define>
             <ui:define name="footer">

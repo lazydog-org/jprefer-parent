@@ -8,8 +8,8 @@
     <head/>
     <body>
         <ui:composition>
-            <h:outputText value="#{userMB.user} logged in" rendered="#{userMB.authenticated}"/>
             <h:form id="header-bar-form">
+                <h:outputText value="#{userMB.user} logged in |" rendered="#{userMB.authenticated}"/>
                 <h:commandButton
                     value="Login"
                     action="#{userMB.login}"

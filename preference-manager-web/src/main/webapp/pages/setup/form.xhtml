@@ -10,22 +10,17 @@
     <head/>
     <body>
         <ui:composition>
+            <p>You must be logged in as an admin to setup the server.</p>
+            <p>Choose the setup type for this server:</p>
             <h:form id="setup-form" rendered="#{userMB.roles['ADMIN']}">
-                <fieldset>
-                    <ol>
-                        <li>
-                            <label for="type">Setup type: </label>
-                            <h:selectOneRadio
-                                id="type"
-                                value="#{setupMB.type}"
-                                layout="pageDirection">
-                                <f:selectItem itemLabel="Preference Manager" itemValue="MANAGER"/>
-                                <f:selectItem itemLabel="Standalone Preference Manager" itemValue="STANDALONE"/>
-                                <f:selectItem itemLabel="Preference Manager Agent" itemValue="AGENT"/>
-                            </h:selectOneRadio>
-                        </li>
-                    </ol>
-                </fieldset>
+                <h:selectOneRadio
+                    id="type"
+                    value="#{setupMB.type}"
+                    layout="pageDirection">
+                    <f:selectItem itemLabel="Preference Manager" itemValue="MANAGER"/>
+                    <f:selectItem itemLabel="Standalone Preference Manager" itemValue="STANDALONE"/>
+                    <f:selectItem itemLabel="Preference Manager Agent" itemValue="AGENT"/>
+                </h:selectOneRadio>
                 <div class="form-buttons">
                     <a4j:commandButton
                         value="Configure"

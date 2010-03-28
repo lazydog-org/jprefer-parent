@@ -18,7 +18,7 @@
                 rendered="#{userMB.roles['OPERATOR']}">
                 <f:facet name="header">
                     <h:panelGroup>
-                        importExport
+                        Import
                     </h:panelGroup>
                 </f:facet>
                 <f:facet name="controls">
@@ -27,11 +27,11 @@
                             <a4j:commandLink
                                 value="close"
                                 oncomplete="Richfaces.hideModalPanel('import-export-modal-panel');"
-                                reRender="preferences-table,agent-table"/>
+                                reRender="preference-table,agent-table"/>
                         </h:form>
                     </h:panelGroup>
                 </f:facet>
-                <h:panelGrid>
+                <h:panelGrid styleClass="modal-panel-grid">
                     <ui:include src="/pages/importExport/form.xhtml"/>
                 </h:panelGrid>
             </rich:modalPanel>

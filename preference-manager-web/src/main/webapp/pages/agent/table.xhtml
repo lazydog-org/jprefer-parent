@@ -12,7 +12,7 @@
     <body>
         <ui:composition>
             <h:form id="agent-table" rendered="#{setupMB.setupTypes['MANAGER']}">
-                <div class="form-buttons">
+                <div class="table-buttons">
                     <a4j:commandButton
                         value="Refresh"
                         reRender="agent-table"/>
@@ -30,100 +30,111 @@
                         reRender="agent-table,message-table"
                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}"/>
                 </div>
-                <rich:dataTable
-                    value="#{agentMB.agents}"
-                    var="agent">
-                    <rich:column id="agent-server-name" headerClass="table-cell table-agent-server-name-cell">
-                        <f:facet name="header">
-                            <h:outputText value="Server Name"/>
-                        </f:facet>
-                        <h:outputText value="#{agent.serverName}"/>
-                    </rich:column>
-                    <rich:column id="agent-enabled" headerClass="table-cell table-agent-enabled-cell">
-                        <f:facet name="header">
-                            <h:outputText value="Enabled"/>
-                        </f:facet>
-                        <h:outputText value="#{agent.enabled}"/>
-                    </rich:column>
-                    <rich:column id="agent-status" headerClass="table-cell table-agent-status-cell">
-                        <f:facet name="header">
-                            <h:outputText value="Status"/>
-                        </f:facet>
-                        <h:outputText value="#{agent.status}"/>
-                        <rich:contextMenu
-                            attachTo="agent-server-name,agent-enabled,agent-status"
-                            submitMode="ajax">
-                            <rich:menuItem
-                                value="Modify"
-                                oncomplete="if (#{agentMB.messageAvailable}) {
-                                                Richfaces.showModalPanel('message-modal-panel');
-                                            }
-                                            else {
-                                                Richfaces.showModalPanel('agent-modal-panel');
-                                            }"
-                                reRender="agent-form,message-table"
-                                rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
-                                <a4j:actionparam
-                                    name="id"
-                                    assignTo="#{agentMB.id}"
-                                    value="#{agent.id}"
-                                    actionListener="#{agentMB.processModifyButton}"/>
-                            </rich:menuItem>
-                            <rich:menuItem
-                                value="Delete"
-                                oncomplete="if (#{agentMB.messageAvailable}) {
-                                                Richfaces.showModalPanel('message-modal-panel');
-                                            }"
-                                reRender="agent-table,message-table"
-                                rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
-                                <a4j:actionparam
-                                    name="id"
-                                    assignTo="#{agentMB.id}"
-                                    value="#{agent.id}"
-                                    actionListener="#{agentMB.processDeleteButton}"/>
-                            </rich:menuItem>
-                            <rich:menuItem
-                                value="Enable"
-                                oncomplete="if (#{agentMB.messageAvailable}) {
-                                                Richfaces.showModalPanel('message-modal-panel');
-                                            }"
-                                reRender="agent-table,message-table"
-                                rendered="#{!agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
-                                <a4j:actionparam
-                                    name="id"
-                                    assignTo="#{agentMB.id}"
-                                    value="#{agent.id}"
-                                    actionListener="#{agentMB.processEnableButton}"/>
-                            </rich:menuItem>
-                            <rich:menuItem
-                                value="Disable"
-                                oncomplete="if (#{agentMB.messageAvailable}) {
-                                                Richfaces.showModalPanel('message-modal-panel');
-                                            }"
-                                reRender="agent-table,message-table"
-                                rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
-                                <a4j:actionparam
-                                    name="id"
-                                    assignTo="#{agentMB.id}"
-                                    value="#{agent.id}"
-                                    actionListener="#{agentMB.processDisableButton}"/>
-                            </rich:menuItem>
-                            <rich:menuItem
-                                value="Synchronize"
-                                oncomplete="if (#{agentMB.messageAvailable}) {
-                                                Richfaces.showModalPanel('message-modal-panel');
-                                            }"
-                                reRender="agent-table,message-table"
-                                rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
-                                <a4j:actionparam
-                                    name="id"
-                                    assignTo="#{agentMB.id}"
-                                    value="#{agent.id}"
-                                    actionListener="#{agentMB.processSynchronizeButton}"/>
-                            </rich:menuItem>
-                        </rich:contextMenu>
-                    </rich:column>
-                </rich:dataTable>
+                <div id="agent-data-table">
+                    <rich:dataTable
+                        value="#{agentMB.agents}"
+                        var="agent">
+                        <rich:column
+                            id="agent-server-name"
+                            headerClass="table-cell agent-table-server-name-cell"
+                            styleClass="table-cell agent-table-server-name-cell">
+                            <f:facet name="header">
+                                <h:outputText value="Server Name"/>
+                            </f:facet>
+                            <h:outputText value="#{agent.serverName}"/>
+                        </rich:column>
+                        <rich:column
+                            id="agent-enabled"
+                            headerClass="table-cell agent-table-enabled-cell"
+                            styleClass="table-cell agent-table-enabled-cell">
+                            <f:facet name="header">
+                                <h:outputText value="Enabled"/>
+                            </f:facet>
+                            <h:outputText value="#{agent.enabled}"/>
+                        </rich:column>
+                        <rich:column
+                            id="agent-status"
+                            headerClass="table-cell agent-table-enabled-cell"
+                            styleClass="table-cell agent-table-status-cell">
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{agent.status}"/>
+                            <rich:contextMenu
+                                attachTo="agent-server-name,agent-enabled,agent-status"
+                                submitMode="ajax">
+                                <rich:menuItem
+                                    value="Modify"
+                                    oncomplete="if (#{agentMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }
+                                                else {
+                                                    Richfaces.showModalPanel('agent-modal-panel');
+                                                }"
+                                    reRender="agent-form,message-table"
+                                    rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
+                                    <a4j:actionparam
+                                        name="id"
+                                        assignTo="#{agentMB.id}"
+                                        value="#{agent.id}"
+                                        actionListener="#{agentMB.processModifyButton}"/>
+                                </rich:menuItem>
+                                <rich:menuItem
+                                    value="Delete"
+                                    oncomplete="if (#{agentMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }"
+                                    reRender="agent-table,message-table"
+                                    rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
+                                    <a4j:actionparam
+                                        name="id"
+                                        assignTo="#{agentMB.id}"
+                                        value="#{agent.id}"
+                                        actionListener="#{agentMB.processDeleteButton}"/>
+                                </rich:menuItem>
+                                <rich:menuItem
+                                    value="Enable"
+                                    oncomplete="if (#{agentMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }"
+                                    reRender="agent-table,message-table"
+                                    rendered="#{!agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
+                                    <a4j:actionparam
+                                        name="id"
+                                        assignTo="#{agentMB.id}"
+                                        value="#{agent.id}"
+                                        actionListener="#{agentMB.processEnableButton}"/>
+                                </rich:menuItem>
+                                <rich:menuItem
+                                    value="Disable"
+                                    oncomplete="if (#{agentMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }"
+                                    reRender="agent-table,message-table"
+                                    rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
+                                    <a4j:actionparam
+                                        name="id"
+                                        assignTo="#{agentMB.id}"
+                                        value="#{agent.id}"
+                                        actionListener="#{agentMB.processDisableButton}"/>
+                                </rich:menuItem>
+                                <rich:menuItem
+                                    value="Synchronize"
+                                    oncomplete="if (#{agentMB.messageAvailable}) {
+                                                    Richfaces.showModalPanel('message-modal-panel');
+                                                }"
+                                    reRender="agent-table,message-table"
+                                    rendered="#{agent.enabled and userMB.roles['OPERATOR'] and setupMB.setupTypes['MANAGER']}">
+                                    <a4j:actionparam
+                                        name="id"
+                                        assignTo="#{agentMB.id}"
+                                        value="#{agent.id}"
+                                        actionListener="#{agentMB.processSynchronizeButton}"/>
+                                </rich:menuItem>
+                            </rich:contextMenu>
+                        </rich:column>
+                    </rich:dataTable>
+                </div>
             </h:form>
         </ui:composition>
     </body>

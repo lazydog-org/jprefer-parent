@@ -18,7 +18,7 @@
                 rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                 <f:facet name="header">
                     <h:panelGroup>
-                        snapshot
+                        Snapshot
                     </h:panelGroup>
                 </f:facet>
                 <f:facet name="controls">
@@ -30,7 +30,7 @@
                         </h:form>
                     </h:panelGroup>
                 </f:facet>
-                <h:panelGrid>
+                <h:panelGrid styleClass="modal-panel-grid">
                     <ui:include src="/pages/snapshot/form.xhtml"/>
                 </h:panelGrid>
             </rich:modalPanel>
