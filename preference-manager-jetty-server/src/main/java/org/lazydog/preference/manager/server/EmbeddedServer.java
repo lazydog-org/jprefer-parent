@@ -10,6 +10,7 @@ import org.eclipse.jetty.jmx.ConnectorServer;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 
@@ -19,6 +20,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * @author  Ron Rickard
  */
 public class EmbeddedServer {
+
+    private HandlerCollection handlerCollection = new HandlerCollection();
 
     /**
      * Deploy the web application on the server.
@@ -38,7 +41,8 @@ public class EmbeddedServer {
         webAppContext.setWar(warPath);
 
         // Deploy the web application.
-        server.setHandler(webAppContext);
+        handlerCollection.addHandler(webAppContext);
+        server.setHandler(handlerCollection);
     }
 
     /**
