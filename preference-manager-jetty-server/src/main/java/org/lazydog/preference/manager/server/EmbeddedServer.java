@@ -121,6 +121,7 @@ public class EmbeddedServer {
 
                 // Parse the installation root.
                 installRoot = configFileCanonicalPath.replaceAll("config/.+$", "");
+                installRoot = configFileCanonicalPath.replaceAll("config\\\\.+$", "");
 
                 // Load the environment properties.
                 env.load(new FileInputStream(configFile));

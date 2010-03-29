@@ -12,6 +12,12 @@
             <lineEnding>unix</lineEnding>
         </file>
         <file>
+            <source>src/main/package/bin/server.bat</source>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0744</fileMode>
+            <lineEnding>dos</lineEnding>
+        </file>
+        <file>
             <source>src/main/package/config/config.properties</source>
             <outputDirectory>config</outputDirectory>
             <fileMode>0644</fileMode>
