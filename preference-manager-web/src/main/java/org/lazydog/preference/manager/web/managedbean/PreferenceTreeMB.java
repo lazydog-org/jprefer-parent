@@ -24,7 +24,6 @@ public class PreferenceTreeMB extends AbstractMB implements Serializable {
     private String actionType;
     private String oldPath;
     private String path;
-    private List<PreferencesTree> preferencesTrees;
 
     /**
      * Get the action type.
@@ -60,24 +59,23 @@ public class PreferenceTreeMB extends AbstractMB implements Serializable {
      */
     public List<PreferencesTree> getPreferencesTrees() {
 
-        // Check if the preferences trees do not exist.
-        if (this.preferencesTrees == null) {
+        // Declare.
+        List<PreferencesTree> preferencesTrees;
 
-            // Initialize.
-            this.preferencesTrees = new ArrayList<PreferencesTree>();
+        // Initialize.
+        preferencesTrees = new ArrayList<PreferencesTree>();
 
-            try {
+        try {
 
-                // Get the children of the preferences tree.
-                this.preferencesTrees = getPreferenceManager()
-                        .getPreferencesTree().getChildren();
-            }
-            catch(Exception e) {
-                this.createMessage("Unable to get the preferences trees.");
-            }
+            // Get the children of the preferences tree.
+            preferencesTrees = getPreferenceManager()
+                    .getPreferencesTree().getChildren();
+        }
+        catch(Exception e) {
+            this.createMessage("Unable to get the preferences trees.");
         }
 
-        return this.preferencesTrees;
+        return preferencesTrees;
     }
 
     /**

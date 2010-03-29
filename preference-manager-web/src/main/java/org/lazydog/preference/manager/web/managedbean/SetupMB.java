@@ -17,8 +17,6 @@ public class SetupMB extends AbstractMB implements Serializable {
     private static final String FAILURE = "failure";
     private static final String SUCCESS = "success";
 
-    private Boolean agentSetupType;
-    private Map<String,Boolean> setupTypes;
     private String type;
 
     /**
@@ -65,25 +63,24 @@ public class SetupMB extends AbstractMB implements Serializable {
      */
     public Boolean getAgentSetupType() {
 
-        // Check if the agent setup type does not exist.
-        if (this.agentSetupType == null) {
+        // Declare.
+        Boolean agentSetupType;
 
-            // Initialize.
-            this.agentSetupType = Boolean.FALSE;
+        // Initialize.
+        agentSetupType = Boolean.FALSE;
 
-            try {
+        try {
 
-                    // Check if the setup is the agent setup type.
-                    if (getPreferenceManager().getSetupType() == SetupType.AGENT) {
-                        this.agentSetupType = Boolean.TRUE;
-                    }
-            }
-            catch(Exception e) {
-                this.createMessage("Unable to get the agent setup type.");
-            }
+                // Check if the setup is the agent setup type.
+                if (getPreferenceManager().getSetupType() == SetupType.AGENT) {
+                    agentSetupType = Boolean.TRUE;
+                }
+        }
+        catch(Exception e) {
+            this.createMessage("Unable to get the agent setup type.");
         }
 
-        return this.agentSetupType;
+        return agentSetupType;
     }
 
     /**
@@ -93,45 +90,44 @@ public class SetupMB extends AbstractMB implements Serializable {
      */
     public Map<String,Boolean> getSetupTypes() {
 
-        // Check if the setup types do not exist.
-        if (this.setupTypes == null) {
+        // Declare.
+        Map<String,Boolean> setupTypes;
 
-            // Initialize.
-            this.setupTypes = new HashMap<String,Boolean>();
+        // Initialize.
+        setupTypes = new HashMap<String,Boolean>();
 
-            try {
+        try {
 
-                // Loop through the setup types in order of precedence.
-                for (SetupType setupType : SetupType.values()) {
+            // Loop through the setup types in order of precedence.
+            for (SetupType setupType : SetupType.values()) {
 
-                    // Check if the setup is the setup type.
-                    if (getPreferenceManager().getSetupType() == setupType) {
+                // Check if the setup is the setup type.
+                if (getPreferenceManager().getSetupType() == setupType) {
 
-                        // Add the role and lower precedent roles to the roles map.
-                        switch(setupType) {
-                            case MANAGER:
-                                this.setupTypes.put(SetupType.MANAGER.toString(), Boolean.TRUE);
-                            case STANDALONE:
-                                this.setupTypes.put(SetupType.STANDALONE.toString(), Boolean.TRUE);
-                            case AGENT:
-                                this.setupTypes.put(SetupType.AGENT.toString(), Boolean.TRUE);
-                                break;
-                        }
-                        break;
+                    // Add the role and lower precedent roles to the roles map.
+                    switch(setupType) {
+                        case MANAGER:
+                            setupTypes.put(SetupType.MANAGER.toString(), Boolean.TRUE);
+                        case STANDALONE:
+                            setupTypes.put(SetupType.STANDALONE.toString(), Boolean.TRUE);
+                        case AGENT:
+                            setupTypes.put(SetupType.AGENT.toString(), Boolean.TRUE);
+                            break;
                     }
-                    else {
+                    break;
+                }
+                else {
 
-                        // This setup is not the setup type.
-                        this.setupTypes.put(setupType.toString(), Boolean.FALSE);
-                    }
+                    // This setup is not the setup type.
+                    setupTypes.put(setupType.toString(), Boolean.FALSE);
                 }
             }
-            catch(Exception e) {
-                this.createMessage("Unable to get the setup types.");
-            }
+        }
+        catch(Exception e) {
+            this.createMessage("Unable to get the setup types.");
         }
 
-        return this.setupTypes;
+        return setupTypes;
     }
 
     /**

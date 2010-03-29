@@ -19,7 +19,6 @@ public class SnapshotMB extends AbstractMB implements Serializable {
 
     private String name;
     private String oldName;
-    private Map<String,Date> snapshots;
 
     /**
      * Get the name.
@@ -46,23 +45,22 @@ public class SnapshotMB extends AbstractMB implements Serializable {
      */
     public Map<String,Date> getSnapshots() {
 
-        // Check if the snapshots do not exist.
-        if (this.snapshots == null) {
+        // Declare.
+        Map<String,Date> snapshots;
 
-            // Initialize.
-            this.snapshots = new LinkedHashMap<String,Date>();
+        // Initialize.
+        snapshots = new LinkedHashMap<String,Date>();
 
-            try {
+        try {
 
-                // Get the snapshots.
-                this.snapshots = getPreferenceManager().getSnapshots();
-            }
-            catch(Exception e) {
-                this.createMessage("Unable to get the snapshots.");
-            }
+            // Get the snapshots.
+            snapshots = getPreferenceManager().getSnapshots();
+        }
+        catch(Exception e) {
+            this.createMessage("Unable to get the snapshots.");
         }
 
-        return this.snapshots;
+        return snapshots;
     }
 
     /**
