@@ -10,11 +10,11 @@ import org.lazydog.preference.manager.model.PreferencesTree;
 
 
 /**
- * Preferences managed bean.
+ * Preference tree managed bean.
  * 
  * @author  Ron Rickard
  */
-public class PreferencesMB extends AbstractMB implements Serializable {
+public class PreferenceTreeMB extends AbstractMB implements Serializable {
 
     private enum ActionType {
         ADD,

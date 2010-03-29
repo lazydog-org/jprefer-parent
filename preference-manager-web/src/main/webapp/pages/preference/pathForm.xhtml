@@ -17,19 +17,19 @@
                             <label for="path">Path: </label>
                             <h:inputText
                                 id="path"
-                                value="#{preferencesMB.path}"
+                                value="#{preferenceTreeMB.path}"
                                 size="80"
                                 maxlength="800"/>
-                            <h:inputHidden value="#{preferencesMB.oldPath}"/>
-                            <h:inputHidden value="#{preferencesMB.actionType}"/>
+                            <h:inputHidden value="#{preferenceTreeMB.oldPath}"/>
+                            <h:inputHidden value="#{preferenceTreeMB.actionType}"/>
                         </li>
                     </ol>
                 </fieldset>
                 <div class="form-buttons">
                     <a4j:commandButton
                         value="Reset"
-                        actionListener="#{preferencesMB.processResetButton}"
-                        oncomplete="if (#{preferencesMB.messageAvailable}) {
+                        actionListener="#{preferenceTreeMB.processResetButton}"
+                        oncomplete="if (#{preferenceTreeMB.messageAvailable}) {
                                         Richfaces.showModalPanel('message-modal-panel');
                                     }"
                         reRender="preference-path-form,message-table"/>
@@ -39,8 +39,8 @@
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
-                        actionListener="#{preferencesMB.processOkButton}"
-                        oncomplete="if (#{preferencesMB.messageAvailable}) {
+                        actionListener="#{preferenceTreeMB.processOkButton}"
+                        oncomplete="if (#{preferenceTreeMB.messageAvailable}) {
                                         Richfaces.showModalPanel('message-modal-panel');
                                     }
                                     else {

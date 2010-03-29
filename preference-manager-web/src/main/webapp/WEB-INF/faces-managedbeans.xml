@@ -22,8 +22,8 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>preferencesMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.PreferencesMB</managed-bean-class>
+        <managed-bean-name>preferenceTreeMB</managed-bean-name>
+        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.PreferenceTreeMB</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>

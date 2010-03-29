@@ -40,7 +40,7 @@
                     <rich:tree
                         switchType="ajax">
                         <rich:recursiveTreeNodesAdaptor
-                            roots="#{preferencesMB.preferencesTrees}"
+                            roots="#{preferenceTreeMB.preferencesTrees}"
                             var="preferenceGroup"
                             nodes="#{preferenceGroup.children}">
                             <rich:treeNodesAdaptor
@@ -123,7 +123,7 @@
                                     </rich:menuItem>
                                     <rich:menuItem
                                         value="Move"
-                                        oncomplete="if (#{preferencesMB.messageAvailable}) {
+                                        oncomplete="if (#{preferenceTreeMB.messageAvailable}) {
                                                         Richfaces.showModalPanel('message-modal-panel');
                                                     }
                                                     else {
@@ -133,13 +133,13 @@
                                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                         <a4j:actionparam
                                             name="path"
-                                            assignTo="#{preferencesMB.path}"
+                                            assignTo="#{preferenceTreeMB.path}"
                                             value="#{preferenceGroup.path}"
-                                            actionListener="#{preferencesMB.processMoveButton}"/>
+                                            actionListener="#{preferenceTreeMB.processMoveButton}"/>
                                     </rich:menuItem>
                                     <rich:menuItem
                                         value="Copy"
-                                        oncomplete="if (#{preferencesMB.messageAvailable}) {
+                                        oncomplete="if (#{preferenceTreeMB.messageAvailable}) {
                                                         Richfaces.showModalPanel('message-modal-panel');
                                                     }
                                                     else {
@@ -149,22 +149,22 @@
                                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                         <a4j:actionparam
                                             name="path"
-                                            assignTo="#{preferencesMB.path}"
+                                            assignTo="#{preferenceTreeMB.path}"
                                             value="#{preferenceGroup.path}"
-                                            actionListener="#{preferencesMB.processCopyButton}"/>
+                                            actionListener="#{preferenceTreeMB.processCopyButton}"/>
                                     </rich:menuItem>
                                     <rich:menuItem
                                         value="Delete"
-                                        oncomplete="if (#{preferencesMB.messageAvailable}) {
+                                        oncomplete="if (#{preferenceTreeMB.messageAvailable}) {
                                                         Richfaces.showModalPanel('message-modal-panel');
                                                     }"
                                         reRender="preference-table,agent-table,message-table"
                                         rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                                         <a4j:actionparam
                                             name="path"
-                                            assignTo="#{preferencesMB.path}"
+                                            assignTo="#{preferenceTreeMB.path}"
                                             value="#{preferenceGroup.path}"
-                                            actionListener="#{preferencesMB.processDeleteButton}"/>
+                                            actionListener="#{preferenceTreeMB.processDeleteButton}"/>
                                     </rich:menuItem>
                                 </rich:contextMenu>
                             </rich:treeNode>
