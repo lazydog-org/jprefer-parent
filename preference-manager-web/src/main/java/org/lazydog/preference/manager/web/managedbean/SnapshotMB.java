@@ -39,9 +39,9 @@ public class SnapshotMB extends AbstractMB implements Serializable {
     }
 
     /**
-     * Get the preferences.
+     * Get the snapshots.
      *
-     * @return  the preferences.
+     * @return  the snapshots.
      */
     public Map<String,Date> getSnapshots() {
 
@@ -118,16 +118,23 @@ public class SnapshotMB extends AbstractMB implements Serializable {
 
         try {
 
-            // Check if the old name exists.
-            if (this.oldName != null && !this.oldName.equals("")) {
+            // Validate the snapshot.
+            if (this.name != null && this.name.length() > 0) {
 
-                // Rename the snapshot.
-                getPreferenceManager().renameSnapshot(oldName, name);
+                // Check if the old name exists.
+                if (this.oldName != null && !this.oldName.equals("")) {
+
+                    // Rename the snapshot.
+                    getPreferenceManager().renameSnapshot(oldName, name);
+                }
+                else {
+
+                    // Create the snapshot.
+                    getPreferenceManager().createSnapshot(this.name);
+                }
             }
             else {
-                
-                // Create the snapshot.
-                getPreferenceManager().createSnapshot(this.name);
+                this.createMessage("Name is required.");
             }
         }
         catch(Exception e) {

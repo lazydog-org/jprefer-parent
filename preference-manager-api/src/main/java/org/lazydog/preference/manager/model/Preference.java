@@ -20,13 +20,14 @@ import org.lazydog.preference.manager.validation.constraints.Path;
 public class Preference implements Serializable {
 
     @NotNull(message="Key is required.")
-    @Size(min=1, message="Key is required.")
+    @Size(min=1, max=80, message="Key has to be between 1 and 80 characters long.")
     private String key;
     @NotNull(message="Path is required.")
+    @Size(min=1, max=800, message="Path has to be between 1 and 800 characters long.")
     @Path(message="Path is invalid.")
     private String path;
     @NotNull(message="Value is required.")
-    @Size(min=1, message="Value is required.")
+    @Size(min=1, max=8192, message="Value has to be between 1 and 8192 characters long.")
     private String value;
 
     /**

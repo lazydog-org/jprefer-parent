@@ -165,18 +165,26 @@ public class PreferencesMB extends AbstractMB implements Serializable {
                     // Add the preference path.
                     getPreferenceManager().savePreferencePath(this.path);
                 }
-                // Check if the action type is copy.
-                else if (ActionType.valueOf(this.actionType) == ActionType.COPY) {
 
-                    // Copy the preference path.
-                    getPreferenceManager().copyPreferencePath(this.oldPath, this.path);
+                // Check if the path starts with the old path.
+                else if (!this.path.startsWith(this.oldPath)) {
+
+                    // Check if the action type is copy.
+                    if (ActionType.valueOf(this.actionType) == ActionType.COPY) {
+
+                        // Copy the preference path.
+                        getPreferenceManager().copyPreferencePath(this.oldPath, this.path);
+                    }
+
+                    // Check if the action type is move.
+                    else if (ActionType.valueOf(this.actionType) == ActionType.MOVE) {
+
+                        // Move the preference path.
+                        getPreferenceManager().movePreferencePath(this.oldPath, this.path);
+                    }
                 }
-
-                // Check if the action type is move.
-                else if (ActionType.valueOf(this.actionType) == ActionType.MOVE) {
-
-                    // Move the preference path.
-                    getPreferenceManager().movePreferencePath(this.oldPath, this.path);
+                else {
+                    this.createMessage("New path cannot start with the old path.");
                 }
             }
             else {

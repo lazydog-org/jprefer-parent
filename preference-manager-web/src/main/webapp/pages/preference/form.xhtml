@@ -18,8 +18,8 @@
                             <h:inputText
                                 id="key"
                                 value="#{preferenceMB.preference.key}"
-                                size="25"
-                                maxlength="50"/>
+                                size="30"
+                                maxlength="80"/>
                             <h:inputHidden value="#{preferenceMB.oldKey}"/>
                             <h:inputHidden value="#{preferenceMB.preference.path}"/>
                         </li>
@@ -28,8 +28,8 @@
                             <h:inputText
                                 id="value"
                                 value="#{preferenceMB.preference.value}"
-                                size="25"
-                                maxlength="50"/>
+                                size="30"
+                                maxlength="8192"/>
                             <h:inputHidden value="#{preferenceMB.oldValue}"/>
                         </li>
                     </ol>

@@ -12,7 +12,7 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class PathValidator implements ConstraintValidator<Path, String> {
 
-    public static final String VALUE_REGEX = "^/[\\w]+(/[\\w]+)*$";
+    public static final String VALUE_REGEX = "^/[\\w]{1,80}(/[\\w]{1,80}){0,10}$";
 
     /**
      * Initialize.
