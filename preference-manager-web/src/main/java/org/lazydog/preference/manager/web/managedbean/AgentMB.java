@@ -16,6 +16,7 @@ import org.lazydog.preference.manager.model.Agent;
 public class AgentMB extends AbstractMB implements Serializable {
 
     private Agent agent;
+    private List<Agent> agents;
     private Integer id;
 
     /**
@@ -34,22 +35,23 @@ public class AgentMB extends AbstractMB implements Serializable {
      */
     public List<Agent> getAgents() {
 
-        // Declare.
-        List<Agent> agents;
+        // Check if the agents do not exist.
+        if (this.agents == null) {
 
-        // Initialize.
-        agents = new ArrayList<Agent>();
-        
-        try {
+            // Initialize.
+            this.agents = new ArrayList<Agent>();
 
-            // Get the agents.
-            agents = getPreferenceManager().getAgents();
+            try {
+
+                // Get the agents.
+                this.agents = getPreferenceManager().getAgents();
+            }
+            catch(Exception e) {
+                this.createMessage("Unable to get the agents.");
+            }
         }
-        catch(Exception e) {
-            this.createMessage("Unable to get the agents.");
-        }
 
-        return agents;
+        return this.agents;
     }
 
     /**

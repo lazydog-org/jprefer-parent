@@ -25,6 +25,7 @@ public class UserMB extends AbstractMB implements Serializable {
     private static final String SUCCESS = "success";
 
     private String password;
+    private Map<String,Boolean> roles;
     private String username;
     
     /**
@@ -104,45 +105,46 @@ public class UserMB extends AbstractMB implements Serializable {
      */
     public Map<String,Boolean> getRoles() {
 
-        // Declare.
-        Map<String,Boolean> roles;
+        // Check if the roles do not exist.
+        if (this.roles == null) {
 
-        // Initialize.
-        roles = new HashMap<String,Boolean>();
+            // Initialize.
+            this.roles = new HashMap<String,Boolean>();
 
-        try {
+            try {
 
-            // Loop through the roles in order of precedence.
-            for (Role role : Role.values()) {
+                // Loop through the roles in order of precedence.
+                for (Role role : Role.values()) {
 
-                // Check if the user is in the role.
-                if (FacesContext.getCurrentInstance().getExternalContext()
-                        .isUserInRole(role.toString())) {
+                    // Check if the user is in the role.
+                    if (FacesContext.getCurrentInstance().getExternalContext()
+                            .isUserInRole(role.toString())) {
 
-                    // Add the role and lower precedent roles to the roles map.
-                    switch(role) {
-                        case ADMIN:
-                            roles.put(Role.ADMIN.toString(), Boolean.TRUE);
-                        case OPERATOR:
-                            roles.put(Role.OPERATOR.toString(), Boolean.TRUE);
-                        case USER:
-                            roles.put(Role.USER.toString(), Boolean.TRUE);
-                            break;
+                        // Add the role and lower precedent roles to the roles map.
+                        switch(role) {
+                            case ADMIN:
+                                this.roles.put(Role.ADMIN.toString(), Boolean.TRUE);
+                            case OPERATOR:
+                                this.roles.put(Role.OPERATOR.toString(), Boolean.TRUE);
+                            case USER:
+                                this.roles.put(Role.USER.toString(), Boolean.TRUE);
+                                break;
+                        }
+                        break;
                     }
-                    break;
-                }
-                else {
+                    else {
 
-                    // The user is not in the role.
-                    roles.put(role.toString(), Boolean.FALSE);
+                        // The user is not in the role.
+                        this.roles.put(role.toString(), Boolean.FALSE);
+                    }
                 }
             }
-        }
-        catch(Exception e) {
-            this.createMessage("Unable to get the roles.");
+            catch(Exception e) {
+                this.createMessage("Unable to get the roles.");
+            }
         }
 
-        return roles;
+        return this.roles;
     }
 
     /**

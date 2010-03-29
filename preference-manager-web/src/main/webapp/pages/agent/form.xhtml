@@ -65,7 +65,7 @@
                         reRender="agent-form,message-table"/>
                     <a4j:commandButton
                         value="Cancel"
-                        oncomplete="Richfaces.hideModalPanel('agent-modal-panel');"/>
+                        oncomplete="Richfaces.hideModalPanel('agent-form-modal-panel');"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
@@ -74,7 +74,7 @@
                                         Richfaces.showModalPanel('message-modal-panel');
                                     }
                                     else {
-                                        Richfaces.hideModalPanel('agent-modal-panel');
+                                        Richfaces.hideModalPanel('agent-form-modal-panel');
                                     }"
                         reRender="agent-form,agent-table,message-table"/>
                 </div>

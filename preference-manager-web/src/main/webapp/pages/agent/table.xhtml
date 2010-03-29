@@ -14,11 +14,8 @@
             <h:form id="agent-table" rendered="#{setupMB.setupTypes['MANAGER']}">
                 <div class="table-buttons">
                     <a4j:commandButton
-                        value="Refresh"
-                        reRender="agent-table"/>
-                    <a4j:commandButton
                         value="Add"
-                        oncomplete="Richfaces.showModalPanel('agent-modal-panel');"
+                        oncomplete="Richfaces.showModalPanel('agent-form-modal-panel');"
                         reRender="agent-form"
                         rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}"/>
                     <a4j:commandButton
@@ -69,7 +66,7 @@
                                                     Richfaces.showModalPanel('message-modal-panel');
                                                 }
                                                 else {
-                                                    Richfaces.showModalPanel('agent-modal-panel');
+                                                    Richfaces.showModalPanel('agent-form-modal-panel');
                                                 }"
                                     reRender="agent-form,message-table"
                                     rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">

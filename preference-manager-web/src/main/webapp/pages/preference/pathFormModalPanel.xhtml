@@ -12,13 +12,13 @@
     <body>
         <ui:composition>
             <rich:modalPanel
-                id="agent-modal-panel"
-                minWidth="400"
+                id="preference-path-form-modal-panel"
+                minWidth="700"
                 autosized="true"
-                rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
+                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
                 <f:facet name="header">
                     <h:panelGroup>
-                        Agent
+                        Preference
                     </h:panelGroup>
                 </f:facet>
                 <f:facet name="controls">
@@ -26,12 +26,12 @@
                         <h:form>
                             <a4j:commandLink
                                 value="close"
-                                oncomplete="Richfaces.hideModalPanel('agent-modal-panel');"/>
+                                oncomplete="Richfaces.hideModalPanel('preference-path-form-modal-panel');"/>
                         </h:form>
                     </h:panelGroup>
                 </f:facet>
                 <h:panelGrid styleClass="modal-panel-grid">
-                    <ui:include src="/pages/agent/form.xhtml"/>
+                    <ui:include src="/pages/preference/pathForm.xhtml"/>
                 </h:panelGrid>
             </rich:modalPanel>
         </ui:composition>

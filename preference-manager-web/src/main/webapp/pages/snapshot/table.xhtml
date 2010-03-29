@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <h:form id="snapshot-table">
+                <div class="table-buttons">
+                    <a4j:commandButton
+                        value="Create"
+                        oncomplete="Richfaces.showModalPanel('snapshot-form-modal-panel');"
+                        reRender="snapshot-form"
+                        rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}"/>
+                </div>
+                <rich:dataTable
+                    value="#{snapshotMB.snapshotKeys}"
+                    var="name">
+                    <rich:column
+                        id="snapshot-name"
+                        headerClass="table-cell snapshot-table-name-cell"
+                        styleClass="table-cell snapshot-table-name-cell">
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{name}"/>
+                    </rich:column>
+                    <rich:column
+                        id="snapshot-date"
+                        headerClass="table-cell snapshot-table-date-cell"
+                        styleClass="table-cell snapshot-table-date-cell">
+                        <f:facet name="header">
+                            <h:outputText value="Date"/>
+                        </f:facet>
+                        <h:outputText value="#{snapshotMB.snapshots[name]}"/>
+                        <rich:contextMenu
+                            attachTo="snapshot-name,snapshot-date"
+                            submitMode="ajax">
+                            <rich:menuItem
+                                value="Restore"
+                                oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="preference-table,agent-table,message-table"
+                                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
+                                <a4j:actionparam
+                                    name="name"
+                                    assignTo="#{snapshotMB.name}"
+                                    value="#{name}"
+                                    actionListener="#{snapshotMB.processRestoreButton}"/>
+                            </rich:menuItem>
+                            <rich:menuItem
+                                value="Rename"
+                                oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }
+                                            else {
+                                                Richfaces.showModalPanel('snapshot-form-modal-panel');
+                                            }"
+                                reRender="snapshot-form,message-table"
+                                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
+                                <a4j:actionparam
+                                    name="name"
+                                    assignTo="#{snapshotMB.name}"
+                                    value="#{name}"
+                                    actionListener="#{snapshotMB.processRenameButton}"/>
+                            </rich:menuItem>
+                            <rich:menuItem
+                                value="Delete"
+                                oncomplete="if (#{snapshotMB.messageAvailable}) {
+                                                Richfaces.showModalPanel('message-modal-panel');
+                                            }"
+                                reRender="snapshot-table,message-table"
+                                rendered="#{userMB.roles['OPERATOR'] and setupMB.setupTypes['STANDALONE']}">
+                                <a4j:actionparam
+                                    name="name"
+                                    assignTo="#{snapshotMB.name}"
+                                    value="#{name}"
+                                    actionListener="#{snapshotMB.processDeleteButton}"/>
+                            </rich:menuItem>
+                        </rich:contextMenu>
+                    </rich:column>
+                </rich:dataTable>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>

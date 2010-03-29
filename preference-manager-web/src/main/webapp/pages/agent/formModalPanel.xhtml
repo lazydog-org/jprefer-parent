@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head/>
+    <body>
+        <ui:composition>
+            <rich:modalPanel
+                id="agent-form-modal-panel"
+                minWidth="400"
+                autosized="true"
+                rendered="#{userMB.roles['ADMIN'] and setupMB.setupTypes['MANAGER']}">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        Agent
+                    </h:panelGroup>
+                </f:facet>
+                <f:facet name="controls">
+                    <h:panelGroup>
+                        <h:form>
+                            <a4j:commandLink
+                                value="close"
+                                oncomplete="Richfaces.hideModalPanel('agent-form-modal-panel');"/>
+                        </h:form>
+                    </h:panelGroup>
+                </f:facet>
+                <h:panelGrid styleClass="modal-panel-grid">
+                    <ui:include src="/pages/agent/form.xhtml"/>
+                </h:panelGrid>
+            </rich:modalPanel>
+        </ui:composition>
+    </body>
+</html>
+

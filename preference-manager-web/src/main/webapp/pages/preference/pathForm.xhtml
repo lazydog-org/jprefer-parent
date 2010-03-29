@@ -10,42 +10,43 @@
     <head/>
     <body>
         <ui:composition>
-            <h:form id="snapshot-form">
+            <h:form id="preference-path-form">
                 <fieldset>
                     <ol>
                         <li>
-                            <label for="name">Name: </label>
+                            <label for="path">Path: </label>
                             <h:inputText
-                                id="name"
-                                value="#{snapshotMB.name}"
-                                size="30"
-                                maxlength="70"/>
-                            <h:inputHidden value="#{snapshotMB.oldName}"/>
+                                id="path"
+                                value="#{preferencesMB.path}"
+                                size="80"
+                                maxlength="800"/>
+                            <h:inputHidden value="#{preferencesMB.oldPath}"/>
+                            <h:inputHidden value="#{preferencesMB.actionType}"/>
                         </li>
                     </ol>
                 </fieldset>
                 <div class="form-buttons">
                     <a4j:commandButton
                         value="Reset"
-                        actionListener="#{snapshotMB.processResetButton}"
-                        oncomplete="if (#{snapshotMB.messageAvailable}) {
+                        actionListener="#{preferencesMB.processResetButton}"
+                        oncomplete="if (#{preferencesMB.messageAvailable}) {
                                         Richfaces.showModalPanel('message-modal-panel');
                                     }"
-                        reRender="snapshot-form,message-table"/>
+                        reRender="preference-path-form,message-table"/>
                     <a4j:commandButton
                         value="Cancel"
-                        oncomplete="Richfaces.hideModalPanel('snapshot-form-modal-panel');"/>
+                        oncomplete="Richfaces.hideModalPanel('preference-path-form-modal-panel');"/>
                     <rich:spacer width="20"/>
                     <a4j:commandButton
                         value="OK"
-                        actionListener="#{snapshotMB.processOkButton}"
-                        oncomplete="if (#{snapshotMB.messageAvailable}) {
+                        actionListener="#{preferencesMB.processOkButton}"
+                        oncomplete="if (#{preferencesMB.messageAvailable}) {
                                         Richfaces.showModalPanel('message-modal-panel');
                                     }
                                     else {
-                                        Richfaces.hideModalPanel('snapshot-form-modal-panel');
+                                        Richfaces.hideModalPanel('preference-path-form-modal-panel');
                                     }"
-                        reRender="snapshot-form,snapshot-table,message-table"/>
+                        reRender="preference-path-form,preference-table,agent-table,message-table"/>
                 </div>
             </h:form>
         </ui:composition>
