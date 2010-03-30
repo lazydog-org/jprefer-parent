@@ -30,7 +30,8 @@
                 <div id="agent-data-table">
                     <rich:dataTable
                         value="#{agentMB.agents}"
-                        var="agent">
+                        var="agent"
+                        rendered="#{!empty agentMB.agents}">
                         <rich:column
                             id="agent-server-name"
                             headerClass="table-cell agent-table-server-name-cell"
@@ -131,7 +132,12 @@
                             </rich:contextMenu>
                         </rich:column>
                     </rich:dataTable>
+                    <h:panelGrid rendered="#{empty agentMB.agents}">
+                        There are no agents configured.
+                    </h:panelGrid>
                 </div>
+                <!-- Needed due to a bug in IE6 that causes context menu to be partially shown. -->
+                <rich:spacer height="60px"/>
             </h:form>
         </ui:composition>
     </body>

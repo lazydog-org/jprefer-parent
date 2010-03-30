@@ -38,7 +38,8 @@
                 </div>
                 <div id="preference-data-table">
                     <rich:tree
-                        switchType="ajax">
+                        switchType="ajax"
+                        rendered="#{!empty preferenceTreeMB.preferencesTrees}">
                         <rich:recursiveTreeNodesAdaptor
                             roots="#{preferenceTreeMB.preferencesTrees}"
                             var="preferenceGroup"
@@ -170,6 +171,9 @@
                             </rich:treeNode>
                         </rich:recursiveTreeNodesAdaptor>
                     </rich:tree>
+                    <h:panelGrid rendered="#{empty preferenceTreeMB.preferencesTrees}">
+                        There are no preferences configured.
+                    </h:panelGrid>
                 </div>
             </h:form>
         </ui:composition>
