@@ -55,7 +55,7 @@
         <module>jprefer-synchronize</module>
         <module>jprefer-configuration</module>
         <module>jprefer-snapshot</module>
-        <module>jprefer</module>
+        <module>jprefer-manager</module>
         <module>jprefer-agent</module>
         <module>jprefer-web</module>
         <module>jprefer-glassfish-server</module>
