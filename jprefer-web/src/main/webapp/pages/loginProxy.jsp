@@ -17,7 +17,7 @@
     GNU Lesser General Public License for more details.
 
     You should have received a copy of the GNU Lesser General Public License
-    along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
+    along with JPrefer.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <body onload="document.forms[0].submit()">
     <form method="post" action="j_security_check">

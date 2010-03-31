@@ -8,40 +8,41 @@
 
     <managed-bean>
         <managed-bean-name>agentMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.AgentMB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.lazydog.jprefer.web.managedbean.AgentMB</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>importExportMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.ImportExportMB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.lazydog.jprefer.web.managedbean.ImportExportMB</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>preferenceMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.PreferenceMB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.lazydog.jprefer.web.managedbean.PreferenceMB</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>preferenceTreeMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.PreferenceTreeMB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.lazydog.jprefer.web.managedbean.PreferenceTreeMB</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>setupMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.SetupMB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.lazydog.jprefer.web.managedbean.SetupMB</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>snapshotMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.SnapshotMB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.lazydog.jprefer.web.managedbean.SnapshotMB</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>userMB</managed-bean-name>
-        <managed-bean-class>org.lazydog.preference.manager.web.managedbean.UserMB</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.lazydog.jprefer.web.managedbean.UserMB</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
 </faces-config>
+
 
 
 
