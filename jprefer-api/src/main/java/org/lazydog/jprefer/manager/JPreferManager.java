@@ -18,7 +18,6 @@
  */
 package org.lazydog.jprefer.manager;
 
-import org.lazydog.jprefer.ServiceException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,7 @@ import org.lazydog.jprefer.model.Agent;
 import org.lazydog.jprefer.model.Preference;
 import org.lazydog.jprefer.model.PreferencesTree;
 import org.lazydog.jprefer.model.SetupType;
+import org.lazydog.jprefer.ServiceException;
 
 
 /**

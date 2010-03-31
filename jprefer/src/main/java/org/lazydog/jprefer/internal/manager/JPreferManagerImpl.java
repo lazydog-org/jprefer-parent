@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.DecoderException;
+import org.lazydog.jprefer.manager.JPreferManager;
 import org.lazydog.jprefer.model.Agent;
 import org.lazydog.jprefer.model.AgentStatus;
 import org.lazydog.jprefer.model.Preference;
 import org.lazydog.jprefer.model.PreferencesTree;
 import org.lazydog.jprefer.model.SetupType;
-import org.lazydog.jprefer.manager.JPreferManager;
 import org.lazydog.jprefer.ServiceException;
 import org.lazydog.jprefer.spi.configuration.ConfigurationService;
 import org.lazydog.jprefer.spi.configuration.ConfigurationServiceFactory;
@@ -46,7 +46,6 @@ import org.lazydog.jprefer.utility.MBeanUtility;
 import org.lazydog.jprefer.utility.MBeanUtilityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 
 /**

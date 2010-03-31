@@ -20,12 +20,12 @@ package org.lazydog.jprefer.agent.contextlistener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.lazydog.jprefer.model.SetupType;
 import org.lazydog.jprefer.manager.JPreferManager;
 import org.lazydog.jprefer.manager.JPreferManagerFactory;
-import org.lazydog.jprefer.utility.MBeanUtility;
+import org.lazydog.jprefer.model.SetupType;
 import org.lazydog.jprefer.spi.synchronize.AgentSynchronizeService;
 import org.lazydog.jprefer.spi.synchronize.AgentSynchronizeServiceFactory;
+import org.lazydog.jprefer.utility.MBeanUtility;
 
 
 /**
