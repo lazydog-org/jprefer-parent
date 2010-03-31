@@ -36,7 +36,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = PortValidator.class)
 public @interface Port {
 
-    String message() default "{org.lazydog.preference.manager.validation.constraints.Port}";
+    String message() default "{org.lazydog.jprefer.validation.constraints.Port}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

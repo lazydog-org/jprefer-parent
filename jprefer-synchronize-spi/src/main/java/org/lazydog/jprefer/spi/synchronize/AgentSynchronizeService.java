@@ -29,5 +29,5 @@ import javax.management.MXBean;
 @MXBean
 public interface AgentSynchronizeService extends SynchronizeService {
 
-    public static final String OBJECT_NAME = "org.lazydog.preference.manager:type=SynchronizeService";
+    public static final String OBJECT_NAME = "org.lazydog.jprefer:type=SynchronizeService";
 }

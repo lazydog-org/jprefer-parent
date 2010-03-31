@@ -30,7 +30,7 @@ CLASSPATH=$CLASSPATH:$LIBDIR/jetty-util.jar
 CLASSPATH=$CLASSPATH:$LIBDIR/jetty-xml.jar
 CLASSPATH=$CLASSPATH:$LIBDIR/jsp-api-2.1-glassfish.jar
 CLASSPATH=$CLASSPATH:$LIBDIR/servlet-api.jar
-MAINCLASS=org.lazydog.preference.manager.server.EmbeddedServer
+MAINCLASS=org.lazydog.jprefer.server.EmbeddedServer
 SERVER="$JAVA_HOME/bin/java -classpath $CLASSPATH -Dconfig=$CONFIGFILE $MAINCLASS"
 
 if [ ! -d $LOGDIR ] ; then

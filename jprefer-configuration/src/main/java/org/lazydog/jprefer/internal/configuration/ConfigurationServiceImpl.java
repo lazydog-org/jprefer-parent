@@ -41,7 +41,7 @@ public final class ConfigurationServiceImpl implements ConfigurationService {
     private static final String AGENT_KEY_REGEX = AGENT_KEY_PREFIX + "\\d+";
     private static final String AGENT_VALUE_REGEX = "(.*),(\\d*),(.*),(.*),(.*)";
     private static final String AGENT_VALUE_SEPARATOR = ",";
-    private static final String CONFIGURATION_PATH = "org/lazydog/preference/manager/configuration";
+    private static final String CONFIGURATION_PATH = "org/lazydog/jprefer/configuration";
     private static final String SEQUENCE_KEY = "sequence";
     private static final int START_SEQUENCE = 1;
     private static final String SETUP_TYPE_KEY = "setup.type";

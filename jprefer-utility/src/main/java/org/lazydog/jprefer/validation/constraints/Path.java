@@ -36,7 +36,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = PathValidator.class)
 public @interface Path {
 
-    String message() default "{org.lazydog.preference.manager.validation.constraints.Path}";
+    String message() default "{org.lazydog.jprefer.validation.constraints.Path}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -42,7 +42,7 @@ public final class SnapshotServiceImpl implements SnapshotService {
     private static final String RESTORE_DATE_KEY = "restore.date";
     private static final String ROOT_PATH = "/";
     private static final String SNAPSHOT_NAME_PREFIX = "snapshot-";
-    private static final String SNAPSHOTS_PATH = "org/lazydog/preference/manager/snapshots";
+    private static final String SNAPSHOTS_PATH = "org/lazydog/jprefer/snapshots";
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
     private static final Preferences snapshotSystem = Preferences.userRoot().node(SNAPSHOTS_PATH);
     private static final Preferences sourceSystem = Preferences.systemRoot();

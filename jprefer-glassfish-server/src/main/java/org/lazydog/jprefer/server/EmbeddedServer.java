@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with JPrefer.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.server;
+package org.lazydog.jprefer.server;
 
 import java.io.File;
 import java.util.HashMap;
