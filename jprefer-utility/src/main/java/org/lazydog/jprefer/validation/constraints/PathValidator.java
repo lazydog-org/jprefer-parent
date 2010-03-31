@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.validation.constraints;
+package org.lazydog.jprefer.validation.constraints;
 
 import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;

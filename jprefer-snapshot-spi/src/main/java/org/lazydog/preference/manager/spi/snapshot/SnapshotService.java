@@ -20,7 +20,7 @@ package org.lazydog.preference.manager.spi.snapshot;
 
 import java.util.Date;
 import java.util.Map;
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.ServiceException;
 
 
 /**

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.internal;
+package org.lazydog.jprefer.internal.manager;
 
 import java.util.Date;
 import java.util.Hashtable;
@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.DecoderException;
-import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.manager.model.AgentStatus;
-import org.lazydog.preference.manager.model.Preference;
-import org.lazydog.preference.manager.model.PreferencesTree;
-import org.lazydog.preference.manager.model.SetupType;
-import org.lazydog.preference.manager.PreferenceManager;
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.model.Agent;
+import org.lazydog.jprefer.model.AgentStatus;
+import org.lazydog.jprefer.model.Preference;
+import org.lazydog.jprefer.model.PreferencesTree;
+import org.lazydog.jprefer.model.SetupType;
+import org.lazydog.jprefer.manager.JPreferManager;
+import org.lazydog.jprefer.ServiceException;
 import org.lazydog.preference.manager.spi.configuration.ConfigurationService;
 import org.lazydog.preference.manager.spi.configuration.ConfigurationServiceFactory;
 import org.lazydog.preference.manager.spi.preference.PreferenceService;
@@ -42,21 +42,21 @@ import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeServiceFac
 import org.lazydog.preference.manager.spi.synchronize.RemoteSynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
-import org.lazydog.preference.manager.utility.MBeanUtility;
-import org.lazydog.preference.manager.utility.MBeanUtilityException;
+import org.lazydog.jprefer.utility.MBeanUtility;
+import org.lazydog.jprefer.utility.MBeanUtilityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 
 /**
- * Preference manager implementation.
+ * JPrefer manager implementation.
  *
  * @author  Ron Rickard
  */
-public class PreferenceManagerImpl implements PreferenceManager {
+public class JPreferManagerImpl implements JPreferManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(PreferenceManagerImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(JPreferManagerImpl.class);
     private static final ConfigurationService configurationService
             = ConfigurationServiceFactory.create();
     private static final PreferenceService preferenceService

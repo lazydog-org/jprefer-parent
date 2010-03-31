@@ -16,27 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.validation.constraints;
+package org.lazydog.jprefer.model;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import java.io.Serializable;
 
 
 /**
- * Path constraint.
+ * Setup type ordered by precendence.
  *
  * @author  Ron Rickard
  */
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PathValidator.class)
-public @interface Path {
+public enum SetupType implements Serializable {
+    MANAGER,
+    STANDALONE,
+    AGENT,
+    UNKNOWN;
+};
 
-    String message() default "{org.lazydog.preference.manager.validation.constraints.Path}";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
-}

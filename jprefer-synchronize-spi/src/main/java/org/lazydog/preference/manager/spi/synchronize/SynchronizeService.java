@@ -18,7 +18,7 @@
  */
 package org.lazydog.preference.manager.spi.synchronize;
 
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.ServiceException;
 
 
 /**

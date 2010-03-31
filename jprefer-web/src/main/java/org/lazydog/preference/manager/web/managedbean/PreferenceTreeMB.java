@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.model.Preference;
-import org.lazydog.preference.manager.model.PreferencesTree;
+import org.lazydog.jprefer.model.Preference;
+import org.lazydog.jprefer.model.PreferencesTree;
 
 
 /**

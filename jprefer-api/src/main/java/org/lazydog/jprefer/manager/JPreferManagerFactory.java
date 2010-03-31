@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager;
+package org.lazydog.jprefer.manager;
 
 import java.util.ServiceLoader;
 
 
 /**
- * Snapshot service factory.
+ * JPrefer manager factory.
  * 
  * @author  Ron Rickard
  */
-public final class PreferenceManagerFactory {
+public final class JPreferManagerFactory {
 
     /**
      * Create the service.
@@ -68,11 +68,11 @@ public final class PreferenceManagerFactory {
     }
 
     /**
-     * Create the snapshot service.
+     * Create the JPrefer manager.
      *
-     * @return  the snapshot service.
+     * @return  the JPrefer manager.
      */
-    public static PreferenceManager create() {
-        return PreferenceManagerFactory.create(PreferenceManager.class);
+    public static JPreferManager create() {
+        return JPreferManagerFactory.create(JPreferManager.class);
     }
 }

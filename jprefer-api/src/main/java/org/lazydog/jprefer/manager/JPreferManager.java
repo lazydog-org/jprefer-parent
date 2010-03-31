@@ -16,23 +16,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager;
+package org.lazydog.jprefer.manager;
 
+import org.lazydog.jprefer.ServiceException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.manager.model.Preference;
-import org.lazydog.preference.manager.model.PreferencesTree;
-import org.lazydog.preference.manager.model.SetupType;
+import org.lazydog.jprefer.model.Agent;
+import org.lazydog.jprefer.model.Preference;
+import org.lazydog.jprefer.model.PreferencesTree;
+import org.lazydog.jprefer.model.SetupType;
 
 
 /**
- * Preference manager.
+ * JPrefer manager.
  *
  * @author  Ron Rickard
  */
-public interface PreferenceManager {
+public interface JPreferManager {
 
     /**
      * Clear the configuration.

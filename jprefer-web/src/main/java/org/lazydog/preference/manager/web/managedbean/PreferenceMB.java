@@ -21,7 +21,7 @@ package org.lazydog.preference.manager.web.managedbean;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.model.Preference;
+import org.lazydog.jprefer.model.Preference;
 
 
 /**

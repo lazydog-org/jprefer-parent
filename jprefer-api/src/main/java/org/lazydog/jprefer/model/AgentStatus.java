@@ -16,27 +16,35 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.validation.constraints;
+package org.lazydog.jprefer.model;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import java.io.Serializable;
 
 
 /**
- * Port constraint.
+ * Agent status.
  *
  * @author  Ron Rickard
  */
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PortValidator.class)
-public @interface Port {
+public enum AgentStatus implements Serializable {
+    DOWN          ("Down"),
+    UP_SYNCED     ("Up, Sync'd"),
+    UP_NOT_SYNCED ("Up, Not Sync'd");
 
-    String message() default "{org.lazydog.preference.manager.validation.constraints.Port}";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
-}
+    private String toString;
+
+    AgentStatus(String toString) {
+        this.toString = toString;
+    }
+
+    /**
+     * The status as a String.
+     *
+     * @return  the status as a String.
+     */
+    @Override
+    public String toString() {
+        return this.toString;
+    }
+};
+

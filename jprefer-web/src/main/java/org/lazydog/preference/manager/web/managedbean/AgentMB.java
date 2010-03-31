@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
-import org.lazydog.preference.manager.model.Agent;
+import org.lazydog.jprefer.model.Agent;
 
 
 /**

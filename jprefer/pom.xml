@@ -29,7 +29,7 @@
     </parent>
     <artifactId>jprefer</artifactId>
     <packaging>jar</packaging>
-    <name>JPrefer</name>
+    <name>JPrefer Manager</name>
     <dependencies>
         <dependency>
             <groupId>commons-codec</groupId>

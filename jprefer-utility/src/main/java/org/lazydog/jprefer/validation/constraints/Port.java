@@ -16,20 +16,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.model;
+package org.lazydog.jprefer.validation.constraints;
 
-import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
 
 /**
- * Setup type ordered by precendence.
+ * Port constraint.
  *
  * @author  Ron Rickard
  */
-public enum SetupType implements Serializable {
-    MANAGER,
-    STANDALONE,
-    AGENT,
-    UNKNOWN;
-};
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = PortValidator.class)
+public @interface Port {
 
+    String message() default "{org.lazydog.preference.manager.validation.constraints.Port}";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}

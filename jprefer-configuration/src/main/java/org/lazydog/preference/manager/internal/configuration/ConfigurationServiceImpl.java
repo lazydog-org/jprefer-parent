@@ -24,9 +24,9 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.manager.model.SetupType;
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.model.Agent;
+import org.lazydog.jprefer.model.SetupType;
+import org.lazydog.jprefer.ServiceException;
 import org.lazydog.preference.manager.spi.configuration.ConfigurationService;
 
 

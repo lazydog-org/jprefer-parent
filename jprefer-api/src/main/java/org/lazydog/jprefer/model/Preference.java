@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.model;
+package org.lazydog.jprefer.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import org.lazydog.preference.manager.validation.constraints.Path;
+import org.lazydog.jprefer.validation.constraints.Path;
 
 
 /**

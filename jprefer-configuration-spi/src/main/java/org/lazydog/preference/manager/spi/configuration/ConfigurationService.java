@@ -19,9 +19,9 @@
 package org.lazydog.preference.manager.spi.configuration;
 
 import java.util.List;
-import org.lazydog.preference.manager.model.Agent;
-import org.lazydog.preference.manager.model.SetupType;
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.model.Agent;
+import org.lazydog.jprefer.model.SetupType;
+import org.lazydog.jprefer.ServiceException;
 
 
 /**

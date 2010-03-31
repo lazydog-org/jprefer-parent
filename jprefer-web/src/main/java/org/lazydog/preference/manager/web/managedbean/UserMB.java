@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
-import org.lazydog.preference.manager.model.Role;
-import org.lazydog.preference.manager.model.SetupType;
+import org.lazydog.jprefer.model.Role;
+import org.lazydog.jprefer.model.SetupType;
 
 
 /**

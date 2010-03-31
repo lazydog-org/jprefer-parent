@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import org.lazydog.preference.manager.model.SetupType;
+import org.lazydog.jprefer.model.SetupType;
 
 
 /**

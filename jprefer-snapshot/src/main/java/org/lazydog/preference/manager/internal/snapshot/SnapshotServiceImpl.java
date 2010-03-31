@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.ServiceException;
 import org.lazydog.preference.manager.spi.snapshot.SnapshotService;
 
 

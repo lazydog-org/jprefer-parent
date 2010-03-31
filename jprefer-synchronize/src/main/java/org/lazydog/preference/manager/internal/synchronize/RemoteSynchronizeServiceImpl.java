@@ -28,7 +28,7 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.ServiceException;
 import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.RemoteSynchronizeService;
 

@@ -18,7 +18,7 @@
  */
 package org.lazydog.preference.manager.internal.synchronize;
 
-import org.lazydog.preference.manager.ServiceException;
+import org.lazydog.jprefer.ServiceException;
 import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeService;
 import org.lazydog.preference.manager.spi.synchronize.SynchronizeServiceFactory;
