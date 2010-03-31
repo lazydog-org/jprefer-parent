@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Preference Manager.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.lazydog.preference.manager.agent.contextlistener;
+package org.lazydog.jprefer.agent.contextlistener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

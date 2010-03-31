@@ -22,9 +22,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Preference Manager Agent</title>
+        <title>JPrefer Agent</title>
     </head>
     <body>
-        Preference Manager Agent running...
+        JPrefer Agent running...
     </body>
 </html>
