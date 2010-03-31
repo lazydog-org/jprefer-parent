@@ -58,11 +58,11 @@ public abstract class AbstractMB {
     }
 
     /**
-     * Get the preference manager.
+     * Get the JPrefer manager.
      * 
-     * @return  the preference manager.
+     * @return  the JPrefer manager.
      */
-    public JPreferManager getPreferenceManager() {
+    public JPreferManager getJPreferManager() {
         return JPreferManagerFactory.create();
     }
 

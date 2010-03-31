@@ -106,7 +106,7 @@ public class EmbeddedServer {
         EmbeddedServer server;
 
         environment = new HashMap<String,String>();
-        environment.put("install.root", "C:\\Temp\\preferencemanager\\embeddedserver");
+        environment.put("install.root", "C:\\Temp\\jprefer\\embeddedserver");
         environment.put("port", "8085");
         environment.put("agent.war", "C:\\Temp\\preference-manager-agent-1.0-SNAPSHOT.war");
         environment.put("gui.war", "C:\\Temp\\preference-manager-web-1.0-SNAPSHOT.war");

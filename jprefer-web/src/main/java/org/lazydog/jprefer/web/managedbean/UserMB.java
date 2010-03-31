@@ -223,7 +223,7 @@ public class UserMB extends AbstractMB implements Serializable {
         try {
 
             // Check if there is no setup.
-            if (getPreferenceManager().getSetupType() == SetupType.UNKNOWN) {
+            if (getJPreferManager().getSetupType() == SetupType.UNKNOWN) {
 
                 // Set the outcome to no setup.
                 outcome = NO_SETUP;

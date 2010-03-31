@@ -53,7 +53,7 @@ public class SetupMB extends AbstractMB implements Serializable {
         try {
 
             // Save the setup type.
-            getPreferenceManager().saveSetupType(SetupType.valueOf(this.type));
+            getJPreferManager().saveSetupType(SetupType.valueOf(this.type));
 
             // Set the outcome to success.
             outcome = SUCCESS;
@@ -90,7 +90,7 @@ public class SetupMB extends AbstractMB implements Serializable {
         try {
 
                 // Check if the setup is the agent setup type.
-                if (getPreferenceManager().getSetupType() == SetupType.AGENT) {
+                if (getJPreferManager().getSetupType() == SetupType.AGENT) {
                     agentSetupType = Boolean.TRUE;
                 }
         }
@@ -120,7 +120,7 @@ public class SetupMB extends AbstractMB implements Serializable {
             for (SetupType setupType : SetupType.values()) {
 
                 // Check if the setup is the setup type.
-                if (getPreferenceManager().getSetupType() == setupType) {
+                if (getJPreferManager().getSetupType() == setupType) {
 
                     // Add the role and lower precedent roles to the roles map.
                     switch(setupType) {
@@ -174,7 +174,7 @@ public class SetupMB extends AbstractMB implements Serializable {
         try {
 
             // Clear the configuration.
-            getPreferenceManager().clearConfiguration();
+            getJPreferManager().clearConfiguration();
 
             // Set the outcome to success.
             outcome = SUCCESS;

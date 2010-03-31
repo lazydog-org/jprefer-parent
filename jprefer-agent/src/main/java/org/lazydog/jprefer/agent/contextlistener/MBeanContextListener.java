@@ -35,7 +35,7 @@ import org.lazydog.jprefer.spi.synchronize.AgentSynchronizeServiceFactory;
  */
 public class MBeanContextListener implements ServletContextListener {
 
-    private static final JPreferManager preferenceManager
+    private static final JPreferManager jPreferManager
             = JPreferManagerFactory.create();
 
     /**
@@ -49,7 +49,7 @@ public class MBeanContextListener implements ServletContextListener {
         try {
 
             // Check if this is an agent setup.
-            if (preferenceManager.getSetupType() == SetupType.AGENT) {
+            if (jPreferManager.getSetupType() == SetupType.AGENT) {
 
                 // Unregister the MBean.
                 MBeanUtility.unregister(AgentSynchronizeService.OBJECT_NAME);
@@ -71,7 +71,7 @@ public class MBeanContextListener implements ServletContextListener {
         try {
 
             // Check if this is an agent setup.
-            if (preferenceManager.getSetupType() == SetupType.AGENT) {
+            if (jPreferManager.getSetupType() == SetupType.AGENT) {
 
                 // Register the MBean.
                 MBeanUtility.register(AgentSynchronizeService.OBJECT_NAME,

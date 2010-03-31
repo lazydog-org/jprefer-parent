@@ -54,7 +54,7 @@ public class ImportExportMB extends AbstractMB implements Serializable {
             ServletOutputStream output;
 
             // Export the document.
-            document = getPreferenceManager().exportDocument();
+            document = getJPreferManager().exportDocument();
 
             // Set the response headers.
             context = FacesContext.getCurrentInstance();
@@ -93,7 +93,7 @@ public class ImportExportMB extends AbstractMB implements Serializable {
             document = readFileAsString(uploadItem.getFile().getAbsolutePath());
 
             // Import the document.
-            getPreferenceManager().importDocument(document);
+            getJPreferManager().importDocument(document);
         }
         catch(Exception e) {
             e.printStackTrace();

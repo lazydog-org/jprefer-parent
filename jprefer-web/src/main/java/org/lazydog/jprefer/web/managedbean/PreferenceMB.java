@@ -85,7 +85,7 @@ public class PreferenceMB extends AbstractMB implements Serializable {
         try {
 
             // Remove the preference.
-            getPreferenceManager().removePreference(
+            getJPreferManager().removePreference(
                     this.preference.getPath(), this.preference.getKey());
         }
         catch(Exception e) {
@@ -127,12 +127,12 @@ public class PreferenceMB extends AbstractMB implements Serializable {
                 if (this.oldKey != null && !this.oldKey.equals("")) {
 
                     // Remove the old preference.
-                    getPreferenceManager().removePreference(
+                    getJPreferManager().removePreference(
                             this.preference.getPath(), this.oldKey);
                 }
 
                 // Add the new preference.
-                getPreferenceManager().savePreference(this.preference);
+                getJPreferManager().savePreference(this.preference);
             }
             else {
 

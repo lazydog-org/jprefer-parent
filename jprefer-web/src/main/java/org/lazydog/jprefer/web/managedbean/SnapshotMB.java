@@ -72,7 +72,7 @@ public class SnapshotMB extends AbstractMB implements Serializable {
         try {
 
             // Get the snapshots.
-            snapshots = getPreferenceManager().getSnapshots();
+            snapshots = getJPreferManager().getSnapshots();
         }
         catch(Exception e) {
             this.createMessage("Unable to get the snapshots.");
@@ -120,7 +120,7 @@ public class SnapshotMB extends AbstractMB implements Serializable {
         try {
 
             // Remove the snapshot.
-            getPreferenceManager().removeSnapshot(this.name);
+            getJPreferManager().removeSnapshot(this.name);
         }
         catch(Exception e) {
             this.createMessage("Unable to delete the snapshot.");
@@ -143,12 +143,12 @@ public class SnapshotMB extends AbstractMB implements Serializable {
                 if (this.oldName != null && !this.oldName.equals("")) {
 
                     // Rename the snapshot.
-                    getPreferenceManager().renameSnapshot(oldName, name);
+                    getJPreferManager().renameSnapshot(oldName, name);
                 }
                 else {
 
                     // Create the snapshot.
-                    getPreferenceManager().createSnapshot(this.name);
+                    getJPreferManager().createSnapshot(this.name);
                 }
             }
             else {
@@ -211,7 +211,7 @@ public class SnapshotMB extends AbstractMB implements Serializable {
         try {
 
             // Restore the snapshot.
-            getPreferenceManager().restoreSnapshot(this.name);
+            getJPreferManager().restoreSnapshot(this.name);
         }
         catch(Exception e) {
             this.createMessage("Unable to restore the snapshot.");

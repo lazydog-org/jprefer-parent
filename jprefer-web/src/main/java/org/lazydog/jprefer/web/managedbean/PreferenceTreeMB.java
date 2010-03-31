@@ -86,7 +86,7 @@ public class PreferenceTreeMB extends AbstractMB implements Serializable {
         try {
 
             // Get the children of the preferences tree.
-            preferencesTrees = getPreferenceManager()
+            preferencesTrees = getJPreferManager()
                     .getPreferencesTree().getChildren();
         }
         catch(Exception e) {
@@ -139,7 +139,7 @@ public class PreferenceTreeMB extends AbstractMB implements Serializable {
         try {
 
             // Remove the preference path.
-            getPreferenceManager().removePreferencePath(this.path);
+            getJPreferManager().removePreferencePath(this.path);
         }
         catch(Exception e) {
             this.createMessage("Unable to delete the preference path.");
@@ -182,7 +182,7 @@ public class PreferenceTreeMB extends AbstractMB implements Serializable {
                 if (ActionType.valueOf(this.actionType) == ActionType.ADD) {
 
                     // Add the preference path.
-                    getPreferenceManager().savePreferencePath(this.path);
+                    getJPreferManager().savePreferencePath(this.path);
                 }
 
                 // Check if the path starts with the old path.
@@ -192,14 +192,14 @@ public class PreferenceTreeMB extends AbstractMB implements Serializable {
                     if (ActionType.valueOf(this.actionType) == ActionType.COPY) {
 
                         // Copy the preference path.
-                        getPreferenceManager().copyPreferencePath(this.oldPath, this.path);
+                        getJPreferManager().copyPreferencePath(this.oldPath, this.path);
                     }
 
                     // Check if the action type is move.
                     else if (ActionType.valueOf(this.actionType) == ActionType.MOVE) {
 
                         // Move the preference path.
-                        getPreferenceManager().movePreferencePath(this.oldPath, this.path);
+                        getJPreferManager().movePreferencePath(this.oldPath, this.path);
                     }
                 }
                 else {
