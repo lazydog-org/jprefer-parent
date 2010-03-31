@@ -283,47 +283,58 @@ public class EmbeddedServer {
 
         // Declare.
         Properties env;
-        int monitorPort;
 
         // Get the environment.
         env = getEnv(System.getProperty(CONFIG_PROPERTY));
-        monitorPort = Integer.parseInt(env.getProperty(MONITOR_PORT_PROPERTY));
 
-        // Check if the 'start' argument was specified.
-        if (args[0].equals("start")) {
+        // Check if the environment exists.
+        if (env != null) {
 
             // Declare.
-            EmbeddedServer server;
-            Thread monitor;
+            int monitorPort;
 
-            // Initialize the embedded server.
-            server = new EmbeddedServer();
+            // Get the monitor port.
+            monitorPort = Integer.parseInt(env.getProperty(MONITOR_PORT_PROPERTY));
 
-            // Star the monitor.
-            monitor = new MonitorThread(monitorPort, server);
-            monitor.start();
+            // Check if the 'start' argument was specified.
+            if (args[0].equals("start")) {
 
-            // Start the server.
-            server.start(env);
+                // Declare.
+                EmbeddedServer server;
+                Thread monitor;
+
+                // Initialize the embedded server.
+                server = new EmbeddedServer();
+
+                // Star the monitor.
+                monitor = new MonitorThread(monitorPort, server);
+                monitor.start();
+
+                // Start the server.
+                server.start(env);
+            }
+
+            // Check if the 'stop' argument was specified.
+            else if (args[0].equals("stop")) {
+
+                // Declare.
+                OutputStream out;
+                Socket socket;
+
+                // Connect to the monitor port.
+                socket = new Socket(InetAddress.getByName("127.0.0.1"), monitorPort);
+
+                // Write data to the monitor port.
+                out = socket.getOutputStream();
+                out.write(("\r\n").getBytes());
+                out.flush();
+
+                // Close the connection.
+                socket.close();
+            }
         }
-
-        // Check if the 'stop' argument was specified.
-        else if (args[0].equals("stop")) {
-
-            // Declare.
-            OutputStream out;
-            Socket socket;
-
-            // Connect to the monitor port.
-            socket = new Socket(InetAddress.getByName("127.0.0.1"), monitorPort);
-
-            // Write data to the monitor port.
-            out = socket.getOutputStream();
-            out.write(("\r\n").getBytes());
-            out.flush();
-
-            // Close the connection.
-            socket.close();
+        else {
+            System.out.println("No environment set.");
         }
     }
 
