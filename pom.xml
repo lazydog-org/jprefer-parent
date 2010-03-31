@@ -2,14 +2,14 @@
 <!--
     Copyright 2009, 2010 lazydog.org.
 
-    This file is part of Preference Manager.
+    This file is part of JPrefer.
 
-    Preference Manager is free software: you can redistribute it and/or modify
+    JPrefer is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Preference Manager is distributed in the hope that it will be useful,
+    JPrefer is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Lesser General Public License for more details.
@@ -22,11 +22,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.lazydog.preference.manager</groupId>
-    <artifactId>preference-manager-parent</artifactId>
+    <groupId>org.lazydog.jprefer</groupId>
+    <artifactId>jprefer-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>Preference Manager Parent</name>
+    <name>JPrefer Parent</name>
     <properties>
         <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,23 +45,21 @@
         </plugins>
     </build>
     <modules>
-        <module>preference-manager-utility</module>
-        <module>preference-manager-api</module>
-        <module>preference-manager-preference-spi</module>
-        <module>preference-manager-synchronize-spi</module>
-        <module>preference-manager-configuration-spi</module>
-        <module>preference-manager-snapshot-spi</module>
-        <module>preference-manager-preference</module>
-        <module>preference-manager-synchronize</module>
-        <module>preference-manager-configuration</module>
-        <module>preference-manager-snapshot</module>
-        <module>preference-manager</module>
-        <module>preference-manager-agent</module>
-        <module>preference-manager-ear</module>
-        <module>preference-manager-web</module>
-        <module>preference-manager-web-ear</module>
-        <module>preference-manager-glassfish-server</module>
-        <module>preference-manager-jetty-server</module>
+        <module>jprefer-utility</module>
+        <module>jprefer-api</module>
+        <module>jprefer-preference-spi</module>
+        <module>jprefer-synchronize-spi</module>
+        <module>jprefer-configuration-spi</module>
+        <module>jprefer-snapshot-spi</module>
+        <module>jprefer-preference</module>
+        <module>jprefer-synchronize</module>
+        <module>jprefer-configuration</module>
+        <module>jprefer-snapshot</module>
+        <module>jprefer</module>
+        <module>jprefer-agent</module>
+        <module>jprefer-web</module>
+        <module>jprefer-glassfish-server</module>
+        <module>jprefer-jetty-server</module>
     </modules>
     <repositories>
         <repository>

@@ -2,14 +2,14 @@
 <!--
     Copyright 2009, 2010 lazydog.org.
 
-    This file is part of Preference Manager.
+    This file is part of JPrefer.
 
-    Preference Manager is free software: you can redistribute it and/or modify
+    JPrefer is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Preference Manager is distributed in the hope that it will be useful,
+    JPrefer is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Lesser General Public License for more details.
@@ -23,13 +23,13 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.lazydog.preference.manager</groupId>
-        <artifactId>preference-manager-parent</artifactId>
+        <groupId>org.lazydog.jprefer</groupId>
+        <artifactId>jprefer-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>preference-manager</artifactId>
+    <artifactId>jprefer</artifactId>
     <packaging>jar</packaging>
-    <name>Preference Manager</name>
+    <name>JPrefer</name>
     <dependencies>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -53,52 +53,52 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-api</artifactId>
+            <artifactId>jprefer-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-configuration</artifactId>
+            <artifactId>jprefer-configuration</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-configuration-spi</artifactId>
+            <artifactId>jprefer-configuration-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-preference</artifactId>
+            <artifactId>jprefer-preference</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-preference-spi</artifactId>
+            <artifactId>jprefer-preference-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-snapshot</artifactId>
+            <artifactId>jprefer-snapshot</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-snapshot-spi</artifactId>
+            <artifactId>jprefer-snapshot-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-synchronize</artifactId>
+            <artifactId>jprefer-synchronize</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-synchronize-spi</artifactId>
+            <artifactId>jprefer-synchronize-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-utility</artifactId>
+            <artifactId>jprefer-utility</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

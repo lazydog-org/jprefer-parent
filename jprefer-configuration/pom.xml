@@ -2,14 +2,14 @@
 <!--
     Copyright 2009, 2010 lazydog.org.
 
-    This file is part of Preference Manager.
+    This file is part of JPrefer.
 
-    Preference Manager is free software: you can redistribute it and/or modify
+    JPrefer is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Preference Manager is distributed in the hope that it will be useful,
+    JPrefer is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Lesser General Public License for more details.
@@ -23,17 +23,17 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.lazydog.preference.manager</groupId>
-        <artifactId>preference-manager-parent</artifactId>
+        <groupId>org.lazydog.jprefer</groupId>
+        <artifactId>jprefer-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>preference-manager-configuration</artifactId>
+    <artifactId>jprefer-configuration</artifactId>
     <packaging>jar</packaging>
-    <name>Preference Manager Configuration</name>
+    <name>JPrefer Configuration</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>preference-manager-configuration-spi</artifactId>
+            <artifactId>jprefer-configuration-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
