@@ -137,9 +137,19 @@ public class EmbeddedServer {
                 // Get the configuration file canonical path.
                 configFileCanonicalPath = configFile.getCanonicalPath();
 
-                // Parse the installation root.
-                installRoot = configFileCanonicalPath.replaceAll("config/.+$", "");
-                installRoot = configFileCanonicalPath.replaceAll("config\\\\.+$", "");
+                // Check if the path uses UNIX-style names.
+                if (configFileCanonicalPath.contains("config/")) {
+
+                    // Parse the install root.
+                    installRoot = configFileCanonicalPath.replaceAll("config/.+$", "");
+                }
+
+                // Otherwise the path uses Windows-style names.
+                else {
+
+                    // Parse the install root.
+                    installRoot = configFileCanonicalPath.replaceAll("config\\\\.+$", "");
+                }
 
                 // Load the environment properties.
                 env.load(new FileInputStream(configFile));
