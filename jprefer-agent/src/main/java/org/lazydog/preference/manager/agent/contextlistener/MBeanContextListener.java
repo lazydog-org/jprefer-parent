@@ -24,8 +24,8 @@ import org.lazydog.jprefer.model.SetupType;
 import org.lazydog.jprefer.manager.JPreferManager;
 import org.lazydog.jprefer.manager.JPreferManagerFactory;
 import org.lazydog.jprefer.utility.MBeanUtility;
-import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeService;
-import org.lazydog.preference.manager.spi.synchronize.AgentSynchronizeServiceFactory;
+import org.lazydog.jprefer.spi.synchronize.AgentSynchronizeService;
+import org.lazydog.jprefer.spi.synchronize.AgentSynchronizeServiceFactory;
 
 
 /**
