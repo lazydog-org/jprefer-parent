@@ -609,24 +609,21 @@ public class JPreferManagerImpl implements JPreferManager {
      *
      * @param  agent     the agent.
      * @param  document  the document.
+     *
+     * @throws  ServiceException  if unable to import the document remotely.
      */
-    private void importDocument(Agent agent, String document) {
+    private void importDocument(Agent agent, String document)
+        throws ServiceException {
 
         // Check if the agent is enabled.
         if (agent.getEnabled()) {
 
-            try {
+            // Declare.
+            SynchronizeService synchronizeService;
 
-                // Declare.
-                SynchronizeService synchronizeService;
-
-                // Import the document remotely.
-                synchronizeService = SynchronizeServiceFactory.create(getEnvironment(agent));
-                synchronizeService.importDocument(document);
-            }
-            catch(Exception e) {
-                // Ignore.
-            }
+            // Import the document remotely.
+            synchronizeService = SynchronizeServiceFactory.create(getEnvironment(agent));
+            synchronizeService.importDocument(document);
         }
     }
 
@@ -956,7 +953,7 @@ public class JPreferManagerImpl implements JPreferManager {
             String document;
 
             // Get the agents.
-            agents = configurationService.findAgents();
+            agents = getAgents();
 
             // Export the document locally.
             document = exportDocument();
