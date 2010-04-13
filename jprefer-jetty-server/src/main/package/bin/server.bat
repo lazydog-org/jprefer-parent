@@ -29,7 +29,7 @@ set CLASSPATH=%CLASSPATH%;%LIBDIR%\jetty-xml.jar
 set CLASSPATH=%CLASSPATH%;%LIBDIR%\jsp-api-2.1-glassfish.jar
 set CLASSPATH=%CLASSPATH%;%LIBDIR%\servlet-api.jar
 set MAINCLASS=org.lazydog.jprefer.server.EmbeddedServer
-set SERVER="%JAVA_HOME%\bin\java" -cp %CLASSPATH% -Dconfig=%CONFIGFILE% %MAINCLASS%
+set SERVER="%JAVA_HOME%\bin\java" -Xmx512m -cp %CLASSPATH% -Dconfig=%CONFIGFILE% %MAINCLASS%
 
 if not exist "%LOGDIR%" mkdir "%LOGDIR%"
 
